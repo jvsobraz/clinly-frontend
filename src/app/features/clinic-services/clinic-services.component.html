@@ -1,0 +1,42 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Serviços</h1>
+      <p class="text-slate-500 text-sm">Serviços e procedimentos oferecidos pela clínica</p>
+    </div>
+    <button mat-flat-button><mat-icon>add</mat-icon> Novo serviço</button>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center py-16"><mat-spinner diameter="40" /></div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (s of services(); track s.id) {
+        <div class="bg-white rounded-xl border border-slate-200 p-5">
+          <div class="flex items-start justify-between mb-3">
+            <h3 class="font-semibold text-slate-800">{{ s.name }}</h3>
+            <div class="flex gap-1 shrink-0">
+              <button mat-icon-button><mat-icon class="text-slate-400 text-[18px]">edit</mat-icon></button>
+              <button mat-icon-button><mat-icon class="text-red-400 text-[18px]">delete</mat-icon></button>
+            </div>
+          </div>
+          @if (s.description) {
+            <p class="text-sm text-slate-500 mb-3">{{ s.description }}</p>
+          }
+          <div class="flex items-center justify-between text-sm">
+            <span class="text-slate-500 flex items-center gap-1">
+              <mat-icon class="text-[16px]">schedule</mat-icon> {{ s.durationMinutes }} min
+            </span>
+            <span class="font-semibold text-indigo-600">{{ formatPrice(s.price) }}</span>
+          </div>
+        </div>
+      }
+      @if (services().length === 0) {
+        <div class="col-span-3 py-12 text-center text-slate-400">
+          <mat-icon class="text-5xl">design_services</mat-icon>
+          <p class="mt-2">Nenhum serviço cadastrado</p>
+        </div>
+      }
+    </div>
+  }
+</div>

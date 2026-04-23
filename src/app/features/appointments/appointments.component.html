@@ -1,0 +1,79 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between flex-wrap gap-3">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Agendamentos</h1>
+      <p class="text-slate-500 text-sm">Gerencie todos os agendamentos da clínica</p>
+    </div>
+    <div class="flex items-center gap-3">
+      <input type="date" class="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+        [value]="selectedDate()"
+        (change)="selectedDate.set($any($event.target).value); load()" />
+      <button mat-flat-button>
+        <mat-icon>add</mat-icon> Novo
+      </button>
+    </div>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center py-16"><mat-spinner diameter="40" /></div>
+  } @else {
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+      @if (appointments().length === 0) {
+        <div class="py-12 text-center text-slate-400">
+          <mat-icon class="text-5xl">calendar_today</mat-icon>
+          <p class="mt-2">Nenhum agendamento nesta data</p>
+        </div>
+      } @else {
+        <table class="w-full text-sm">
+          <thead class="bg-slate-50 border-b border-slate-200">
+            <tr>
+              <th class="text-left px-4 py-3 font-medium text-slate-600">Data/Hora</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600">Paciente</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Profissional</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Serviço</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600">Status</th>
+              <th class="px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (apt of appointments(); track apt.id) {
+              <tr class="border-b border-slate-100 hover:bg-slate-50">
+                <td class="px-4 py-3 font-medium text-slate-700">{{ formatDateTime(apt.scheduledAt) }}</td>
+                <td class="px-4 py-3 text-slate-800">{{ apt.patientName }}</td>
+                <td class="px-4 py-3 text-slate-600 hidden md:table-cell">{{ apt.professionalName }}</td>
+                <td class="px-4 py-3 text-slate-500 hidden lg:table-cell">{{ apt.serviceName ?? '—' }}</td>
+                <td class="px-4 py-3">
+                  <span class="px-2 py-0.5 rounded-full text-xs font-medium" [ngClass]="statusColor(apt.status)">
+                    {{ statusLabel(apt.status) }}
+                  </span>
+                </td>
+                <td class="px-4 py-3 text-right">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu>
+                    @if (apt.status === 'Pending') {
+                      <button mat-menu-item (click)="confirm(apt.id)">
+                        <mat-icon>check_circle</mat-icon> Confirmar
+                      </button>
+                    }
+                    @if (apt.status === 'Confirmed') {
+                      <button mat-menu-item (click)="complete(apt.id)">
+                        <mat-icon>task_alt</mat-icon> Concluir
+                      </button>
+                    }
+                    @if (apt.status === 'Pending' || apt.status === 'Confirmed') {
+                      <button mat-menu-item (click)="cancel(apt.id)" class="text-red-600">
+                        <mat-icon>cancel</mat-icon> Cancelar
+                      </button>
+                    }
+                  </mat-menu>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  }
+</div>

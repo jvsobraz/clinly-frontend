@@ -1,0 +1,63 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Profissionais</h1>
+      <p class="text-slate-500 text-sm">Gerencie a equipe da clínica</p>
+    </div>
+    <button mat-flat-button><mat-icon>add</mat-icon> Novo profissional</button>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center py-16"><mat-spinner diameter="40" /></div>
+  } @else {
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      @for (pro of professionals(); track pro.id) {
+        <div class="bg-white rounded-xl border border-slate-200 p-5 flex flex-col gap-3">
+          <div class="flex items-center gap-3">
+            <div class="w-12 h-12 rounded-full bg-indigo-100 flex items-center justify-center shrink-0">
+              @if (pro.avatarUrl) {
+                <img [src]="pro.avatarUrl" [alt]="pro.name" class="w-12 h-12 rounded-full object-cover" />
+              } @else {
+                <mat-icon class="text-indigo-600">person</mat-icon>
+              }
+            </div>
+            <div class="flex-1 min-w-0">
+              <p class="font-semibold text-slate-800 truncate">{{ pro.name }}</p>
+              @if (pro.crm) {
+                <p class="text-xs text-slate-500">CRM {{ pro.crm }}</p>
+              }
+            </div>
+            <span class="text-xs px-2 py-0.5 rounded-full"
+              [class]="pro.isActive ? 'bg-green-100 text-green-700' : 'bg-slate-100 text-slate-500'">
+              {{ pro.isActive ? 'Ativo' : 'Inativo' }}
+            </span>
+          </div>
+
+          @if (pro.specialties.length > 0) {
+            <div class="flex flex-wrap gap-1">
+              @for (s of pro.specialties; track s) {
+                <span class="bg-blue-50 text-blue-700 text-xs px-2 py-0.5 rounded-full">{{ s }}</span>
+              }
+            </div>
+          }
+
+          <div class="flex items-center justify-between text-sm text-slate-500">
+            <span>{{ pro.defaultAppointmentDurationMinutes }}min por consulta</span>
+            <div class="flex gap-1">
+              <button mat-icon-button><mat-icon class="text-slate-400 text-[18px]">edit</mat-icon></button>
+              <button mat-icon-button (click)="delete(pro.id)">
+                <mat-icon class="text-red-400 text-[18px]">delete</mat-icon>
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+      @if (professionals().length === 0) {
+        <div class="col-span-3 py-12 text-center text-slate-400">
+          <mat-icon class="text-5xl">medical_services</mat-icon>
+          <p class="mt-2">Nenhum profissional cadastrado</p>
+        </div>
+      }
+    </div>
+  }
+</div>

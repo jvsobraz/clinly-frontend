@@ -1,0 +1,89 @@
+<div class="space-y-6">
+
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Dashboard</h1>
+      <p class="text-slate-500 text-sm">Visão geral de hoje</p>
+    </div>
+    <a routerLink="/dashboard/appointments" mat-stroked-button>
+      <mat-icon>add</mat-icon> Novo agendamento
+    </a>
+  </div>
+
+  @if (loading()) {
+    <div class="flex justify-center py-16">
+      <mat-spinner diameter="40" />
+    </div>
+  }
+
+  @if (data(); as d) {
+    <!-- Stats cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white rounded-xl p-5 border border-slate-200">
+        <p class="text-sm text-slate-500 mb-1">Hoje — Total</p>
+        <p class="text-3xl font-bold text-slate-800">{{ d.todayTotal }}</p>
+      </div>
+      <div class="bg-white rounded-xl p-5 border border-slate-200">
+        <p class="text-sm text-slate-500 mb-1">Confirmados</p>
+        <p class="text-3xl font-bold text-blue-600">{{ d.todayConfirmed }}</p>
+      </div>
+      <div class="bg-white rounded-xl p-5 border border-slate-200">
+        <p class="text-sm text-slate-500 mb-1">Concluídos</p>
+        <p class="text-3xl font-bold text-green-600">{{ d.todayCompleted }}</p>
+      </div>
+      <div class="bg-white rounded-xl p-5 border border-slate-200">
+        <p class="text-sm text-slate-500 mb-1">Cancelados</p>
+        <p class="text-3xl font-bold text-red-500">{{ d.todayCancelled }}</p>
+      </div>
+    </div>
+
+    <!-- Month stats -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div class="bg-indigo-600 text-white rounded-xl p-5">
+        <p class="text-sm opacity-75 mb-1">Agendamentos no mês</p>
+        <p class="text-3xl font-bold">{{ d.monthTotal }}</p>
+      </div>
+      <div class="bg-white rounded-xl p-5 border border-slate-200">
+        <p class="text-sm text-slate-500 mb-1">Cancelamentos no mês</p>
+        <p class="text-3xl font-bold text-slate-800">{{ d.monthCancelled }}</p>
+      </div>
+      <div class="bg-white rounded-xl p-5 border border-slate-200">
+        <p class="text-sm text-slate-500 mb-1">Taxa de não comparecimento</p>
+        <p class="text-3xl font-bold text-amber-500">{{ d.noShowRate | number:'1.1-1' }}%</p>
+      </div>
+    </div>
+
+    <!-- Today agenda -->
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+      <div class="px-5 py-4 border-b border-slate-100 flex items-center justify-between">
+        <h2 class="font-semibold text-slate-800">Agenda de hoje</h2>
+        <a routerLink="/dashboard/appointments" class="text-sm text-indigo-600 hover:underline">Ver todos</a>
+      </div>
+      @if (d.todayAgenda.length === 0) {
+        <div class="py-10 text-center text-slate-400">
+          <mat-icon class="text-4xl">event_available</mat-icon>
+          <p class="mt-2">Nenhum agendamento para hoje</p>
+        </div>
+      }
+      @for (item of d.todayAgenda; track item.appointmentId) {
+        <div class="flex items-center gap-4 px-5 py-3 border-b border-slate-50 hover:bg-slate-50">
+          <div class="w-16 text-center">
+            <p class="text-sm font-semibold text-slate-700">{{ formatTime(item.scheduledAt) }}</p>
+            <p class="text-xs text-slate-400">{{ item.durationMinutes }}min</p>
+          </div>
+          <div class="flex-1 min-w-0">
+            <p class="font-medium text-slate-800 truncate">{{ item.patientName }}</p>
+            <p class="text-sm text-slate-500 truncate">{{ item.professionalName }}
+              @if (item.serviceName) { · {{ item.serviceName }} }
+            </p>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-xs font-medium"
+            [ngClass]="statusColor(item.status)">
+            {{ statusLabel(item.status) }}
+          </span>
+        </div>
+      }
+    </div>
+  }
+
+</div>
