@@ -8,6 +8,7 @@ import {
   AuthResponse, LoginRequest, RegisterRequest,
   RefreshTokenRequest, ForgotPasswordRequest, ResetPasswordRequest,
 } from '../models/auth.model';
+import { TenantContextService } from './tenant-context.service';
 
 const TOKEN_KEY = 'clinly_token';
 const REFRESH_KEY = 'clinly_refresh';
@@ -17,6 +18,7 @@ const USER_KEY = 'clinly_user';
 export class AuthService {
   private http = inject(HttpClient);
   private router = inject(Router);
+  private tenantCtx = inject(TenantContextService);
   private api = `${environment.apiUrl}/auth`;
 
   private _user = signal<AuthResponse['user'] | null>(this.loadUser());
@@ -69,6 +71,7 @@ export class AuthService {
     localStorage.removeItem(USER_KEY);
     this._token.set(null);
     this._user.set(null);
+    this.tenantCtx.clear();
     this.router.navigate(['/auth/login']);
   }
 
@@ -78,5 +81,8 @@ export class AuthService {
     localStorage.setItem(USER_KEY, JSON.stringify(res.user));
     this._token.set(res.token);
     this._user.set(res.user);
+    if (res.user.clinicId) {
+      this.tenantCtx.setTenant(res.user.clinicId, res.user.clinicName ?? '');
+    }
   }
 }
