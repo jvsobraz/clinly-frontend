@@ -1,9 +1,11 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { PatientService } from '../../core/services/patient.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { Patient } from '../../core/models/patient.model';
@@ -11,7 +13,7 @@ import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-patients',
-  imports: [CommonModule, FormsModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, FormsModule, RouterLink, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatTooltipModule],
   templateUrl: './patients.component.html',
 })
 export class PatientsComponent implements OnInit {

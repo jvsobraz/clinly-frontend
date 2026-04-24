@@ -26,6 +26,7 @@ export const routes: Routes = [
       { path: 'appointments', loadComponent: () => import('./features/appointments/appointments.component').then(m => m.AppointmentsComponent) },
       { path: 'professionals', loadComponent: () => import('./features/professionals/professionals.component').then(m => m.ProfessionalsComponent) },
       { path: 'patients', loadComponent: () => import('./features/patients/patients.component').then(m => m.PatientsComponent) },
+      { path: 'patients/:id/intelligence', loadComponent: () => import('./features/patients/patient-detail/patient-detail.component').then(m => m.PatientDetailComponent) },
       { path: 'services', loadComponent: () => import('./features/clinic-services/clinic-services.component').then(m => m.ClinicServicesComponent) },
       { path: 'rooms', loadComponent: () => import('./features/rooms/rooms.component').then(m => m.RoomsComponent) },
       { path: 'waitlist', loadComponent: () => import('./features/waitlist/waitlist.component').then(m => m.WaitlistComponent) },
@@ -38,6 +39,11 @@ export const routes: Routes = [
   {
     path: 'booking/:slug',
     loadComponent: () => import('./features/booking/booking.component').then(m => m.BookingComponent),
+  },
+
+  {
+    path: 'offer/:token',
+    loadComponent: () => import('./features/offer/offer.component').then(m => m.OfferComponent),
   },
 
   { path: '**', redirectTo: '/dashboard' },

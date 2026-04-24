@@ -42,6 +42,9 @@
                 <td class="px-4 py-3 text-slate-500 hidden lg:table-cell">{{ p.phone ?? '—' }}</td>
                 <td class="px-4 py-3 text-slate-500 hidden lg:table-cell">{{ p.healthInsurance ?? '—' }}</td>
                 <td class="px-4 py-3 text-right">
+                  <a mat-icon-button [routerLink]="['/dashboard/patients', p.id, 'intelligence']" matTooltip="Inteligência 360°">
+                    <mat-icon class="text-indigo-400 text-[18px]">insights</mat-icon>
+                  </a>
                   <button mat-icon-button><mat-icon class="text-slate-400 text-[18px]">edit</mat-icon></button>
                 </td>
               </tr>

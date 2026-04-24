@@ -86,4 +86,34 @@
     </div>
   }
 
+  <!-- At-Risk Patients Widget -->
+  @if (atRisk().length > 0) {
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-6">
+      <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center gap-2">
+          <mat-icon class="text-red-500">warning</mat-icon>
+          <h2 class="font-semibold text-slate-700">Pacientes em Risco de Churn</h2>
+        </div>
+        <a routerLink="/dashboard/patients" class="text-xs text-indigo-600 hover:underline">Ver todos</a>
+      </div>
+      <div class="flex flex-col gap-3">
+        @for (p of atRisk(); track p.patientId) {
+          <a [routerLink]="['/dashboard/patients', p.patientId, 'intelligence']"
+             class="flex items-center justify-between p-3 rounded-lg bg-slate-50 hover:bg-slate-100 transition-colors cursor-pointer no-underline">
+            <div>
+              <p class="font-medium text-slate-800 text-sm">{{ p.patientName }}</p>
+              <p class="text-xs text-slate-400">
+                {{ p.daysSinceLastVisit < 0 ? 'Sem visitas' : p.daysSinceLastVisit + ' dias sem visita' }}
+                · LTV {{ p.lifetimeValue | currency:'BRL':'symbol':'1.0-0' }}
+              </p>
+            </div>
+            <span class="px-2 py-0.5 rounded-full text-xs font-medium" [ngClass]="retentionClass(p.retentionStatus)">
+              {{ retentionLabel(p.retentionStatus) }}
+            </span>
+          </a>
+        }
+      </div>
+    </div>
+  }
+
 </div>
