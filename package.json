@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "npx @tailwindcss/cli -i src/tailwind.css -o src/tailwind-dist.css && ng build --configuration=production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

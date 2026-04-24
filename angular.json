@@ -31,7 +31,7 @@
               }
             ],
             "styles": [
-              "src/tailwind.css",
+              "src/tailwind-dist.css",
               "src/styles.scss"
             ]
           },
