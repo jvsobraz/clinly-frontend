@@ -1,6 +1,6 @@
 # Clinly — Frontend
 
-Interface web da plataforma SaaS de agendamento para clínicas, construída com **Angular 21** e **Angular Material**. Permite que administradores gerenciem agendamentos, profissionais e pacientes, além de oferecer uma página pública de booking por slug da clínica.
+Interface web da plataforma SaaS de agendamento para clínicas, construída com **Angular 21** e **Angular Material**. Inclui backoffice completo para administradores (agendamentos, pacientes, financeiro, relatórios), **Inteligência 360° do Paciente** (LTV, churn prediction), **Smart Gap Engine** (confirmação de slot por magic-link), pesquisa NPS pós-consulta, portal do paciente e agendamento público por slug da clínica.
 
 ---
 
@@ -32,15 +32,22 @@ src/app/
 │   ├── auth/             # Login, Register, Forgot/Reset Password
 │   ├── appointments/     # Lista e ações de agendamentos
 │   ├── professionals/    # CRUD de profissionais
-│   ├── patients/         # CRUD de pacientes com busca
+│   ├── patients/         # CRUD de pacientes + Patient 360° Intelligence
 │   ├── clinic-services/  # Serviços e procedimentos da clínica
 │   ├── rooms/            # Salas físicas
-│   ├── dashboard/        # Métricas e agenda do dia
+│   ├── dashboard/        # Métricas, agenda do dia e widget de churn
+│   ├── financial/        # Relatório financeiro e registro de pagamentos
+│   ├── nps/              # Pesquisa de satisfação NPS (público)
+│   ├── offer/            # Confirmação de slot via magic-link (público)
+│   ├── patient-portal/   # Portal do Paciente (próximas consultas + histórico)
 │   ├── settings/         # Configurações da clínica
 │   ├── subscription/     # Planos e checkout Stripe
+│   ├── waitlist/         # Lista de espera
+│   ├── packages/         # Pacotes de tratamento
 │   └── booking/          # Agendamento público via slug
 └── layout/
     ├── admin-layout/     # Layout com sidebar colapsável + header
+    ├── patient-layout/   # Header dedicado para o Portal do Paciente
     └── auth-layout/      # Layout centralizado para páginas de autenticação
 ```
 
@@ -122,6 +129,8 @@ src/
 │   │   │   ├── appointment.model.ts   # Tipos + STATUS_LABELS + STATUS_COLORS
 │   │   │   ├── auth.model.ts
 │   │   │   ├── dashboard.model.ts
+│   │   │   ├── financial.model.ts     # FinancialReport, PaymentItem
+│   │   │   ├── intelligence.model.ts  # PatientIntelligence, WaitlistOffer
 │   │   │   ├── notification.model.ts
 │   │   │   ├── patient.model.ts
 │   │   │   ├── professional.model.ts
@@ -130,8 +139,12 @@ src/
 │   │       ├── auth.service.ts            # Login, register, refresh, logout (signal-based)
 │   │       ├── appointment.service.ts
 │   │       ├── dashboard.service.ts
+│   │       ├── financial.service.ts       # Relatório financeiro e pagamentos
+│   │       ├── intelligence.service.ts    # Inteligência 360° e Smart Gap Engine
 │   │       ├── notification.service.ts
+│   │       ├── nps.service.ts             # Pesquisa NPS (getContext, submit)
 │   │       ├── patient.service.ts
+│   │       ├── patient-portal.service.ts  # Upcoming + histórico para pacientes
 │   │       ├── professional.service.ts
 │   │       └── tenant-context.service.ts  # tenantId e tenantName reativos
 │   ├── features/
@@ -144,13 +157,23 @@ src/
 │   │   ├── booking/
 │   │   ├── clinic-services/
 │   │   ├── dashboard/
+│   │   ├── financial/
+│   │   ├── nps/
+│   │   ├── offer/
+│   │   ├── patient-portal/
+│   │   │   ├── portal-home.component.ts         # Próximas consultas
+│   │   │   └── portal-appointments.component.ts # Histórico completo + NPS
 │   │   ├── patients/
+│   │   │   └── patient-detail/  # Patient 360° Intelligence
 │   │   ├── professionals/
 │   │   ├── rooms/
 │   │   ├── settings/
-│   │   └── subscription/
+│   │   ├── subscription/
+│   │   ├── waitlist/
+│   │   └── packages/
 │   ├── layout/
 │   │   ├── admin-layout/
+│   │   ├── patient-layout/
 │   │   └── auth-layout/
 │   ├── app.config.ts   # Providers: Router, HttpClient, Animations
 │   ├── app.routes.ts   # Roteamento lazy loaded
@@ -173,17 +196,23 @@ src/
 | `/auth/register` | `RegisterComponent` | `guestGuard` | Cadastro + criação da clínica |
 | `/auth/forgot-password` | `ForgotPasswordComponent` | `guestGuard` | Solicitar reset de senha |
 | `/auth/reset-password` | `ResetPasswordComponent` | `guestGuard` | Redefinir senha via token |
-| `/dashboard` | `DashboardComponent` | `authGuard` | Métricas e agenda do dia |
+| `/dashboard` | `DashboardComponent` | `authGuard` | Métricas, agenda do dia e widget de pacientes em risco de churn |
 | `/dashboard/appointments` | `AppointmentsComponent` | `authGuard` | Lista de agendamentos com filtro por data |
 | `/dashboard/professionals` | `ProfessionalsComponent` | `authGuard` | Cards de profissionais com especialidades |
-| `/dashboard/patients` | `PatientsComponent` | `authGuard` | Tabela de pacientes com busca em tempo real |
+| `/dashboard/patients` | `PatientsComponent` | `authGuard` | Tabela de pacientes com busca em tempo real e ícone de insights |
+| `/dashboard/patients/:id/intelligence` | `PatientDetailComponent` | `authGuard` | Inteligência 360°: LTV, retenção, perfil comportamental e insights |
 | `/dashboard/services` | `ClinicServicesComponent` | `authGuard` | Serviços e procedimentos |
 | `/dashboard/rooms` | `RoomsComponent` | `authGuard` | Salas físicas |
 | `/dashboard/waitlist` | `WaitlistComponent` | `authGuard` | Lista de espera com fila ordenada e notificação por e-mail |
 | `/dashboard/packages` | `PackagesComponent` | `authGuard` | Pacotes de tratamento (CRUD + atribuição a pacientes) |
+| `/dashboard/financial` | `FinancialComponent` | `authGuard` | Relatório financeiro com filtro por período e registro de pagamentos |
 | `/dashboard/settings` | `SettingsComponent` | `authGuard` | Configurações da clínica |
 | `/dashboard/subscription` | `SubscriptionComponent` | `authGuard` | Planos Free/Basic/Pro + checkout Stripe |
+| `/patient` | `PortalHomeComponent` | `authGuard` | Portal do Paciente — próximas consultas |
+| `/patient/appointments` | `PortalAppointmentsComponent` | `authGuard` | Portal do Paciente — histórico completo com NPS |
 | `/booking/:slug` | `BookingComponent` | — | Agendamento público (sem login) |
+| `/offer/:token` | `OfferComponent` | — | Confirmação de slot via Smart Gap Engine (magic-link) |
+| `/nps/:token` | `NpsComponent` | — | Pesquisa de satisfação NPS pós-consulta (magic-link) |
 
 ---
 
@@ -228,6 +257,15 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 ### Pacientes
 - Tabela com busca em tempo real (debounce de 400ms)
 - Campos: nome, e-mail, telefone, plano de saúde
+- Ícone de insights em cada linha com link para a página de Inteligência 360°
+
+### Patient 360° Intelligence
+- Painel de retenção com badge colorido: **Ativo** / **Em Risco** / **Churned**
+- Cards de métricas: LTV (Lifetime Value), taxa de comparecimento, dias desde a última visita, tendência de risco
+- Perfil comportamental: dia e horário preferidos, antecedência média de agendamento, contagem de faltas
+- Histórico clínico: data da última e próxima consulta, barra de progresso de pacotes ativos
+- Insights automáticos por nível (info / warning / danger)
+- Widget "Pacientes em Risco de Churn" no Dashboard com link para cada inteligência
 
 ### Serviços da Clínica
 - Cards com duração e preço formatado em BRL
@@ -245,6 +283,30 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 - Listagem de pacotes com nome, total de sessões, preço e validade
 - CRUD completo com formulário inline (criar/editar)
 - Soft-delete (desativação sem exclusão física)
+
+### Financeiro
+- Filtro por período com seletores de data (padrão: mês corrente)
+- Cards de resumo: receita total, a receber, consultas pagas e não pagas
+- Breakdown de receita por profissional e por serviço
+- Tabela detalhada de pagamentos com botão "Marcar Pago" para consultas pendentes
+
+### Smart Gap Engine — Oferta de Slot
+- Página pública `/offer/:token` sem necessidade de login
+- Estados: carregando / disponível / confirmado / expirado / erro
+- Exibe contagem regressiva de minutos até expirar
+- `POST /confirm` cria o agendamento; resposta `409` redireciona para tela de "slot já ocupado"
+
+### NPS Pós-Consulta
+- Página pública `/nps/:token` acessível via link do e-mail
+- Grade interativa de 0 a 10 com seleção por toque/clique
+- Campo de comentário opcional
+- Contexto exibido: nome da clínica, serviço e data da consulta
+
+### Portal do Paciente
+- Layout dedicado (`patient-layout`) com header "Clinly | Portal do Paciente"
+- `/patient` — Card de boas-vindas com nome do paciente + próximas consultas (visual de calendário com dia/mês)
+- `/patient/appointments` — Histórico completo com badges de status, nota NPS quando já respondida e botão "Avaliar" para pesquisas pendentes
+- Pacientes fazem login pela mesma tela (`/auth/login`) com role `Patient`
 
 ### Configurações
 - Edição de nome, telefone, endereço, mensagem de boas-vindas e cor primária
