@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
 import {
   Appointment, CreateAppointmentRequest,
-  UpdateAppointmentRequest, CancelAppointmentRequest,
+  UpdateAppointmentRequest, CancelAppointmentRequest, NoShowRisk,
 } from '../models/appointment.model';
 
 @Injectable({ providedIn: 'root' })
@@ -47,5 +47,10 @@ export class AppointmentService {
 
   noShow(tenantId: number, id: number): Observable<void> {
     return this.http.patch<void>(`${this.url(tenantId)}/${id}/no-show`, {});
+  }
+
+  getNoShowRisk(tenantId: number, patientId: number, scheduledAt: string): Observable<NoShowRisk> {
+    const params = new HttpParams().set('patientId', patientId).set('scheduledAt', scheduledAt);
+    return this.http.get<NoShowRisk>(`${this.url(tenantId)}/no-show-risk`, { params });
   }
 }

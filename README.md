@@ -179,6 +179,8 @@ src/
 | `/dashboard/patients` | `PatientsComponent` | `authGuard` | Tabela de pacientes com busca em tempo real |
 | `/dashboard/services` | `ClinicServicesComponent` | `authGuard` | Serviços e procedimentos |
 | `/dashboard/rooms` | `RoomsComponent` | `authGuard` | Salas físicas |
+| `/dashboard/waitlist` | `WaitlistComponent` | `authGuard` | Lista de espera com fila ordenada e notificação por e-mail |
+| `/dashboard/packages` | `PackagesComponent` | `authGuard` | Pacotes de tratamento (CRUD + atribuição a pacientes) |
 | `/dashboard/settings` | `SettingsComponent` | `authGuard` | Configurações da clínica |
 | `/dashboard/subscription` | `SubscriptionComponent` | `authGuard` | Planos Free/Basic/Pro + checkout Stripe |
 | `/booking/:slug` | `BookingComponent` | — | Agendamento público (sem login) |
@@ -217,6 +219,7 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 - Lista com filtro por data
 - Ações rápidas via menu: Confirmar, Concluir, Cancelar
 - Badge de status com cores semânticas (Pendente, Confirmado, Cancelado, Concluído, Não compareceu)
+- **Badge de risco de no-show** (Baixo/Médio/Alto) calculado por score baseado em histórico, antecedência, dia da semana e horário
 
 ### Profissionais
 - Cards com avatar, CRM, especialidades e duração padrão de consulta
@@ -231,6 +234,17 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 
 ### Salas
 - Cards com capacidade
+
+### Lista de Espera
+- Tabela ordenada por tempo de espera com posição na fila
+- Status colorido (Aguardando, Notificado, Agendado, Expirado)
+- Botão "Notificar Próximo" — envia e-mail ao primeiro paciente na fila
+- Remoção individual de registros
+
+### Pacotes de Tratamento
+- Listagem de pacotes com nome, total de sessões, preço e validade
+- CRUD completo com formulário inline (criar/editar)
+- Soft-delete (desativação sem exclusão física)
 
 ### Configurações
 - Edição de nome, telefone, endereço, mensagem de boas-vindas e cor primária

@@ -32,6 +32,7 @@
               <th class="text-left px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Profissional</th>
               <th class="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Serviço</th>
               <th class="text-left px-4 py-3 font-medium text-slate-600">Status</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden xl:table-cell">Risco No-show</th>
               <th class="px-4 py-3"></th>
             </tr>
           </thead>
@@ -46,6 +47,21 @@
                   <span class="px-2 py-0.5 rounded-full text-xs font-medium" [ngClass]="statusColor(apt.status)">
                     {{ statusLabel(apt.status) }}
                   </span>
+                </td>
+                <td class="px-4 py-3 hidden xl:table-cell">
+                  @if (apt.noShowRiskScore > 0) {
+                    <span class="px-2 py-0.5 rounded-full text-xs font-medium"
+                      [ngClass]="{
+                        'bg-green-100 text-green-800': apt.noShowRiskScore <= 30,
+                        'bg-yellow-100 text-yellow-800': apt.noShowRiskScore > 30 && apt.noShowRiskScore <= 60,
+                        'bg-red-100 text-red-800': apt.noShowRiskScore > 60
+                      }">
+                      {{ apt.noShowRiskScore <= 30 ? 'Baixo' : apt.noShowRiskScore <= 60 ? 'Médio' : 'Alto' }}
+                      ({{ apt.noShowRiskScore }})
+                    </span>
+                  } @else {
+                    <span class="text-slate-300 text-xs">—</span>
+                  }
                 </td>
                 <td class="px-4 py-3 text-right">
                   <button mat-icon-button [matMenuTriggerFor]="menu">

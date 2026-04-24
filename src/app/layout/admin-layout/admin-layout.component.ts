@@ -37,6 +37,8 @@ export class AdminLayoutComponent {
     { label: 'Pacientes', icon: 'people', route: '/dashboard/patients' },
     { label: 'Serviços', icon: 'design_services', route: '/dashboard/services' },
     { label: 'Salas', icon: 'meeting_room', route: '/dashboard/rooms' },
+    { label: 'Lista de Espera', icon: 'queue', route: '/dashboard/waitlist' },
+    { label: 'Pacotes', icon: 'inventory_2', route: '/dashboard/packages' },
   ];
 
   bottomItems: NavItem[] = [

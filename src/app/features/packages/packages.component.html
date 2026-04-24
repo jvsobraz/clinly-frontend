@@ -1,0 +1,111 @@
+<div class="space-y-6">
+  <div class="flex items-center justify-between flex-wrap gap-3">
+    <div>
+      <h1 class="text-2xl font-bold text-slate-800">Pacotes de Tratamento</h1>
+      <p class="text-slate-500 text-sm">Crie e gerencie pacotes de sessões para seus pacientes</p>
+    </div>
+    <button mat-flat-button (click)="openCreate()">
+      <mat-icon>add</mat-icon> Novo Pacote
+    </button>
+  </div>
+
+  @if (showForm()) {
+    <div class="bg-white rounded-xl border border-slate-200 p-6">
+      <h2 class="text-lg font-semibold text-slate-800 mb-4">
+        {{ editingId() ? 'Editar Pacote' : 'Novo Pacote' }}
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-slate-700 mb-1">Nome *</label>
+          <input [(ngModel)]="form.name" type="text" placeholder="Ex: Pacote Fisioterapia 10 sessões"
+            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+        </div>
+        <div class="md:col-span-2">
+          <label class="block text-sm font-medium text-slate-700 mb-1">Descrição</label>
+          <textarea [(ngModel)]="form.description" rows="2" placeholder="Descreva o pacote..."
+            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Total de Sessões *</label>
+          <input [(ngModel)]="form.totalSessions" type="number" min="1"
+            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Preço (R$) *</label>
+          <input [(ngModel)]="form.price" type="number" min="0" step="0.01"
+            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 mb-1">Validade (dias)</label>
+          <input [(ngModel)]="form.validityDays" type="number" min="1"
+            class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300" />
+        </div>
+      </div>
+      <div class="flex justify-end gap-3 mt-5">
+        <button mat-stroked-button (click)="cancel()">Cancelar</button>
+        <button mat-flat-button (click)="save()" [disabled]="saving() || !form.name">
+          {{ saving() ? 'Salvando...' : 'Salvar' }}
+        </button>
+      </div>
+    </div>
+  }
+
+  @if (loading()) {
+    <div class="flex justify-center py-16"><mat-spinner diameter="40" /></div>
+  } @else {
+    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+      @if (packages().length === 0) {
+        <div class="py-12 text-center text-slate-400">
+          <mat-icon class="text-5xl">inventory_2</mat-icon>
+          <p class="mt-2">Nenhum pacote de tratamento cadastrado</p>
+        </div>
+      } @else {
+        <table class="w-full text-sm">
+          <thead class="bg-slate-50 border-b border-slate-200">
+            <tr>
+              <th class="text-left px-4 py-3 font-medium text-slate-600">Nome</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Sessões</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Preço</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Validade</th>
+              <th class="px-4 py-3"></th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (pkg of packages(); track pkg.id) {
+              <tr class="border-b border-slate-100 hover:bg-slate-50">
+                <td class="px-4 py-3">
+                  <p class="font-medium text-slate-800">{{ pkg.name }}</p>
+                  @if (pkg.description) {
+                    <p class="text-xs text-slate-400 mt-0.5">{{ pkg.description }}</p>
+                  }
+                </td>
+                <td class="px-4 py-3 text-slate-600 hidden md:table-cell">
+                  {{ pkg.totalSessions }} sessões
+                </td>
+                <td class="px-4 py-3 font-medium text-indigo-700 hidden md:table-cell">
+                  {{ formatCurrency(pkg.price) }}
+                </td>
+                <td class="px-4 py-3 text-slate-500 hidden lg:table-cell">
+                  {{ pkg.validityDays }} dias
+                </td>
+                <td class="px-4 py-3 text-right">
+                  <button mat-icon-button [matMenuTriggerFor]="menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu>
+                    <button mat-menu-item (click)="openEdit(pkg)">
+                      <mat-icon>edit</mat-icon> Editar
+                    </button>
+                    <button mat-menu-item (click)="delete(pkg.id)" class="text-red-600">
+                      <mat-icon>delete_outline</mat-icon> Excluir
+                    </button>
+                  </mat-menu>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      }
+    </div>
+  }
+</div>

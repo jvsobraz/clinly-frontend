@@ -28,6 +28,8 @@ export const routes: Routes = [
       { path: 'patients', loadComponent: () => import('./features/patients/patients.component').then(m => m.PatientsComponent) },
       { path: 'services', loadComponent: () => import('./features/clinic-services/clinic-services.component').then(m => m.ClinicServicesComponent) },
       { path: 'rooms', loadComponent: () => import('./features/rooms/rooms.component').then(m => m.RoomsComponent) },
+      { path: 'waitlist', loadComponent: () => import('./features/waitlist/waitlist.component').then(m => m.WaitlistComponent) },
+      { path: 'packages', loadComponent: () => import('./features/packages/packages.component').then(m => m.PackagesComponent) },
       { path: 'settings', loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent) },
       { path: 'subscription', loadComponent: () => import('./features/subscription/subscription.component').then(m => m.SubscriptionComponent) },
     ],

@@ -16,7 +16,13 @@ export interface Appointment {
   status: AppointmentStatus;
   notes?: string;
   cancelReason?: string;
+  noShowRiskScore: number;
   createdAt: string;
+}
+
+export interface NoShowRisk {
+  score: number;
+  label: 'Low' | 'Medium' | 'High';
 }
 
 export interface CreateAppointmentRequest {
