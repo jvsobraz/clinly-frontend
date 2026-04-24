@@ -36,5 +36,5 @@ import { AuthService } from '../../core/services/auth.service';
 })
 export class PatientLayoutComponent {
   private auth = inject(AuthService);
-  logout() { this.auth.logout().subscribe(); }
+  logout() { this.auth.logout(); }
 }
