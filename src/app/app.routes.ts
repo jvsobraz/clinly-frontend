@@ -31,20 +31,25 @@ export const routes: Routes = [
       { path: 'rooms', loadComponent: () => import('./features/rooms/rooms.component').then(m => m.RoomsComponent) },
       { path: 'waitlist', loadComponent: () => import('./features/waitlist/waitlist.component').then(m => m.WaitlistComponent) },
       { path: 'packages', loadComponent: () => import('./features/packages/packages.component').then(m => m.PackagesComponent) },
+      { path: 'financial', loadComponent: () => import('./features/financial/financial.component').then(m => m.FinancialComponent) },
       { path: 'settings', loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent) },
       { path: 'subscription', loadComponent: () => import('./features/subscription/subscription.component').then(m => m.SubscriptionComponent) },
     ],
   },
 
   {
-    path: 'booking/:slug',
-    loadComponent: () => import('./features/booking/booking.component').then(m => m.BookingComponent),
+    path: 'patient',
+    canActivate: [authGuard],
+    loadComponent: () => import('./layout/patient-layout/patient-layout.component').then(m => m.PatientLayoutComponent),
+    children: [
+      { path: '', loadComponent: () => import('./features/patient-portal/portal-home.component').then(m => m.PortalHomeComponent) },
+      { path: 'appointments', loadComponent: () => import('./features/patient-portal/portal-appointments.component').then(m => m.PortalAppointmentsComponent) },
+    ],
   },
 
-  {
-    path: 'offer/:token',
-    loadComponent: () => import('./features/offer/offer.component').then(m => m.OfferComponent),
-  },
+  { path: 'booking/:slug', loadComponent: () => import('./features/booking/booking.component').then(m => m.BookingComponent) },
+  { path: 'offer/:token', loadComponent: () => import('./features/offer/offer.component').then(m => m.OfferComponent) },
+  { path: 'nps/:token', loadComponent: () => import('./features/nps/nps.component').then(m => m.NpsComponent) },
 
   { path: '**', redirectTo: '/dashboard' },
 ];
