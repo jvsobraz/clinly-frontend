@@ -204,7 +204,7 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 - `isLoggedIn()` — computed booleano
 - `isAdmin()` — computed true para SuperAdmin/ClinicAdmin
 
-**`authInterceptor`** injeta automaticamente o `Bearer` token em todas as requisições e, ao receber um `401`, tenta renovar o token via `refreshToken()` antes de fazer logout.
+**`authInterceptor`** injeta automaticamente o `Bearer` token em todas as requisições e, ao receber um `401`, tenta renovar o token via `refreshToken()` antes de fazer logout. Quando múltiplas requisições retornam `401` simultaneamente, apenas uma dispara o refresh — as demais aguardam via `BehaviorSubject` para evitar race conditions que invalidariam o token rotacionado.
 
 ---
 
@@ -264,3 +264,14 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 - Cadastro com geração automática de slug a partir do nome da clínica
 - Recuperação e redefinição de senha
 - Logout com invalidação do refresh token no backend
+
+---
+
+## Segurança
+
+| Medida | Onde | Descrição |
+|---|---|---|
+| Refresh token serializado | `auth.interceptor.ts` | Um `BehaviorSubject` garante que apenas uma chamada `/auth/refresh-token` ocorre por vez; requisições concorrentes aguardam o resultado em vez de disparar refreshes paralelos que rotacionariam o token |
+| `X-Requested-With` | `auth.interceptor.ts` | Header enviado em todas as requisições como sinal anti-CSRF para o backend |
+| Guards de rota | `auth.guard.ts` | `authGuard` bloqueia acesso a rotas privadas; `guestGuard` redireciona usuários logados |
+| Tokens em `localStorage` | `auth.service.ts` | Tokens são removidos no logout e na falha de refresh |
