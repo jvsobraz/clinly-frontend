@@ -168,4 +168,8 @@ export class AppointmentsComponent implements OnInit {
   dayLabel(date: Date): string {
     return DAY_LABELS[date.getDay()];
   }
+
+  firstWord(name: string | undefined): string {
+    return name?.split(' ')[0] ?? '';
+  }
 }

@@ -181,7 +181,7 @@
                            [ngClass]="calendarStatusColor(apt.status)"
                            [matTooltip]="apt.patient?.name + ' — ' + apt.service?.name + ' (' + formatTime(apt.scheduledAt) + ')'">
                         <div class="font-medium truncate">{{ apt.patient?.name }}</div>
-                        <div class="text-[10px] opacity-75">{{ formatTime(apt.scheduledAt) }} · {{ apt.professional?.name?.split(' ')[0] }}</div>
+                        <div class="text-[10px] opacity-75">{{ formatTime(apt.scheduledAt) }} · {{ firstWord(apt.professional?.name) }}</div>
                       </div>
                     }
                   </div>
