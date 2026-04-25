@@ -12,7 +12,7 @@ export interface Specialty {
 export class SpecialtyService {
   private http = inject(HttpClient);
 
-  getAll(): Observable<Specialty[]> {
-    return this.http.get<Specialty[]>(`${environment.apiUrl}/specialties`);
+  getAll(tenantId: number): Observable<Specialty[]> {
+    return this.http.get<Specialty[]>(`${environment.apiUrl}/tenants/${tenantId}/specialties`);
   }
 }

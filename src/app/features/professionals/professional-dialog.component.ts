@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ProfessionalService } from '../../core/services/professional.service';
 import { SpecialtyService, Specialty } from '../../core/services/specialty.service';
 import { Professional } from '../../core/models/professional.model';
@@ -76,6 +77,7 @@ export class ProfessionalDialogComponent implements OnInit {
   private professionalService = inject(ProfessionalService);
   private specialtyService = inject(SpecialtyService);
   private fb = inject(FormBuilder);
+  private snackBar = inject(MatSnackBar);
 
   specialties = signal<Specialty[]>([]);
   loadingSpecialties = signal(true);
@@ -94,7 +96,7 @@ export class ProfessionalDialogComponent implements OnInit {
   });
 
   ngOnInit() {
-    this.specialtyService.getAll().subscribe({
+    this.specialtyService.getAll(this.data.tenantId).subscribe({
       next: list => {
         this.specialties.set(list);
         this.loadingSpecialties.set(false);
@@ -118,8 +120,15 @@ export class ProfessionalDialogComponent implements OnInit {
       : this.professionalService.create(this.data.tenantId, body);
 
     req$.subscribe({
-      next: result => { this.saving.set(false); this.ref.close(result); },
-      error: () => this.saving.set(false),
+      next: result => {
+        this.saving.set(false);
+        this.snackBar.open('Profissional salvo com sucesso!', 'Fechar', { duration: 3000 });
+        this.ref.close(result);
+      },
+      error: (err) => {
+        this.saving.set(false);
+        this.snackBar.open(err?.error?.error ?? 'Erro ao salvar profissional.', 'Fechar', { duration: 4000 });
+      },
     });
   }
 }

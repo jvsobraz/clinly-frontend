@@ -56,6 +56,11 @@ export class AppointmentsComponent implements OnInit {
     this.service.complete(tenantId, id).subscribe(() => this.load());
   }
 
+  noShow(id: number) {
+    const tenantId = this.tenantCtx.tenantId()!;
+    this.service.noShow(tenantId, id).subscribe(() => this.load());
+  }
+
   openDialog() {
     const tenantId = this.tenantCtx.tenantId()!;
     this.dialog.open(AppointmentDialogComponent, {

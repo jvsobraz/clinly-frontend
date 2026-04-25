@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { RoomService, Room } from '../../core/services/room.service';
 
 interface DialogData {
@@ -50,6 +51,7 @@ export class RoomDialogComponent {
   data = inject<DialogData>(MAT_DIALOG_DATA);
   private service = inject(RoomService);
   private fb = inject(FormBuilder);
+  private snackBar = inject(MatSnackBar);
 
   saving = signal(false);
 
@@ -68,8 +70,15 @@ export class RoomDialogComponent {
       : this.service.create(this.data.tenantId, body);
 
     req$.subscribe({
-      next: result => { this.saving.set(false); this.ref.close(result); },
-      error: () => this.saving.set(false),
+      next: result => {
+        this.saving.set(false);
+        this.snackBar.open('Sala salva com sucesso!', 'Fechar', { duration: 3000 });
+        this.ref.close(result);
+      },
+      error: (err) => {
+        this.saving.set(false);
+        this.snackBar.open(err?.error?.error ?? 'Erro ao salvar sala.', 'Fechar', { duration: 4000 });
+      },
     });
   }
 }

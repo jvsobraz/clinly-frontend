@@ -5,6 +5,7 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
@@ -65,6 +66,7 @@ export class ServiceDialogComponent {
   data = inject<DialogData>(MAT_DIALOG_DATA);
   private http = inject(HttpClient);
   private fb = inject(FormBuilder);
+  private snackBar = inject(MatSnackBar);
 
   saving = signal(false);
 
@@ -85,8 +87,15 @@ export class ServiceDialogComponent {
       : this.http.post<ClinicService>(url, body);
 
     req$.subscribe({
-      next: result => { this.saving.set(false); this.ref.close(result); },
-      error: () => this.saving.set(false),
+      next: result => {
+        this.saving.set(false);
+        this.snackBar.open('Serviço salvo com sucesso!', 'Fechar', { duration: 3000 });
+        this.ref.close(result);
+      },
+      error: (err) => {
+        this.saving.set(false);
+        this.snackBar.open(err?.error?.error ?? 'Erro ao salvar serviço.', 'Fechar', { duration: 4000 });
+      },
     });
   }
 }

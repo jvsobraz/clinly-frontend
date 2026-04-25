@@ -248,10 +248,11 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 
 ### Agendamentos
 - Lista com filtro por data
-- **Dialog de criação** com seleção de paciente, profissional, serviço (opcional), sala (opcional), data/hora e duração — duração pré-preenchida automaticamente ao selecionar o profissional
-- Ações rápidas via menu: Confirmar, Concluir, Cancelar
+- **Dialog de criação** com seleção de paciente, profissional, serviço (obrigatório), sala (opcional) e data/hora — duração exibida automaticamente ao selecionar o serviço
+- Ações rápidas via menu: Confirmar, Concluir, **Marcar Falta** (NoShow), Cancelar
 - Badge de status com cores semânticas (Pendente, Confirmado, Cancelado, Concluído, Não compareceu)
 - **Badge de risco de no-show** (Baixo/Médio/Alto) calculado por score baseado em histórico, antecedência, dia da semana e horário
+- Feedback visual via snackbar em todas as ações
 
 ### Profissionais
 - Cards com avatar, CRM, especialidades e duração padrão de consulta

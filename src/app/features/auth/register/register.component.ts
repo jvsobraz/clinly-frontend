@@ -33,7 +33,7 @@ export class RegisterComponent {
     name: ['', [Validators.required, Validators.minLength(3)]],
     email: ['', [Validators.required, Validators.email]],
     clinicName: ['', [Validators.required, Validators.minLength(3)]],
-    clinicSlug: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-z0-9-]+$/)]],
+    clinicSlug: ['', [Validators.required, Validators.minLength(3), Validators.pattern(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)]],
     password: ['', [Validators.required, Validators.minLength(8)]],
     confirmPassword: ['', Validators.required],
   }, { validators: passwordMatch });
@@ -43,7 +43,11 @@ export class RegisterComponent {
   hidePassword = signal(true);
 
   onClinicNameChange(name: string) {
-    const slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    const slug = name.toLowerCase()
+      .replace(/\s+/g, '-')
+      .replace(/[^a-z0-9-]/g, '')
+      .replace(/-+/g, '-')
+      .replace(/^-+|-+$/g, '');
     this.form.get('clinicSlug')?.setValue(slug);
   }
 

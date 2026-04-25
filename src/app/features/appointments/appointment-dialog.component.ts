@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { HttpClient } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -47,7 +48,7 @@ interface ClinicService { id: number; name: string; durationMinutes: number; }
 
           <mat-form-field appearance="outline">
             <mat-label>Profissional *</mat-label>
-            <mat-select formControlName="professionalId" (selectionChange)="onProfessionalChange($event.value)">
+            <mat-select formControlName="professionalId">
               @for (p of professionals(); track p.id) {
                 <mat-option [value]="p.id">{{ p.name }}</mat-option>
               }
@@ -55,14 +56,19 @@ interface ClinicService { id: number; name: string; durationMinutes: number; }
           </mat-form-field>
 
           <mat-form-field appearance="outline">
-            <mat-label>Serviço</mat-label>
-            <mat-select formControlName="serviceId">
-              <mat-option [value]="null">— Nenhum —</mat-option>
+            <mat-label>Serviço *</mat-label>
+            <mat-select formControlName="serviceId" (selectionChange)="onServiceChange($event.value)">
               @for (s of services(); track s.id) {
                 <mat-option [value]="s.id">{{ s.name }}</mat-option>
               }
             </mat-select>
           </mat-form-field>
+
+          @if (selectedServiceDuration()) {
+            <p class="text-sm text-slate-500 -mt-1 px-1">
+              Duração: <span class="font-medium text-slate-700">{{ selectedServiceDuration() }} min</span>
+            </p>
+          }
 
           @if (rooms().length > 0) {
             <mat-form-field appearance="outline">
@@ -76,20 +82,14 @@ interface ClinicService { id: number; name: string; durationMinutes: number; }
             </mat-form-field>
           }
 
-          <div class="grid grid-cols-2 gap-3">
-            <mat-form-field appearance="outline">
-              <mat-label>Data e hora *</mat-label>
-              <input matInput type="datetime-local" formControlName="scheduledAt" />
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Duração (min) *</mat-label>
-              <input matInput type="number" formControlName="durationMinutes" />
-            </mat-form-field>
-          </div>
+          <mat-form-field appearance="outline">
+            <mat-label>Data e hora *</mat-label>
+            <input matInput type="datetime-local" formControlName="scheduledAt" />
+          </mat-form-field>
 
           <mat-form-field appearance="outline">
             <mat-label>Observações</mat-label>
-            <textarea matInput formControlName="notes" rows="2"></textarea>
+            <textarea matInput formControlName="patientNotes" rows="2"></textarea>
           </mat-form-field>
         </form>
       }
@@ -111,22 +111,23 @@ export class AppointmentDialogComponent implements OnInit {
   private roomService = inject(RoomService);
   private http = inject(HttpClient);
   private fb = inject(FormBuilder);
+  private snackBar = inject(MatSnackBar);
 
   patients = signal<Patient[]>([]);
   professionals = signal<Professional[]>([]);
   services = signal<ClinicService[]>([]);
   rooms = signal<Room[]>([]);
+  selectedServiceDuration = signal<number | null>(null);
   loadingData = signal(true);
   saving = signal(false);
 
   form = this.fb.group({
     patientId: [null as number | null, Validators.required],
     professionalId: [null as number | null, Validators.required],
-    serviceId: [null as number | null],
+    serviceId: [null as number | null, Validators.required],
     roomId: [null as number | null],
     scheduledAt: ['', Validators.required],
-    durationMinutes: [60, [Validators.required, Validators.min(5)]],
-    notes: [''],
+    patientNotes: [''],
   });
 
   ngOnInit() {
@@ -144,15 +145,16 @@ export class AppointmentDialogComponent implements OnInit {
         this.rooms.set(rooms);
         this.loadingData.set(false);
       },
-      error: () => this.loadingData.set(false),
+      error: () => {
+        this.snackBar.open('Erro ao carregar dados.', 'Fechar', { duration: 4000 });
+        this.loadingData.set(false);
+      },
     });
   }
 
-  onProfessionalChange(professionalId: number) {
-    const pro = this.professionals().find(p => p.id === professionalId);
-    if (pro) {
-      this.form.patchValue({ durationMinutes: pro.defaultAppointmentDurationMinutes });
-    }
+  onServiceChange(serviceId: number) {
+    const svc = this.services().find(s => s.id === serviceId);
+    this.selectedServiceDuration.set(svc?.durationMinutes ?? null);
   }
 
   save() {
@@ -162,15 +164,21 @@ export class AppointmentDialogComponent implements OnInit {
     const body = {
       patientId: v.patientId!,
       professionalId: v.professionalId!,
-      serviceId: v.serviceId ?? undefined,
+      serviceId: v.serviceId!,
       roomId: v.roomId ?? undefined,
       scheduledAt: new Date(v.scheduledAt!).toISOString(),
-      durationMinutes: v.durationMinutes!,
-      notes: v.notes || undefined,
+      patientNotes: v.patientNotes || undefined,
     };
     this.appointmentService.create(this.data.tenantId, body).subscribe({
-      next: result => { this.saving.set(false); this.ref.close(result); },
-      error: () => this.saving.set(false),
+      next: result => {
+        this.saving.set(false);
+        this.snackBar.open('Agendamento criado!', 'Fechar', { duration: 3000 });
+        this.ref.close(result);
+      },
+      error: (err) => {
+        this.saving.set(false);
+        this.snackBar.open(err?.error?.error ?? 'Erro ao criar agendamento.', 'Fechar', { duration: 4000 });
+      },
     });
   }
 }

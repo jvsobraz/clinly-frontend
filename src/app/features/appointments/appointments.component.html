@@ -78,6 +78,11 @@
                         <mat-icon>task_alt</mat-icon> Concluir
                       </button>
                     }
+                    @if (apt.status === 'Confirmed') {
+                      <button mat-menu-item (click)="noShow(apt.id)">
+                        <mat-icon>person_off</mat-icon> Marcar Falta
+                      </button>
+                    }
                     @if (apt.status === 'Pending' || apt.status === 'Confirmed') {
                       <button mat-menu-item (click)="cancel(apt.id)" class="text-red-600">
                         <mat-icon>cancel</mat-icon> Cancelar

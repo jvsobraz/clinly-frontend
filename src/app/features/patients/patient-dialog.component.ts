@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { PatientService } from '../../core/services/patient.service';
 import { Patient } from '../../core/models/patient.model';
 
@@ -84,6 +85,7 @@ export class PatientDialogComponent {
   data = inject<DialogData>(MAT_DIALOG_DATA);
   private service = inject(PatientService);
   private fb = inject(FormBuilder);
+  private snackBar = inject(MatSnackBar);
 
   saving = signal(false);
 
@@ -107,8 +109,15 @@ export class PatientDialogComponent {
       : this.service.create(this.data.tenantId, body);
 
     req$.subscribe({
-      next: result => { this.saving.set(false); this.ref.close(result); },
-      error: () => this.saving.set(false),
+      next: result => {
+        this.saving.set(false);
+        this.snackBar.open('Paciente salvo com sucesso!', 'Fechar', { duration: 3000 });
+        this.ref.close(result);
+      },
+      error: (err) => {
+        this.saving.set(false);
+        this.snackBar.open(err?.error?.error ?? 'Erro ao salvar paciente.', 'Fechar', { duration: 4000 });
+      },
     });
   }
 }

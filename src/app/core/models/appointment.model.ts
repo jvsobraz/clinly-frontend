@@ -28,19 +28,17 @@ export interface NoShowRisk {
 export interface CreateAppointmentRequest {
   patientId: number;
   professionalId: number;
-  serviceId?: number;
+  serviceId: number;
   roomId?: number;
   scheduledAt: string;
-  durationMinutes: number;
-  notes?: string;
+  patientNotes?: string;
 }
 
 export interface UpdateAppointmentRequest {
   scheduledAt: string;
-  durationMinutes: number;
   serviceId?: number;
   roomId?: number;
-  notes?: string;
+  patientNotes?: string;
 }
 
 export interface CancelAppointmentRequest {
