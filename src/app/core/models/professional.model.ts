@@ -3,6 +3,8 @@ export interface Professional {
   tenantId: number;
   userId?: number;
   name: string;
+  email?: string;
+  phone?: string;
   crm?: string;
   bio?: string;
   avatarUrl?: string;
@@ -10,13 +12,4 @@ export interface Professional {
   acceptsNewPatients: boolean;
   isActive: boolean;
   specialties: string[];
-}
-
-export interface CreateProfessionalRequest {
-  name: string;
-  crm?: string;
-  bio?: string;
-  defaultAppointmentDurationMinutes: number;
-  acceptsNewPatients: boolean;
-  specialtyIds: number[];
 }

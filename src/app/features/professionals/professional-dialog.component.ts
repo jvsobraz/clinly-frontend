@@ -34,6 +34,17 @@ interface DialogData {
           <mat-label>Nome completo *</mat-label>
           <input matInput formControlName="name" />
         </mat-form-field>
+        @if (!data.professional) {
+          <mat-form-field appearance="outline">
+            <mat-label>E-mail *</mat-label>
+            <input matInput type="email" formControlName="email" />
+            <mat-hint>Será usado para o profissional acessar o sistema</mat-hint>
+          </mat-form-field>
+        }
+        <mat-form-field appearance="outline">
+          <mat-label>Telefone</mat-label>
+          <input matInput formControlName="phone" />
+        </mat-form-field>
         <mat-form-field appearance="outline">
           <mat-label>CRM / Registro profissional</mat-label>
           <input matInput formControlName="crm" />
@@ -83,8 +94,15 @@ export class ProfessionalDialogComponent implements OnInit {
   loadingSpecialties = signal(true);
   saving = signal(false);
 
+  isEdit = !!this.data.professional;
+
   form = this.fb.group({
     name: [this.data.professional?.name ?? '', [Validators.required, Validators.minLength(2)]],
+    email: [
+      '',
+      this.isEdit ? [] : [Validators.required, Validators.email],
+    ],
+    phone: [this.data.professional?.phone ?? ''],
     crm: [this.data.professional?.crm ?? ''],
     bio: [this.data.professional?.bio ?? ''],
     defaultAppointmentDurationMinutes: [
@@ -100,7 +118,7 @@ export class ProfessionalDialogComponent implements OnInit {
       next: list => {
         this.specialties.set(list);
         this.loadingSpecialties.set(false);
-        if (this.data.professional?.specialties.length) {
+        if (this.data.professional?.specialties?.length) {
           const ids = list
             .filter(s => this.data.professional!.specialties.includes(s.name))
             .map(s => s.id);
@@ -114,10 +132,26 @@ export class ProfessionalDialogComponent implements OnInit {
   save() {
     if (this.form.invalid) return;
     this.saving.set(true);
-    const body = this.form.value as any;
-    const req$ = this.data.professional
-      ? this.professionalService.update(this.data.tenantId, this.data.professional.id, body)
-      : this.professionalService.create(this.data.tenantId, body);
+    const v = this.form.value;
+
+    const req$ = this.isEdit
+      ? this.professionalService.update(this.data.tenantId, this.data.professional!.id, {
+          crm: v.crm,
+          bio: v.bio,
+          defaultAppointmentDurationMinutes: v.defaultAppointmentDurationMinutes,
+          acceptsNewPatients: v.acceptsNewPatients,
+          specialtyIds: v.specialtyIds,
+        })
+      : this.professionalService.register(this.data.tenantId, {
+          name: v.name,
+          email: v.email,
+          phone: v.phone,
+          crm: v.crm,
+          bio: v.bio,
+          defaultAppointmentDurationMinutes: v.defaultAppointmentDurationMinutes,
+          acceptsNewPatients: v.acceptsNewPatients,
+          specialtyIds: v.specialtyIds,
+        });
 
     req$.subscribe({
       next: result => {

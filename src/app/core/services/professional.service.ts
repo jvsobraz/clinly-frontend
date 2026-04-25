@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { Professional, CreateProfessionalRequest } from '../models/professional.model';
+import { Professional } from '../models/professional.model';
 
 @Injectable({ providedIn: 'root' })
 export class ProfessionalService {
@@ -20,11 +20,11 @@ export class ProfessionalService {
     return this.http.get<Professional>(`${this.url(tenantId)}/${id}`);
   }
 
-  create(tenantId: number, body: CreateProfessionalRequest): Observable<Professional> {
-    return this.http.post<Professional>(this.url(tenantId), body);
+  register(tenantId: number, body: object): Observable<Professional> {
+    return this.http.post<Professional>(`${this.url(tenantId)}/register`, body);
   }
 
-  update(tenantId: number, id: number, body: CreateProfessionalRequest): Observable<Professional> {
+  update(tenantId: number, id: number, body: object): Observable<Professional> {
     return this.http.put<Professional>(`${this.url(tenantId)}/${id}`, body);
   }
 
