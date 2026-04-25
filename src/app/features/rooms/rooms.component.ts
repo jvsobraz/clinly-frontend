@@ -3,11 +3,10 @@ import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { HttpClient } from '@angular/common/http';
+import { MatDialog } from '@angular/material/dialog';
+import { RoomService, Room } from '../../core/services/room.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
-import { environment } from '../../../environments/environment';
-
-interface Room { id: number; name: string; description?: string; capacity: number; }
+import { RoomDialogComponent } from './room-dialog.component';
 
 @Component({
   selector: 'app-rooms',
@@ -19,7 +18,7 @@ interface Room { id: number; name: string; description?: string; capacity: numbe
           <h1 class="text-2xl font-bold text-slate-800">Salas</h1>
           <p class="text-slate-500 text-sm">Salas e espaços físicos da clínica</p>
         </div>
-        <button mat-flat-button><mat-icon>add</mat-icon> Nova sala</button>
+        <button mat-flat-button (click)="openDialog()"><mat-icon>add</mat-icon> Nova sala</button>
       </div>
       @if (loading()) {
         <div class="flex justify-center py-16"><mat-spinner diameter="40" /></div>
@@ -33,8 +32,8 @@ interface Room { id: number; name: string; description?: string; capacity: numbe
                   <h3 class="font-semibold text-slate-800">{{ r.name }}</h3>
                 </div>
                 <div class="flex gap-1">
-                  <button mat-icon-button><mat-icon class="text-slate-400 text-[18px]">edit</mat-icon></button>
-                  <button mat-icon-button><mat-icon class="text-red-400 text-[18px]">delete</mat-icon></button>
+                  <button mat-icon-button (click)="openDialog(r)"><mat-icon class="text-slate-400 text-[18px]">edit</mat-icon></button>
+                  <button mat-icon-button (click)="delete(r.id)"><mat-icon class="text-red-400 text-[18px]">delete</mat-icon></button>
                 </div>
               </div>
               @if (r.description) { <p class="text-sm text-slate-500 mb-2">{{ r.description }}</p> }
@@ -53,17 +52,42 @@ interface Room { id: number; name: string; description?: string; capacity: numbe
   `,
 })
 export class RoomsComponent implements OnInit {
-  private http = inject(HttpClient);
+  private service = inject(RoomService);
   private tenantCtx = inject(TenantContextService);
+  private dialog = inject(MatDialog);
+
   rooms = signal<Room[]>([]);
   loading = signal(true);
 
   ngOnInit() {
+    this.load();
+  }
+
+  load() {
     const id = this.tenantCtx.tenantId();
     if (!id) return;
-    this.http.get<Room[]>(`${environment.apiUrl}/tenants/${id}/rooms`).subscribe({
+    this.loading.set(true);
+    this.service.getAll(id).subscribe({
       next: (list) => { this.rooms.set(list); this.loading.set(false); },
       error: () => this.loading.set(false),
+    });
+  }
+
+  openDialog(room?: Room) {
+    const tenantId = this.tenantCtx.tenantId()!;
+    this.dialog.open(RoomDialogComponent, {
+      data: { tenantId, room },
+      width: '440px',
+    }).afterClosed().subscribe(result => {
+      if (result) this.load();
+    });
+  }
+
+  delete(id: number) {
+    if (!confirm('Remover esta sala?')) return;
+    const tenantId = this.tenantCtx.tenantId()!;
+    this.service.delete(tenantId, id).subscribe(() => {
+      this.rooms.update(list => list.filter(r => r.id !== id));
     });
   }
 }

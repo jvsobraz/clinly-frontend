@@ -4,9 +4,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
+import { MatDialog } from '@angular/material/dialog';
 import { AppointmentService } from '../../core/services/appointment.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { Appointment, STATUS_LABELS, STATUS_COLORS } from '../../core/models/appointment.model';
+import { AppointmentDialogComponent } from './appointment-dialog.component';
 
 @Component({
   selector: 'app-appointments',
@@ -16,6 +18,7 @@ import { Appointment, STATUS_LABELS, STATUS_COLORS } from '../../core/models/app
 export class AppointmentsComponent implements OnInit {
   private service = inject(AppointmentService);
   private tenantCtx = inject(TenantContextService);
+  private dialog = inject(MatDialog);
 
   appointments = signal<Appointment[]>([]);
   loading = signal(true);
@@ -51,6 +54,17 @@ export class AppointmentsComponent implements OnInit {
   complete(id: number) {
     const tenantId = this.tenantCtx.tenantId()!;
     this.service.complete(tenantId, id).subscribe(() => this.load());
+  }
+
+  openDialog() {
+    const tenantId = this.tenantCtx.tenantId()!;
+    this.dialog.open(AppointmentDialogComponent, {
+      data: { tenantId },
+      width: '560px',
+      maxHeight: '90vh',
+    }).afterClosed().subscribe(result => {
+      if (result) this.load();
+    });
   }
 
   formatDateTime(iso: string): string {

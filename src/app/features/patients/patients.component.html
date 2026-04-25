@@ -4,7 +4,7 @@
       <h1 class="text-2xl font-bold text-slate-800">Pacientes</h1>
       <p class="text-slate-500 text-sm">Cadastro e histórico de pacientes</p>
     </div>
-    <button mat-flat-button><mat-icon>person_add</mat-icon> Novo paciente</button>
+    <button mat-flat-button (click)="openDialog()"><mat-icon>person_add</mat-icon> Novo paciente</button>
   </div>
 
   <div class="relative">
@@ -45,7 +45,7 @@
                   <a mat-icon-button [routerLink]="['/dashboard/patients', p.id, 'intelligence']" matTooltip="Inteligência 360°">
                     <mat-icon class="text-indigo-400 text-[18px]">insights</mat-icon>
                   </a>
-                  <button mat-icon-button><mat-icon class="text-slate-400 text-[18px]">edit</mat-icon></button>
+                  <button mat-icon-button (click)="openDialog(p)"><mat-icon class="text-slate-400 text-[18px]">edit</mat-icon></button>
                 </td>
               </tr>
             }

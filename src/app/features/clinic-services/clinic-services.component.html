@@ -4,7 +4,7 @@
       <h1 class="text-2xl font-bold text-slate-800">Serviços</h1>
       <p class="text-slate-500 text-sm">Serviços e procedimentos oferecidos pela clínica</p>
     </div>
-    <button mat-flat-button><mat-icon>add</mat-icon> Novo serviço</button>
+    <button mat-flat-button (click)="openDialog()"><mat-icon>add</mat-icon> Novo serviço</button>
   </div>
 
   @if (loading()) {
@@ -16,8 +16,8 @@
           <div class="flex items-start justify-between mb-3">
             <h3 class="font-semibold text-slate-800">{{ s.name }}</h3>
             <div class="flex gap-1 shrink-0">
-              <button mat-icon-button><mat-icon class="text-slate-400 text-[18px]">edit</mat-icon></button>
-              <button mat-icon-button><mat-icon class="text-red-400 text-[18px]">delete</mat-icon></button>
+              <button mat-icon-button (click)="openDialog(s)"><mat-icon class="text-slate-400 text-[18px]">edit</mat-icon></button>
+              <button mat-icon-button (click)="delete(s.id)"><mat-icon class="text-red-400 text-[18px]">delete</mat-icon></button>
             </div>
           </div>
           @if (s.description) {

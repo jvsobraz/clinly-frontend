@@ -4,7 +4,7 @@
       <h1 class="text-2xl font-bold text-slate-800">Profissionais</h1>
       <p class="text-slate-500 text-sm">Gerencie a equipe da clínica</p>
     </div>
-    <button mat-flat-button><mat-icon>add</mat-icon> Novo profissional</button>
+    <button mat-flat-button (click)="openDialog()"><mat-icon>add</mat-icon> Novo profissional</button>
   </div>
 
   @if (loading()) {
@@ -44,7 +44,7 @@
           <div class="flex items-center justify-between text-sm text-slate-500">
             <span>{{ pro.defaultAppointmentDurationMinutes }}min por consulta</span>
             <div class="flex gap-1">
-              <button mat-icon-button><mat-icon class="text-slate-400 text-[18px]">edit</mat-icon></button>
+              <button mat-icon-button (click)="openDialog(pro)"><mat-icon class="text-slate-400 text-[18px]">edit</mat-icon></button>
               <button mat-icon-button (click)="delete(pro.id)">
                 <mat-icon class="text-red-400 text-[18px]">delete</mat-icon>
               </button>
