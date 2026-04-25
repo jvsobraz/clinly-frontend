@@ -146,6 +146,8 @@ src/
 │   │       ├── patient.service.ts
 │   │       ├── patient-portal.service.ts  # Upcoming + histórico para pacientes
 │   │       ├── professional.service.ts
+│   │       ├── room.service.ts            # CRUD de salas
+│   │       ├── specialty.service.ts       # Listagem de especialidades
 │   │       └── tenant-context.service.ts  # tenantId e tenantName reativos
 │   ├── features/
 │   │   ├── auth/
@@ -246,6 +248,7 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 
 ### Agendamentos
 - Lista com filtro por data
+- **Dialog de criação** com seleção de paciente, profissional, serviço (opcional), sala (opcional), data/hora e duração — duração pré-preenchida automaticamente ao selecionar o profissional
 - Ações rápidas via menu: Confirmar, Concluir, Cancelar
 - Badge de status com cores semânticas (Pendente, Confirmado, Cancelado, Concluído, Não compareceu)
 - **Badge de risco de no-show** (Baixo/Médio/Alto) calculado por score baseado em histórico, antecedência, dia da semana e horário
@@ -253,10 +256,12 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 ### Profissionais
 - Cards com avatar, CRM, especialidades e duração padrão de consulta
 - Badge de status ativo/inativo
+- **Dialog de criação/edição** com seleção múltipla de especialidades, bio, CRM, duração padrão e flag de aceita novos pacientes
 
 ### Pacientes
 - Tabela com busca em tempo real (debounce de 400ms)
 - Campos: nome, e-mail, telefone, plano de saúde
+- **Dialog de criação/edição** com campos: nome, e-mail, telefone, CPF, data de nascimento, gênero, plano de saúde e observações
 - Ícone de insights em cada linha com link para a página de Inteligência 360°
 
 ### Patient 360° Intelligence
@@ -269,9 +274,13 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 
 ### Serviços da Clínica
 - Cards com duração e preço formatado em BRL
+- **Dialog de criação/edição** com nome, descrição, duração e preço
+- Exclusão com confirmação
 
 ### Salas
 - Cards com capacidade
+- **Dialog de criação/edição** com nome, descrição e capacidade
+- Exclusão com confirmação
 
 ### Lista de Espera
 - Tabela ordenada por tempo de espera com posição na fila
