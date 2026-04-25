@@ -2,7 +2,8 @@ import { Routes } from '@angular/router';
 import { authGuard, guestGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '', loadComponent: () => import('./features/landing/landing.component').then(m => m.LandingComponent) },
+  { path: 'landing', loadComponent: () => import('./features/landing/landing.component').then(m => m.LandingComponent) },
 
   {
     path: 'auth',
@@ -51,5 +52,5 @@ export const routes: Routes = [
   { path: 'offer/:token', loadComponent: () => import('./features/offer/offer.component').then(m => m.OfferComponent) },
   { path: 'nps/:token', loadComponent: () => import('./features/nps/nps.component').then(m => m.NpsComponent) },
 
-  { path: '**', redirectTo: '/dashboard' },
+  { path: '**', redirectTo: '/' },
 ];

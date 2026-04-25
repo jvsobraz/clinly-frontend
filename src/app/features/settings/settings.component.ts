@@ -33,6 +33,10 @@ export class SettingsComponent implements OnInit {
   loading = signal(true);
   saving = signal(false);
   saved = signal(false);
+  seeding = signal(false);
+  clearing = signal(false);
+  seedMsg = signal<string | null>(null);
+  seedError = signal(false);
 
   ngOnInit() {
     const id = this.tenantCtx.tenantId();
@@ -53,6 +57,42 @@ export class SettingsComponent implements OnInit {
     this.http.put(`${environment.apiUrl}/tenants/${id}`, this.form.getRawValue()).subscribe({
       next: () => { this.saved.set(true); this.saving.set(false); setTimeout(() => this.saved.set(false), 3000); },
       error: () => this.saving.set(false),
+    });
+  }
+
+  seedDemo() {
+    const id = this.tenantCtx.tenantId()!;
+    this.seeding.set(true);
+    this.seedMsg.set(null);
+    this.http.post<any>(`${environment.apiUrl}/tenants/${id}/seed/demo`, {}).subscribe({
+      next: (res) => {
+        this.seeding.set(false);
+        this.seedError.set(false);
+        this.seedMsg.set(res.message);
+      },
+      error: () => {
+        this.seeding.set(false);
+        this.seedError.set(true);
+        this.seedMsg.set('Erro ao gerar dados demo.');
+      },
+    });
+  }
+
+  clearDemo() {
+    const id = this.tenantCtx.tenantId()!;
+    this.clearing.set(true);
+    this.seedMsg.set(null);
+    this.http.delete<any>(`${environment.apiUrl}/tenants/${id}/seed/demo`).subscribe({
+      next: (res) => {
+        this.clearing.set(false);
+        this.seedError.set(false);
+        this.seedMsg.set(res.message);
+      },
+      error: () => {
+        this.clearing.set(false);
+        this.seedError.set(true);
+        this.seedMsg.set('Erro ao remover dados demo.');
+      },
     });
   }
 }

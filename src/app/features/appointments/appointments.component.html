@@ -1,13 +1,38 @@
 <div class="space-y-6">
+  <!-- Header -->
   <div class="flex items-center justify-between flex-wrap gap-3">
     <div>
       <h1 class="text-2xl font-bold text-slate-800">Agendamentos</h1>
       <p class="text-slate-500 text-sm">Gerencie todos os agendamentos da clínica</p>
     </div>
     <div class="flex items-center gap-3">
-      <input type="date" class="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-        [value]="selectedDate()"
-        (change)="selectedDate.set($any($event.target).value); load()" />
+
+      <!-- View toggle -->
+      <div class="flex rounded-lg border border-slate-200 overflow-hidden text-sm">
+        <button class="px-3 py-2 flex items-center gap-1.5 transition-colors"
+          [class.bg-indigo-600]="viewMode() === 'list'"
+          [class.text-white]="viewMode() === 'list'"
+          [class.text-slate-600]="viewMode() !== 'list'"
+          [class.hover:bg-slate-50]="viewMode() !== 'list'"
+          (click)="setView('list')">
+          <mat-icon class="text-[18px]">list</mat-icon> Lista
+        </button>
+        <button class="px-3 py-2 flex items-center gap-1.5 border-l border-slate-200 transition-colors"
+          [class.bg-indigo-600]="viewMode() === 'week'"
+          [class.text-white]="viewMode() === 'week'"
+          [class.text-slate-600]="viewMode() !== 'week'"
+          [class.hover:bg-slate-50]="viewMode() !== 'week'"
+          (click)="setView('week')">
+          <mat-icon class="text-[18px]">calendar_view_week</mat-icon> Semana
+        </button>
+      </div>
+
+      @if (viewMode() === 'list') {
+        <input type="date" class="border border-slate-200 rounded-lg px-3 py-2 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-300"
+          [value]="selectedDate()"
+          (change)="selectedDate.set($any($event.target).value); load()" />
+      }
+
       <button mat-flat-button (click)="openDialog()">
         <mat-icon>add</mat-icon> Novo
       </button>
@@ -17,84 +42,165 @@
   @if (loading()) {
     <div class="flex justify-center py-16"><mat-spinner diameter="40" /></div>
   } @else {
-    <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
-      @if (appointments().length === 0) {
-        <div class="py-12 text-center text-slate-400">
-          <mat-icon class="text-5xl">calendar_today</mat-icon>
-          <p class="mt-2">Nenhum agendamento nesta data</p>
-        </div>
-      } @else {
-        <table class="w-full text-sm">
-          <thead class="bg-slate-50 border-b border-slate-200">
-            <tr>
-              <th class="text-left px-4 py-3 font-medium text-slate-600">Data/Hora</th>
-              <th class="text-left px-4 py-3 font-medium text-slate-600">Paciente</th>
-              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Profissional</th>
-              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Serviço</th>
-              <th class="text-left px-4 py-3 font-medium text-slate-600">Status</th>
-              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden xl:table-cell">Risco No-show</th>
-              <th class="px-4 py-3"></th>
-            </tr>
-          </thead>
-          <tbody>
-            @for (apt of appointments(); track apt.id) {
-              <tr class="border-b border-slate-100 hover:bg-slate-50">
-                <td class="px-4 py-3 font-medium text-slate-700">{{ formatDateTime(apt.scheduledAt) }}</td>
-                <td class="px-4 py-3 text-slate-800">{{ apt.patient?.name }}</td>
-                <td class="px-4 py-3 text-slate-600 hidden md:table-cell">{{ apt.professional?.name }}</td>
-                <td class="px-4 py-3 text-slate-500 hidden lg:table-cell">{{ apt.service?.name ?? '—' }}</td>
-                <td class="px-4 py-3">
-                  <span class="px-2 py-0.5 rounded-full text-xs font-medium" [ngClass]="statusColor(apt.status)">
-                    {{ statusLabel(apt.status) }}
-                  </span>
-                </td>
-                <td class="px-4 py-3 hidden xl:table-cell">
-                  @if (apt.noShowRiskScore > 0) {
-                    <span class="px-2 py-0.5 rounded-full text-xs font-medium"
-                      [ngClass]="{
-                        'bg-green-100 text-green-800': apt.noShowRiskScore <= 30,
-                        'bg-yellow-100 text-yellow-800': apt.noShowRiskScore > 30 && apt.noShowRiskScore <= 60,
-                        'bg-red-100 text-red-800': apt.noShowRiskScore > 60
-                      }">
-                      {{ apt.noShowRiskScore <= 30 ? 'Baixo' : apt.noShowRiskScore <= 60 ? 'Médio' : 'Alto' }}
-                      ({{ apt.noShowRiskScore }})
-                    </span>
-                  } @else {
-                    <span class="text-slate-300 text-xs">—</span>
-                  }
-                </td>
-                <td class="px-4 py-3 text-right">
-                  <button mat-icon-button [matMenuTriggerFor]="menu">
-                    <mat-icon>more_vert</mat-icon>
-                  </button>
-                  <mat-menu #menu>
-                    @if (apt.status === 'Pending') {
-                      <button mat-menu-item (click)="confirm(apt.id)">
-                        <mat-icon>check_circle</mat-icon> Confirmar
-                      </button>
-                    }
-                    @if (apt.status === 'Confirmed') {
-                      <button mat-menu-item (click)="complete(apt.id)">
-                        <mat-icon>task_alt</mat-icon> Concluir
-                      </button>
-                    }
-                    @if (apt.status === 'Confirmed') {
-                      <button mat-menu-item (click)="noShow(apt.id)">
-                        <mat-icon>person_off</mat-icon> Marcar Falta
-                      </button>
-                    }
-                    @if (apt.status === 'Pending' || apt.status === 'Confirmed') {
-                      <button mat-menu-item (click)="cancel(apt.id)" class="text-red-600">
-                        <mat-icon>cancel</mat-icon> Cancelar
-                      </button>
-                    }
-                  </mat-menu>
-                </td>
+
+    <!-- ── LIST VIEW ────────────────────────────────────────────────────── -->
+    @if (viewMode() === 'list') {
+      <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+        @if (appointments().length === 0) {
+          <div class="py-12 text-center text-slate-400">
+            <mat-icon class="text-5xl">calendar_today</mat-icon>
+            <p class="mt-2">Nenhum agendamento nesta data</p>
+          </div>
+        } @else {
+          <table class="w-full text-sm">
+            <thead class="bg-slate-50 border-b border-slate-200">
+              <tr>
+                <th class="text-left px-4 py-3 font-medium text-slate-600">Data/Hora</th>
+                <th class="text-left px-4 py-3 font-medium text-slate-600">Paciente</th>
+                <th class="text-left px-4 py-3 font-medium text-slate-600 hidden md:table-cell">Profissional</th>
+                <th class="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Serviço</th>
+                <th class="text-left px-4 py-3 font-medium text-slate-600">Status</th>
+                <th class="text-left px-4 py-3 font-medium text-slate-600 hidden xl:table-cell">Risco No-show</th>
+                <th class="px-4 py-3"></th>
               </tr>
+            </thead>
+            <tbody>
+              @for (apt of appointments(); track apt.id) {
+                <tr class="border-b border-slate-100 hover:bg-slate-50">
+                  <td class="px-4 py-3 font-medium text-slate-700">{{ formatDateTime(apt.scheduledAt) }}</td>
+                  <td class="px-4 py-3 text-slate-800">{{ apt.patient?.name }}</td>
+                  <td class="px-4 py-3 text-slate-600 hidden md:table-cell">{{ apt.professional?.name }}</td>
+                  <td class="px-4 py-3 text-slate-500 hidden lg:table-cell">{{ apt.service?.name ?? '—' }}</td>
+                  <td class="px-4 py-3">
+                    <span class="px-2 py-0.5 rounded-full text-xs font-medium" [ngClass]="statusColor(apt.status)">
+                      {{ statusLabel(apt.status) }}
+                    </span>
+                  </td>
+                  <td class="px-4 py-3 hidden xl:table-cell">
+                    @if (apt.noShowRiskScore > 0) {
+                      <span class="px-2 py-0.5 rounded-full text-xs font-medium"
+                        [ngClass]="{
+                          'bg-green-100 text-green-800': apt.noShowRiskScore <= 30,
+                          'bg-yellow-100 text-yellow-800': apt.noShowRiskScore > 30 && apt.noShowRiskScore <= 60,
+                          'bg-red-100 text-red-800': apt.noShowRiskScore > 60
+                        }">
+                        {{ apt.noShowRiskScore <= 30 ? 'Baixo' : apt.noShowRiskScore <= 60 ? 'Médio' : 'Alto' }}
+                        ({{ apt.noShowRiskScore }})
+                      </span>
+                    } @else {
+                      <span class="text-slate-300 text-xs">—</span>
+                    }
+                  </td>
+                  <td class="px-4 py-3 text-right">
+                    <button mat-icon-button [matMenuTriggerFor]="menu">
+                      <mat-icon>more_vert</mat-icon>
+                    </button>
+                    <mat-menu #menu>
+                      @if (apt.status === 'Pending') {
+                        <button mat-menu-item (click)="confirm(apt.id)">
+                          <mat-icon>check_circle</mat-icon> Confirmar
+                        </button>
+                      }
+                      @if (apt.status === 'Confirmed') {
+                        <button mat-menu-item (click)="complete(apt.id)">
+                          <mat-icon>task_alt</mat-icon> Concluir
+                        </button>
+                      }
+                      @if (apt.status === 'Confirmed') {
+                        <button mat-menu-item (click)="noShow(apt.id)">
+                          <mat-icon>person_off</mat-icon> Marcar Falta
+                        </button>
+                      }
+                      @if (apt.status === 'Pending' || apt.status === 'Confirmed') {
+                        <button mat-menu-item (click)="cancel(apt.id)">
+                          <mat-icon>cancel</mat-icon> Cancelar
+                        </button>
+                      }
+                    </mat-menu>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        }
+      </div>
+    }
+
+    <!-- ── WEEK CALENDAR VIEW ────────────────────────────────────────────── -->
+    @if (viewMode() === 'week') {
+      <div class="bg-white rounded-xl border border-slate-200 overflow-hidden">
+
+        <!-- Week navigation -->
+        <div class="flex items-center justify-between px-4 py-3 border-b border-slate-200">
+          <button mat-icon-button (click)="prevWeek()" matTooltip="Semana anterior">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+          <div class="flex items-center gap-3">
+            <span class="text-sm font-medium text-slate-700">{{ weekLabel() }}</span>
+            <button class="text-xs px-2 py-1 rounded border border-slate-200 text-slate-500 hover:bg-slate-50" (click)="goToday()">Hoje</button>
+          </div>
+          <button mat-icon-button (click)="nextWeek()" matTooltip="Próxima semana">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+
+        <!-- Calendar grid -->
+        <div class="overflow-x-auto">
+          <div class="min-w-[700px]">
+
+            <!-- Day headers -->
+            <div class="grid grid-cols-8 border-b border-slate-200">
+              <div class="py-2 text-xs text-slate-400 text-center"></div>
+              @for (day of weekDays(); track day.getTime()) {
+                <div class="py-2 text-center border-l border-slate-100"
+                     [class.bg-indigo-50]="isToday(day)">
+                  <div class="text-xs font-medium text-slate-500">{{ dayLabel(day) }}</div>
+                  <div class="text-lg font-bold"
+                       [class.text-indigo-600]="isToday(day)"
+                       [class.text-slate-800]="!isToday(day)">
+                    {{ day.getDate() }}
+                  </div>
+                </div>
+              }
+            </div>
+
+            <!-- Hour rows -->
+            @for (hour of hourSlots; track hour) {
+              <div class="grid grid-cols-8 border-b border-slate-100 min-h-[64px]">
+                <!-- Hour label -->
+                <div class="py-1 px-2 text-xs text-slate-400 text-right self-start pt-1.5">
+                  {{ hour }}:00
+                </div>
+                <!-- Day cells -->
+                @for (day of weekDays(); track day.getTime()) {
+                  <div class="border-l border-slate-100 p-1 flex flex-col gap-1"
+                       [class.bg-indigo-50]="isToday(day)"
+                       [class.bg-slate-50]="day.getDay() === 0 && !isToday(day)">
+                    @for (apt of appointmentsForCell(day, hour); track apt.id) {
+                      <div class="rounded border text-xs px-1.5 py-1 cursor-default truncate"
+                           [ngClass]="calendarStatusColor(apt.status)"
+                           [matTooltip]="apt.patient?.name + ' — ' + apt.service?.name + ' (' + formatTime(apt.scheduledAt) + ')'">
+                        <div class="font-medium truncate">{{ apt.patient?.name }}</div>
+                        <div class="text-[10px] opacity-75">{{ formatTime(apt.scheduledAt) }} · {{ apt.professional?.name?.split(' ')[0] }}</div>
+                      </div>
+                    }
+                  </div>
+                }
+              </div>
             }
-          </tbody>
-        </table>
-      }
-    </div>
+
+          </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="flex items-center gap-4 px-4 py-2 border-t border-slate-100 text-xs text-slate-500">
+          <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-yellow-100 border border-yellow-300 inline-block"></span>Pendente</span>
+          <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-blue-100 border border-blue-300 inline-block"></span>Confirmado</span>
+          <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-green-100 border border-green-300 inline-block"></span>Concluído</span>
+          <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-red-100 border border-red-300 inline-block"></span>Falta</span>
+          <span class="flex items-center gap-1"><span class="w-3 h-3 rounded bg-gray-100 border border-gray-300 inline-block"></span>Cancelado</span>
+        </div>
+      </div>
+    }
   }
 </div>

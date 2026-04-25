@@ -21,6 +21,11 @@ export class AppointmentService {
     return this.http.get<Appointment[]>(this.url(tenantId), { params });
   }
 
+  getWeek(tenantId: number, from: string, to: string): Observable<Appointment[]> {
+    const params = new HttpParams().set('from', from).set('to', to);
+    return this.http.get<Appointment[]>(this.url(tenantId), { params });
+  }
+
   getById(tenantId: number, id: number): Observable<Appointment> {
     return this.http.get<Appointment>(`${this.url(tenantId)}/${id}`);
   }
