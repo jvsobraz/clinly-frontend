@@ -106,7 +106,7 @@ export class PatientDialogComponent {
     const body = this.form.value as any;
     const req$ = this.data.patient
       ? this.service.update(this.data.tenantId, this.data.patient.id, body)
-      : this.service.create(this.data.tenantId, body);
+      : this.service.register(this.data.tenantId, body);
 
     req$.subscribe({
       next: result => {

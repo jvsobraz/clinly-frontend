@@ -22,6 +22,10 @@ export class PatientService {
     return this.http.get<Patient>(`${this.url(tenantId)}/${id}`);
   }
 
+  register(tenantId: number, body: CreatePatientRequest): Observable<Patient> {
+    return this.http.post<Patient>(`${this.url(tenantId)}/register`, body);
+  }
+
   create(tenantId: number, body: CreatePatientRequest): Observable<Patient> {
     return this.http.post<Patient>(this.url(tenantId), body);
   }
