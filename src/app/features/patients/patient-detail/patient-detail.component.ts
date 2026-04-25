@@ -181,14 +181,15 @@ export class PatientDetailComponent implements OnInit {
 
   retentionClass(s: string) {
     return {
-      'Active': 'bg-green-100 text-green-700',
-      'AtRisk': 'bg-yellow-100 text-yellow-700',
-      'Churned': 'bg-red-100 text-red-700'
+      'New':     'bg-blue-100 text-blue-700',
+      'Active':  'bg-green-100 text-green-700',
+      'AtRisk':  'bg-yellow-100 text-yellow-700',
+      'Churned': 'bg-red-100 text-red-700',
     }[s] ?? 'bg-gray-100 text-gray-700';
   }
 
   retentionLabel(s: string) {
-    return { 'Active': 'Ativo', 'AtRisk': 'Em Risco', 'Churned': 'Inativo' }[s] ?? s;
+    return { 'New': 'Novo', 'Active': 'Ativo', 'AtRisk': 'Em Risco', 'Churned': 'Inativo' }[s] ?? s;
   }
 
   attendanceColor(rate: number) {
