@@ -1,6 +1,6 @@
 # Clinly — Frontend
 
-Interface web da plataforma SaaS de agendamento para clínicas, construída com **Angular 21** e **Angular Material**. Inclui backoffice completo para administradores (agendamentos, pacientes, financeiro, relatórios), **Inteligência 360° do Paciente** (LTV, churn prediction), **Smart Gap Engine** (confirmação de slot por magic-link), pesquisa NPS pós-consulta, portal do paciente e agendamento público por slug da clínica.
+Interface web da plataforma SaaS de agendamento para clínicas, construída com **Angular 21** e **Angular Material**. Inclui **landing page pública**, backoffice completo para administradores (agendamentos em lista e **calendário semanal**, pacientes, financeiro, relatórios), **Inteligência 360° do Paciente** (LTV, churn prediction), **Smart Gap Engine** (confirmação de slot por magic-link), pesquisa NPS pós-consulta, portal do paciente e agendamento público por slug da clínica.
 
 ---
 
@@ -29,8 +29,9 @@ src/app/
 │   ├── models/           # Interfaces TypeScript dos recursos da API
 │   └── services/         # Serviços HTTP e TenantContextService
 ├── features/             # Módulos de funcionalidade (lazy loaded)
+│   ├── landing/          # Landing page pública (/)
 │   ├── auth/             # Login, Register, Forgot/Reset Password
-│   ├── appointments/     # Lista e ações de agendamentos
+│   ├── appointments/     # Lista e calendário semanal de agendamentos
 │   ├── professionals/    # CRUD de profissionais
 │   ├── patients/         # CRUD de pacientes + Patient 360° Intelligence
 │   ├── clinic-services/  # Serviços e procedimentos da clínica
@@ -40,7 +41,7 @@ src/app/
 │   ├── nps/              # Pesquisa de satisfação NPS (público)
 │   ├── offer/            # Confirmação de slot via magic-link (público)
 │   ├── patient-portal/   # Portal do Paciente (próximas consultas + histórico)
-│   ├── settings/         # Configurações da clínica
+│   ├── settings/         # Configurações da clínica + seed de dados demo
 │   ├── subscription/     # Planos e checkout Stripe
 │   ├── waitlist/         # Lista de espera
 │   ├── packages/         # Pacotes de tratamento
@@ -109,9 +110,20 @@ ng serve
 Para build de produção:
 
 ```bash
-ng build
-# Output em dist/frontend/
+npm run build:prod
+# Output em dist/frontend/browser/
 ```
+
+### Docker (produção)
+
+O repositório inclui um `Dockerfile` multi-stage (Node 22 → nginx:alpine) e um `nginx.conf` com SPA fallback e cache de assets estáticos. Para rodar em conjunto com o backend e o banco de dados use o Docker Compose no repositório backend:
+
+```bash
+# No repo backend, após configurar o .env:
+docker compose up -d
+```
+
+O frontend será servido em `http://localhost:80`.
 
 ---
 
@@ -193,13 +205,14 @@ src/
 
 | Rota | Componente | Guard | Descrição |
 |---|---|---|---|
-| `/` | — | — | Redireciona para `/dashboard` |
+| `/` | `LandingComponent` | — | Landing page pública (hero, features, pricing, CTA) |
+| `/landing` | `LandingComponent` | — | Alias para a landing page |
 | `/auth/login` | `LoginComponent` | `guestGuard` | Tela de login |
 | `/auth/register` | `RegisterComponent` | `guestGuard` | Cadastro + criação da clínica |
 | `/auth/forgot-password` | `ForgotPasswordComponent` | `guestGuard` | Solicitar reset de senha |
 | `/auth/reset-password` | `ResetPasswordComponent` | `guestGuard` | Redefinir senha via token |
 | `/dashboard` | `DashboardComponent` | `authGuard` | Métricas, agenda do dia e widget de pacientes em risco de churn |
-| `/dashboard/appointments` | `AppointmentsComponent` | `authGuard` | Lista de agendamentos com filtro por data |
+| `/dashboard/appointments` | `AppointmentsComponent` | `authGuard` | Lista de agendamentos (filtro por data) e **calendário semanal** com toggle Lista/Semana |
 | `/dashboard/professionals` | `ProfessionalsComponent` | `authGuard` | Cards de profissionais com especialidades |
 | `/dashboard/patients` | `PatientsComponent` | `authGuard` | Tabela de pacientes com busca em tempo real e ícone de insights |
 | `/dashboard/patients/:id/intelligence` | `PatientDetailComponent` | `authGuard` | Inteligência 360°: LTV, retenção, perfil comportamental e insights |
@@ -247,7 +260,8 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 - Agenda do dia com status colorido
 
 ### Agendamentos
-- Lista com filtro por data
+- **Toggle Lista/Semana:** alterna entre visualização em tabela (filtrada por dia) e calendário semanal (grade Mon–Dom com cards por hora)
+- **Calendário semanal:** cards color-coded por status, navegação por semana (anterior/próxima/Hoje), legenda de cores, tooltip com nome do paciente e serviço
 - **Dialog de criação** com seleção de paciente, profissional, serviço (obrigatório), sala (opcional) e data/hora — duração exibida automaticamente ao selecionar o serviço
 - Ações rápidas via menu: Confirmar, Concluir, **Marcar Falta** (NoShow), Cancelar
 - Badge de status com cores semânticas (Pendente, Confirmado, Cancelado, Concluído, Não compareceu)
@@ -318,8 +332,14 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 - `/patient/appointments` — Histórico completo com badges de status, nota NPS quando já respondida e botão "Avaliar" para pesquisas pendentes
 - Pacientes fazem login pela mesma tela (`/auth/login`) com role `Patient`
 
+### Landing Page
+- Página pública em `/` sem necessidade de login ou autenticação
+- Seções: hero com CTA, stats (multi-tenant, inteligência 360°), grid de 6 features, pricing table (Free/Basic/Pro), call-to-action final e footer
+- Links diretos para `/auth/register` e `/auth/login`
+
 ### Configurações
 - Edição de nome, telefone, endereço, mensagem de boas-vindas e cor primária
+- **Seed de dados demo:** botão "Gerar dados demo" (POST `/seed/demo`) e "Remover dados demo" (DELETE `/seed/demo`) com feedback visual de status — popula a clínica com profissionais, pacientes, serviços, salas e ~8 meses de agendamentos realistas para demonstração
 
 ### Assinatura
 - Toggle mensal/anual (desconto de 20% no anual)
