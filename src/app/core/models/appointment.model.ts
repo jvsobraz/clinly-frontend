@@ -1,23 +1,40 @@
 export type AppointmentStatus = 'Pending' | 'Confirmed' | 'Cancelled' | 'NoShow' | 'Completed';
 
+export interface AppointmentPatient {
+  id: number;
+  name: string;
+  email: string;
+  phone?: string;
+}
+
+export interface AppointmentProfessional {
+  id: number;
+  name: string;
+  crm?: string;
+  avatarUrl?: string;
+}
+
+export interface AppointmentService {
+  id: number;
+  name: string;
+  durationMinutes: number;
+  price: number;
+}
+
 export interface Appointment {
   id: number;
   tenantId: number;
-  patientId: number;
-  patientName: string;
-  professionalId: number;
-  professionalName: string;
-  serviceId?: number;
-  serviceName?: string;
-  roomId?: number;
-  roomName?: string;
   scheduledAt: string;
-  durationMinutes: number;
+  endsAt: string;
   status: AppointmentStatus;
-  notes?: string;
-  cancelReason?: string;
+  patientNotes?: string;
+  cancellationReason?: string;
   noShowRiskScore: number;
+  roomName?: string;
   createdAt: string;
+  patient: AppointmentPatient;
+  professional: AppointmentProfessional;
+  service: AppointmentService;
 }
 
 export interface NoShowRisk {

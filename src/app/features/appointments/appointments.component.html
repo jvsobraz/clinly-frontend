@@ -40,9 +40,9 @@
             @for (apt of appointments(); track apt.id) {
               <tr class="border-b border-slate-100 hover:bg-slate-50">
                 <td class="px-4 py-3 font-medium text-slate-700">{{ formatDateTime(apt.scheduledAt) }}</td>
-                <td class="px-4 py-3 text-slate-800">{{ apt.patientName }}</td>
-                <td class="px-4 py-3 text-slate-600 hidden md:table-cell">{{ apt.professionalName }}</td>
-                <td class="px-4 py-3 text-slate-500 hidden lg:table-cell">{{ apt.serviceName ?? '—' }}</td>
+                <td class="px-4 py-3 text-slate-800">{{ apt.patient?.name }}</td>
+                <td class="px-4 py-3 text-slate-600 hidden md:table-cell">{{ apt.professional?.name }}</td>
+                <td class="px-4 py-3 text-slate-500 hidden lg:table-cell">{{ apt.service?.name ?? '—' }}</td>
                 <td class="px-4 py-3">
                   <span class="px-2 py-0.5 rounded-full text-xs font-medium" [ngClass]="statusColor(apt.status)">
                     {{ statusLabel(apt.status) }}
