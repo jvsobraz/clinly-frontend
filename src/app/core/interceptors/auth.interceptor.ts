@@ -32,7 +32,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
             refreshSubject.next(res);
             const retryReq = req.clone({
               setHeaders: {
-                Authorization: `Bearer ${res.token}`,
+                Authorization: `Bearer ${res.accessToken}`,
                 'X-Requested-With': 'XMLHttpRequest',
               },
             });
@@ -54,7 +54,7 @@ export const authInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, ne
         switchMap(res => {
           const retryReq = req.clone({
             setHeaders: {
-              Authorization: `Bearer ${res!.token}`,
+              Authorization: `Bearer ${res!.accessToken}`,
               'X-Requested-With': 'XMLHttpRequest',
             },
           });

@@ -76,10 +76,10 @@ export class AuthService {
   }
 
   private saveSession(res: AuthResponse): void {
-    localStorage.setItem(TOKEN_KEY, res.token);
+    localStorage.setItem(TOKEN_KEY, res.accessToken);
     localStorage.setItem(REFRESH_KEY, res.refreshToken);
     localStorage.setItem(USER_KEY, JSON.stringify(res.user));
-    this._token.set(res.token);
+    this._token.set(res.accessToken);
     this._user.set(res.user);
     if (res.user.clinicId) {
       this.tenantCtx.setTenant(res.user.clinicId, res.user.clinicName ?? '');
