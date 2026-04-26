@@ -5,11 +5,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatBadgeModule } from '@angular/material/badge';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../core/services/auth.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
+import { LanguageService } from '../../core/services/language.service';
 
 interface NavItem {
-  label: string;
+  key: string;
   icon: string;
   route: string;
 }
@@ -19,7 +21,7 @@ interface NavItem {
   imports: [
     RouterOutlet, RouterLink, RouterLinkActive,
     MatIconModule, MatButtonModule, MatTooltipModule, MatBadgeModule,
-    CommonModule,
+    CommonModule, TranslateModule,
   ],
   templateUrl: './admin-layout.component.html',
   styleUrl: './admin-layout.component.scss',
@@ -27,24 +29,25 @@ interface NavItem {
 export class AdminLayoutComponent {
   auth = inject(AuthService);
   tenantCtx = inject(TenantContextService);
+  lang = inject(LanguageService);
 
   sidebarOpen = signal(true);
 
   navItems: NavItem[] = [
-    { label: 'Dashboard', icon: 'dashboard', route: '/dashboard' },
-    { label: 'Agendamentos', icon: 'calendar_today', route: '/dashboard/appointments' },
-    { label: 'Profissionais', icon: 'medical_services', route: '/dashboard/professionals' },
-    { label: 'Pacientes', icon: 'people', route: '/dashboard/patients' },
-    { label: 'Serviços', icon: 'design_services', route: '/dashboard/services' },
-    { label: 'Salas', icon: 'meeting_room', route: '/dashboard/rooms' },
-    { label: 'Lista de Espera', icon: 'queue', route: '/dashboard/waitlist' },
-    { label: 'Pacotes', icon: 'inventory_2', route: '/dashboard/packages' },
-    { label: 'Financeiro', icon: 'payments', route: '/dashboard/financial' },
+    { key: 'nav.dashboard', icon: 'dashboard', route: '/dashboard' },
+    { key: 'nav.appointments', icon: 'calendar_today', route: '/dashboard/appointments' },
+    { key: 'nav.professionals', icon: 'medical_services', route: '/dashboard/professionals' },
+    { key: 'nav.patients', icon: 'people', route: '/dashboard/patients' },
+    { key: 'nav.services', icon: 'design_services', route: '/dashboard/services' },
+    { key: 'nav.rooms', icon: 'meeting_room', route: '/dashboard/rooms' },
+    { key: 'nav.waitlist', icon: 'queue', route: '/dashboard/waitlist' },
+    { key: 'nav.packages', icon: 'inventory_2', route: '/dashboard/packages' },
+    { key: 'nav.financial', icon: 'payments', route: '/dashboard/financial' },
   ];
 
   bottomItems: NavItem[] = [
-    { label: 'Configurações', icon: 'settings', route: '/dashboard/settings' },
-    { label: 'Assinatura', icon: 'credit_card', route: '/dashboard/subscription' },
+    { key: 'nav.settings', icon: 'settings', route: '/dashboard/settings' },
+    { key: 'nav.subscription', icon: 'credit_card', route: '/dashboard/subscription' },
   ];
 
   toggleSidebar() {

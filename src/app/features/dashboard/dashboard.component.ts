@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { TranslateModule } from '@ngx-translate/core';
 import { DashboardService } from '../../core/services/dashboard.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { IntelligenceService } from '../../core/services/intelligence.service';
@@ -13,7 +14,7 @@ import { PatientIntelligence } from '../../core/models/intelligence.model';
 
 @Component({
   selector: 'app-dashboard',
-  imports: [CommonModule, RouterLink, MatIconModule, MatButtonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, RouterLink, MatIconModule, MatButtonModule, MatProgressSpinnerModule, TranslateModule],
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {

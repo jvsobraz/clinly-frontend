@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 import { ProfessionalService } from '../../core/services/professional.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { Professional } from '../../core/models/professional.model';
@@ -12,7 +13,7 @@ import { ProfessionalDialogComponent } from './professional-dialog.component';
 
 @Component({
   selector: 'app-professionals',
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatChipsModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatChipsModule, TranslateModule],
   templateUrl: './professionals.component.html',
 })
 export class ProfessionalsComponent implements OnInit {

@@ -23,11 +23,11 @@
           routerLinkActive="bg-indigo-50 text-indigo-700 font-medium"
           [routerLinkActiveOptions]="{ exact: item.route === '/dashboard' }"
           class="flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors text-sm"
-          [matTooltip]="!sidebarOpen() ? item.label : ''"
+          [matTooltip]="!sidebarOpen() ? (item.key | translate) : ''"
           matTooltipPosition="right">
           <mat-icon class="shrink-0 text-[20px]">{{ item.icon }}</mat-icon>
           @if (sidebarOpen()) {
-            <span class="truncate">{{ item.label }}</span>
+            <span class="truncate">{{ item.key | translate }}</span>
           }
         </a>
       }
@@ -40,11 +40,11 @@
           [routerLink]="item.route"
           routerLinkActive="bg-indigo-50 text-indigo-700 font-medium"
           class="flex items-center gap-3 px-4 py-2.5 mx-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors text-sm"
-          [matTooltip]="!sidebarOpen() ? item.label : ''"
+          [matTooltip]="!sidebarOpen() ? (item.key | translate) : ''"
           matTooltipPosition="right">
           <mat-icon class="shrink-0 text-[20px]">{{ item.icon }}</mat-icon>
           @if (sidebarOpen()) {
-            <span class="truncate">{{ item.label }}</span>
+            <span class="truncate">{{ item.key | translate }}</span>
           }
         </a>
       }
@@ -59,7 +59,7 @@
             <p class="text-sm font-medium text-slate-700 truncate">{{ auth.user()?.name }}</p>
             <p class="text-xs text-slate-400 truncate">{{ auth.user()?.role }}</p>
           </div>
-          <button mat-icon-button (click)="logout()" matTooltip="Sair" class="shrink-0">
+          <button mat-icon-button (click)="logout()" [matTooltip]="'common.logout' | translate" class="shrink-0">
             <mat-icon class="text-slate-400 text-[18px]">logout</mat-icon>
           </button>
         }
@@ -77,6 +77,21 @@
       </button>
       <div class="flex-1"></div>
       <span class="text-sm text-slate-500">{{ tenantCtx.tenantName() }}</span>
+
+      <!-- Language switcher -->
+      <div class="flex rounded-md border border-slate-200 overflow-hidden text-xs">
+        @for (l of lang.supported; track l) {
+          <button
+            class="px-2.5 py-1 transition-colors"
+            [class.bg-indigo-600]="lang.current === l"
+            [class.text-white]="lang.current === l"
+            [class.text-slate-500]="lang.current !== l"
+            [class.hover:bg-slate-50]="lang.current !== l"
+            (click)="lang.use(l)">
+            {{ lang.label(l) }}
+          </button>
+        }
+      </div>
     </header>
 
     <!-- Page content -->

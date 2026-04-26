@@ -62,6 +62,7 @@ src/app/
 | Angular Signals | Estado reativo sem NgRx |
 | Angular Router | Lazy loading + guards |
 | RxJS | HTTP e operadores reativos |
+| ngx-translate 17 | Internacionalização (PT-BR / EN) com troca em runtime |
 
 ---
 
@@ -189,7 +190,7 @@ src/
 │   │   ├── admin-layout/
 │   │   ├── patient-layout/
 │   │   └── auth-layout/
-│   ├── app.config.ts   # Providers: Router, HttpClient, Animations
+│   ├── app.config.ts   # Providers: Router, HttpClient, Animations, TranslateModule
 │   ├── app.routes.ts   # Roteamento lazy loaded
 │   └── app.ts
 ├── environments/
@@ -336,6 +337,12 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 - Página pública em `/` sem necessidade de login ou autenticação
 - Seções: hero com CTA, stats (multi-tenant, inteligência 360°), grid de 6 features, pricing table (Free/Basic/Pro), call-to-action final e footer
 - Links diretos para `/auth/register` e `/auth/login`
+
+### Internacionalização (i18n)
+- Toggle **PT | EN** no header do admin-layout (persistido no `localStorage` via `LanguageService`)
+- Suporte a PT-BR e EN com arquivos JSON em `src/assets/i18n/`
+- Telas traduzidas: dashboard, agendamentos, pacientes, profissionais, configurações, login e cadastro
+- Baseado em **ngx-translate 17** com `provideTranslateService` + `provideTranslateHttpLoader` (lazy loading dos arquivos de tradução)
 
 ### Configurações
 - Edição de nome, telefone, endereço, mensagem de boas-vindas e cor primária

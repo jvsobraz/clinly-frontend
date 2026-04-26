@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpClient } from '@angular/common/http';
+import { TranslateModule } from '@ngx-translate/core';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { environment } from '../../../environments/environment';
 
@@ -14,6 +15,7 @@ import { environment } from '../../../environments/environment';
   imports: [
     CommonModule, ReactiveFormsModule,
     MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule,
+    TranslateModule,
   ],
   templateUrl: './settings.component.html',
 })

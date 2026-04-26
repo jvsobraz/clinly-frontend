@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
 
 function passwordMatch(ctrl: AbstractControl): ValidationErrors | null {
@@ -20,7 +21,7 @@ function passwordMatch(ctrl: AbstractControl): ValidationErrors | null {
   imports: [
     ReactiveFormsModule, RouterLink, CommonModule,
     MatFormFieldModule, MatInputModule, MatButtonModule,
-    MatIconModule, MatProgressSpinnerModule,
+    MatIconModule, MatProgressSpinnerModule, TranslateModule,
   ],
   templateUrl: './register.component.html',
 })

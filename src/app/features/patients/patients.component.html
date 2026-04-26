@@ -1,15 +1,15 @@
 <div class="space-y-6">
   <div class="flex items-center justify-between flex-wrap gap-3">
     <div>
-      <h1 class="text-2xl font-bold text-slate-800">Pacientes</h1>
-      <p class="text-slate-500 text-sm">Cadastro e histórico de pacientes</p>
+      <h1 class="text-2xl font-bold text-slate-800">{{ 'patients.title' | translate }}</h1>
+      <p class="text-slate-500 text-sm">{{ 'patients.subtitle' | translate }}</p>
     </div>
-    <button mat-flat-button (click)="openDialog()"><mat-icon>person_add</mat-icon> Novo paciente</button>
+    <button mat-flat-button (click)="openDialog()"><mat-icon>person_add</mat-icon> {{ 'patients.new' | translate }}</button>
   </div>
 
   <div class="relative">
     <mat-icon class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</mat-icon>
-    <input type="text" placeholder="Buscar por nome, e-mail ou CPF…"
+    <input type="text" [placeholder]="'patients.search' | translate"
       class="w-full pl-10 pr-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300"
       [(ngModel)]="searchText" (ngModelChange)="onSearch($event)" />
   </div>
@@ -21,16 +21,16 @@
       @if (patients().length === 0) {
         <div class="py-12 text-center text-slate-400">
           <mat-icon class="text-5xl">people</mat-icon>
-          <p class="mt-2">Nenhum paciente encontrado</p>
+          <p class="mt-2">{{ 'patients.empty' | translate }}</p>
         </div>
       } @else {
         <table class="w-full text-sm">
           <thead class="bg-slate-50 border-b border-slate-200">
             <tr>
-              <th class="text-left px-4 py-3 font-medium text-slate-600">Nome</th>
-              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden md:table-cell">E-mail</th>
-              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Telefone</th>
-              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">Plano</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600">{{ 'patients.columns.name' | translate }}</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden md:table-cell">{{ 'patients.columns.email' | translate }}</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">{{ 'patients.columns.phone' | translate }}</th>
+              <th class="text-left px-4 py-3 font-medium text-slate-600 hidden lg:table-cell">{{ 'patients.columns.plan' | translate }}</th>
               <th class="px-4 py-3"></th>
             </tr>
           </thead>

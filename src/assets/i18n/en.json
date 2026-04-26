@@ -1,0 +1,174 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "appointments": "Appointments",
+    "professionals": "Professionals",
+    "patients": "Patients",
+    "services": "Services",
+    "rooms": "Rooms",
+    "waitlist": "Waitlist",
+    "packages": "Packages",
+    "financial": "Financial",
+    "settings": "Settings",
+    "subscription": "Subscription"
+  },
+  "common": {
+    "save": "Save changes",
+    "saving": "Saving...",
+    "cancel": "Cancel",
+    "loading": "Loading...",
+    "search": "Search by name, email or ID…",
+    "new": "New",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": "Confirm",
+    "active": "Active",
+    "inactive": "Inactive",
+    "logout": "Logout",
+    "none": "—"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Today's overview",
+    "newAppointment": "New appointment",
+    "todayTotal": "Today — Total",
+    "confirmed": "Confirmed",
+    "completed": "Completed",
+    "cancelled": "Cancelled",
+    "monthTotal": "Appointments this month",
+    "monthCancelled": "Cancellations this month",
+    "noShowRate": "No-show rate",
+    "todayAgenda": "Today's schedule",
+    "viewAll": "View all",
+    "noAppointments": "No appointments for today",
+    "churnRisk": "Churn Risk Patients",
+    "daysSinceVisit": "{{ days }} days without visit",
+    "noVisits": "No visits"
+  },
+  "appointments": {
+    "title": "Appointments",
+    "subtitle": "Manage all clinic appointments",
+    "new": "New",
+    "list": "List",
+    "week": "Week",
+    "columns": {
+      "datetime": "Date/Time",
+      "patient": "Patient",
+      "professional": "Professional",
+      "service": "Service",
+      "status": "Status",
+      "noShowRisk": "No-show Risk"
+    },
+    "noShowRiskLevels": {
+      "low": "Low",
+      "medium": "Medium",
+      "high": "High"
+    },
+    "actions": {
+      "confirm": "Confirm",
+      "complete": "Complete",
+      "noShow": "Mark No-show",
+      "cancel": "Cancel"
+    },
+    "empty": "No appointments on this date",
+    "weekNav": {
+      "prev": "Previous week",
+      "next": "Next week",
+      "today": "Today"
+    },
+    "legend": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "noShow": "No-show",
+      "cancelled": "Cancelled"
+    }
+  },
+  "patients": {
+    "title": "Patients",
+    "subtitle": "Patient records and history",
+    "new": "New patient",
+    "search": "Search by name, email or ID…",
+    "columns": {
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "plan": "Plan"
+    },
+    "empty": "No patients found"
+  },
+  "professionals": {
+    "title": "Professionals",
+    "subtitle": "Manage the clinic team",
+    "new": "New professional",
+    "perAppointment": "{{ min }}min per appointment",
+    "empty": "No professionals registered"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Customize your clinic information",
+    "saved": "Settings saved successfully!",
+    "demoData": {
+      "title": "Demo Data",
+      "subtitle": "Populate your account with realistic patients, professionals, services and appointments for demonstration.",
+      "generate": "Generate demo data",
+      "generating": "Generating...",
+      "remove": "Remove demo data",
+      "removing": "Removing..."
+    },
+    "clinicName": "Clinic name",
+    "phone": "Phone",
+    "address": "Address",
+    "welcomeMessage": "Welcome message",
+    "primaryColor": "Primary color"
+  },
+  "auth": {
+    "login": {
+      "title": "Sign in",
+      "subtitle": "Access your Clinly account",
+      "email": "Email",
+      "password": "Password",
+      "forgot": "Forgot password?",
+      "submit": "Sign in",
+      "noAccount": "Don't have an account?",
+      "createAccount": "Create account",
+      "invalidCredentials": "Invalid credentials.",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email",
+      "passwordRequired": "Password is required"
+    },
+    "register": {
+      "title": "Create account",
+      "subtitle": "Start free for 14 days",
+      "name": "Your name",
+      "email": "Email",
+      "clinicName": "Clinic name",
+      "clinicSlug": "Slug (clinic URL)",
+      "slugHint": "e.g. my-clinic → clinly.com/booking/my-clinic",
+      "slugPattern": "Only lowercase letters, numbers and hyphens",
+      "password": "Password",
+      "confirmPassword": "Confirm password",
+      "passwordMismatch": "Passwords do not match",
+      "submit": "Create free account",
+      "hasAccount": "Already have an account?",
+      "login": "Sign in"
+    },
+    "forgotPassword": {
+      "title": "Forgot password?",
+      "subtitle": "Enter your email to receive instructions",
+      "email": "Email",
+      "submit": "Send instructions",
+      "backToLogin": "Back to login"
+    },
+    "resetPassword": {
+      "title": "Reset password",
+      "newPassword": "New password",
+      "confirmPassword": "Confirm new password",
+      "submit": "Reset password"
+    }
+  },
+  "language": {
+    "pt": "PT",
+    "en": "EN"
+  }
+}

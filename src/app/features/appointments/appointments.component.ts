@@ -6,6 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 import { AppointmentService } from '../../core/services/appointment.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { Appointment, STATUS_LABELS, STATUS_COLORS } from '../../core/models/appointment.model';
@@ -16,7 +17,7 @@ const HOUR_SLOTS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
 
 @Component({
   selector: 'app-appointments',
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatMenuModule, MatTooltipModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatMenuModule, MatTooltipModule, TranslateModule],
   templateUrl: './appointments.component.html',
 })
 export class AppointmentsComponent implements OnInit {

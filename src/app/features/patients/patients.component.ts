@@ -7,6 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 import { PatientService } from '../../core/services/patient.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { Patient } from '../../core/models/patient.model';
@@ -15,7 +16,7 @@ import { debounceTime, Subject } from 'rxjs';
 
 @Component({
   selector: 'app-patients',
-  imports: [CommonModule, FormsModule, RouterLink, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatTooltipModule],
+  imports: [CommonModule, FormsModule, RouterLink, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatTooltipModule, TranslateModule],
   templateUrl: './patients.component.html',
 })
 export class PatientsComponent implements OnInit {

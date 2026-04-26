@@ -1,27 +1,27 @@
 <div class="max-w-2xl space-y-6">
   <div>
-    <h1 class="text-2xl font-bold text-slate-800">Configurações</h1>
-    <p class="text-slate-500 text-sm">Personalize as informações da sua clínica</p>
+    <h1 class="text-2xl font-bold text-slate-800">{{ 'settings.title' | translate }}</h1>
+    <p class="text-slate-500 text-sm">{{ 'settings.subtitle' | translate }}</p>
   </div>
 
   @if (saved()) {
     <div class="bg-green-50 border border-green-200 text-green-700 rounded-lg px-4 py-3 text-sm">
-      Configurações salvas com sucesso!
+      {{ 'settings.saved' | translate }}
     </div>
   }
 
   <!-- Demo Data -->
   <div class="bg-white rounded-xl border border-slate-200 p-6">
-    <h2 class="text-base font-semibold text-slate-800 mb-1">Dados Demo</h2>
-    <p class="text-sm text-slate-500 mb-4">Popule sua conta com pacientes, profissionais, serviços e agendamentos realistas para demonstração.</p>
+    <h2 class="text-base font-semibold text-slate-800 mb-1">{{ 'settings.demoData.title' | translate }}</h2>
+    <p class="text-sm text-slate-500 mb-4">{{ 'settings.demoData.subtitle' | translate }}</p>
     <div class="flex gap-3">
       <button mat-stroked-button type="button" (click)="seedDemo()" [disabled]="seeding()">
-        @if (seeding()) { <mat-spinner diameter="18" class="inline-block mr-1" /> Gerando... }
-        @else { Gerar dados demo }
+        @if (seeding()) { <mat-spinner diameter="18" class="inline-block mr-1" /> {{ 'settings.demoData.generating' | translate }} }
+        @else { {{ 'settings.demoData.generate' | translate }} }
       </button>
       <button mat-stroked-button type="button" (click)="clearDemo()" [disabled]="clearing()" class="text-red-600">
-        @if (clearing()) { Removendo... }
-        @else { Remover dados demo }
+        @if (clearing()) { {{ 'settings.demoData.removing' | translate }} }
+        @else { {{ 'settings.demoData.remove' | translate }} }
       </button>
     </div>
     @if (seedMsg()) {
@@ -35,27 +35,27 @@
     } @else {
       <form [formGroup]="form" (ngSubmit)="save()" class="flex flex-col gap-4">
         <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Nome da clínica</mat-label>
+          <mat-label>{{ 'settings.clinicName' | translate }}</mat-label>
           <input matInput formControlName="name" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Telefone</mat-label>
+          <mat-label>{{ 'settings.phone' | translate }}</mat-label>
           <input matInput formControlName="phone" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Endereço</mat-label>
+          <mat-label>{{ 'settings.address' | translate }}</mat-label>
           <input matInput formControlName="address" />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Mensagem de boas-vindas</mat-label>
+          <mat-label>{{ 'settings.welcomeMessage' | translate }}</mat-label>
           <textarea matInput formControlName="welcomeMessage" rows="3"></textarea>
         </mat-form-field>
 
         <div class="flex items-center gap-3">
-          <label class="text-sm text-slate-600">Cor principal</label>
+          <label class="text-sm text-slate-600">{{ 'settings.primaryColor' | translate }}</label>
           <input type="color" formControlName="primaryColor"
             class="w-10 h-10 rounded border border-slate-200 cursor-pointer p-0.5" />
           <span class="text-sm text-slate-400">{{ form.get('primaryColor')?.value }}</span>
@@ -64,7 +64,7 @@
         <div class="flex justify-end">
           <button mat-flat-button type="submit" [disabled]="saving() || form.invalid">
             @if (saving()) { <mat-spinner diameter="20" class="inline-block" /> }
-            @else { Salvar alterações }
+            @else { {{ 'common.save' | translate }} }
           </button>
         </div>
       </form>

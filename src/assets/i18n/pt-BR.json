@@ -1,0 +1,174 @@
+{
+  "nav": {
+    "dashboard": "Dashboard",
+    "appointments": "Agendamentos",
+    "professionals": "Profissionais",
+    "patients": "Pacientes",
+    "services": "Serviços",
+    "rooms": "Salas",
+    "waitlist": "Lista de Espera",
+    "packages": "Pacotes",
+    "financial": "Financeiro",
+    "settings": "Configurações",
+    "subscription": "Assinatura"
+  },
+  "common": {
+    "save": "Salvar alterações",
+    "saving": "Salvando...",
+    "cancel": "Cancelar",
+    "loading": "Carregando...",
+    "search": "Buscar por nome, e-mail ou CPF…",
+    "new": "Novo",
+    "edit": "Editar",
+    "delete": "Excluir",
+    "confirm": "Confirmar",
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "logout": "Sair",
+    "none": "—"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "subtitle": "Visão geral de hoje",
+    "newAppointment": "Novo agendamento",
+    "todayTotal": "Hoje — Total",
+    "confirmed": "Confirmados",
+    "completed": "Concluídos",
+    "cancelled": "Cancelados",
+    "monthTotal": "Agendamentos no mês",
+    "monthCancelled": "Cancelamentos no mês",
+    "noShowRate": "Taxa de não comparecimento",
+    "todayAgenda": "Agenda de hoje",
+    "viewAll": "Ver todos",
+    "noAppointments": "Nenhum agendamento para hoje",
+    "churnRisk": "Pacientes em Risco de Churn",
+    "daysSinceVisit": "{{ days }} dias sem visita",
+    "noVisits": "Sem visitas"
+  },
+  "appointments": {
+    "title": "Agendamentos",
+    "subtitle": "Gerencie todos os agendamentos da clínica",
+    "new": "Novo",
+    "list": "Lista",
+    "week": "Semana",
+    "columns": {
+      "datetime": "Data/Hora",
+      "patient": "Paciente",
+      "professional": "Profissional",
+      "service": "Serviço",
+      "status": "Status",
+      "noShowRisk": "Risco No-show"
+    },
+    "noShowRiskLevels": {
+      "low": "Baixo",
+      "medium": "Médio",
+      "high": "Alto"
+    },
+    "actions": {
+      "confirm": "Confirmar",
+      "complete": "Concluir",
+      "noShow": "Marcar Falta",
+      "cancel": "Cancelar"
+    },
+    "empty": "Nenhum agendamento nesta data",
+    "weekNav": {
+      "prev": "Semana anterior",
+      "next": "Próxima semana",
+      "today": "Hoje"
+    },
+    "legend": {
+      "pending": "Pendente",
+      "confirmed": "Confirmado",
+      "completed": "Concluído",
+      "noShow": "Falta",
+      "cancelled": "Cancelado"
+    }
+  },
+  "patients": {
+    "title": "Pacientes",
+    "subtitle": "Cadastro e histórico de pacientes",
+    "new": "Novo paciente",
+    "search": "Buscar por nome, e-mail ou CPF…",
+    "columns": {
+      "name": "Nome",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "plan": "Plano"
+    },
+    "empty": "Nenhum paciente encontrado"
+  },
+  "professionals": {
+    "title": "Profissionais",
+    "subtitle": "Gerencie a equipe da clínica",
+    "new": "Novo profissional",
+    "perAppointment": "{{ min }}min por consulta",
+    "empty": "Nenhum profissional cadastrado"
+  },
+  "settings": {
+    "title": "Configurações",
+    "subtitle": "Personalize as informações da sua clínica",
+    "saved": "Configurações salvas com sucesso!",
+    "demoData": {
+      "title": "Dados Demo",
+      "subtitle": "Popule sua conta com pacientes, profissionais, serviços e agendamentos realistas para demonstração.",
+      "generate": "Gerar dados demo",
+      "generating": "Gerando...",
+      "remove": "Remover dados demo",
+      "removing": "Removendo..."
+    },
+    "clinicName": "Nome da clínica",
+    "phone": "Telefone",
+    "address": "Endereço",
+    "welcomeMessage": "Mensagem de boas-vindas",
+    "primaryColor": "Cor principal"
+  },
+  "auth": {
+    "login": {
+      "title": "Entrar",
+      "subtitle": "Acesse sua conta Clinly",
+      "email": "E-mail",
+      "password": "Senha",
+      "forgot": "Esqueceu a senha?",
+      "submit": "Entrar",
+      "noAccount": "Não tem conta?",
+      "createAccount": "Criar conta",
+      "invalidCredentials": "Credenciais inválidas.",
+      "emailRequired": "E-mail obrigatório",
+      "emailInvalid": "E-mail inválido",
+      "passwordRequired": "Senha obrigatória"
+    },
+    "register": {
+      "title": "Criar conta",
+      "subtitle": "Comece gratuitamente por 14 dias",
+      "name": "Seu nome",
+      "email": "E-mail",
+      "clinicName": "Nome da clínica",
+      "clinicSlug": "Slug (URL da clínica)",
+      "slugHint": "Ex: minha-clinica → clinly.com.br/booking/minha-clinica",
+      "slugPattern": "Apenas letras minúsculas, números e hífens",
+      "password": "Senha",
+      "confirmPassword": "Confirmar senha",
+      "passwordMismatch": "As senhas não conferem",
+      "submit": "Criar conta grátis",
+      "hasAccount": "Já tem conta?",
+      "login": "Entrar"
+    },
+    "forgotPassword": {
+      "title": "Esqueceu a senha?",
+      "subtitle": "Informe seu e-mail para receber as instruções",
+      "email": "E-mail",
+      "submit": "Enviar instruções",
+      "backToLogin": "Voltar ao login"
+    },
+    "resetPassword": {
+      "title": "Redefinir senha",
+      "newPassword": "Nova senha",
+      "confirmPassword": "Confirmar nova senha",
+      "submit": "Redefinir senha"
+    }
+  },
+  "language": {
+    "pt": "PT",
+    "en": "EN"
+  }
+}
