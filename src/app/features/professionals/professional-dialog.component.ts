@@ -9,6 +9,7 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 import { ProfessionalService } from '../../core/services/professional.service';
 import { SpecialtyService, Specialty } from '../../core/services/specialty.service';
 import { Professional } from '../../core/models/professional.model';
@@ -25,43 +26,44 @@ interface DialogData {
     CommonModule, ReactiveFormsModule, MatDialogModule,
     MatFormFieldModule, MatInputModule, MatButtonModule,
     MatCheckboxModule, MatSelectModule, MatProgressSpinnerModule,
+    TranslateModule,
   ],
   template: `
-    <h2 mat-dialog-title>{{ data.professional ? 'Editar Profissional' : 'Novo Profissional' }}</h2>
+    <h2 mat-dialog-title>{{ data.professional ? ('professionals.dialog.titleEdit' | translate) : ('professionals.dialog.titleNew' | translate) }}</h2>
     <mat-dialog-content>
       <form [formGroup]="form" class="flex flex-col gap-3 pt-2 min-w-[440px]">
         <mat-form-field appearance="outline">
-          <mat-label>Nome completo *</mat-label>
+          <mat-label>{{ 'professionals.dialog.name' | translate }}</mat-label>
           <input matInput formControlName="name" />
         </mat-form-field>
         @if (!data.professional) {
           <mat-form-field appearance="outline">
-            <mat-label>E-mail *</mat-label>
+            <mat-label>{{ 'professionals.dialog.email' | translate }}</mat-label>
             <input matInput type="email" formControlName="email" />
-            <mat-hint>Será usado para o profissional acessar o sistema</mat-hint>
+            <mat-hint>{{ 'professionals.dialog.emailHint' | translate }}</mat-hint>
           </mat-form-field>
         }
         <mat-form-field appearance="outline">
-          <mat-label>Telefone</mat-label>
+          <mat-label>{{ 'professionals.dialog.phone' | translate }}</mat-label>
           <input matInput formControlName="phone" />
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>CRM / Registro profissional</mat-label>
+          <mat-label>{{ 'professionals.dialog.crm' | translate }}</mat-label>
           <input matInput formControlName="crm" />
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Bio</mat-label>
+          <mat-label>{{ 'professionals.dialog.bio' | translate }}</mat-label>
           <textarea matInput formControlName="bio" rows="3"></textarea>
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Duração padrão da consulta (min) *</mat-label>
+          <mat-label>{{ 'professionals.dialog.duration' | translate }}</mat-label>
           <input matInput type="number" formControlName="defaultAppointmentDurationMinutes" />
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Especialidades</mat-label>
+          <mat-label>{{ 'professionals.dialog.specialties' | translate }}</mat-label>
           @if (loadingSpecialties()) {
             <mat-select formControlName="specialtyIds" multiple [disabled]="true">
-              <mat-option>Carregando...</mat-option>
+              <mat-option>{{ 'professionals.dialog.loadingSpecialties' | translate }}</mat-option>
             </mat-select>
           } @else {
             <mat-select formControlName="specialtyIds" multiple>
@@ -71,13 +73,13 @@ interface DialogData {
             </mat-select>
           }
         </mat-form-field>
-        <mat-checkbox formControlName="acceptsNewPatients">Aceita novos pacientes</mat-checkbox>
+        <mat-checkbox formControlName="acceptsNewPatients">{{ 'professionals.dialog.acceptsNew' | translate }}</mat-checkbox>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end" class="gap-2 px-6 pb-4">
-      <button mat-button mat-dialog-close>Cancelar</button>
+      <button mat-button mat-dialog-close>{{ 'common.cancel' | translate }}</button>
       <button mat-flat-button [disabled]="form.invalid || saving()" (click)="save()">
-        {{ saving() ? 'Salvando…' : 'Salvar' }}
+        {{ saving() ? ('common.savingEllipsis' | translate) : ('common.save' | translate) }}
       </button>
     </mat-dialog-actions>
   `,
@@ -156,12 +158,12 @@ export class ProfessionalDialogComponent implements OnInit {
     req$.subscribe({
       next: result => {
         this.saving.set(false);
-        this.snackBar.open('Profissional salvo com sucesso!', 'Fechar', { duration: 3000 });
+        this.snackBar.open('OK', 'X', { duration: 3000 });
         this.ref.close(result);
       },
       error: (err) => {
         this.saving.set(false);
-        this.snackBar.open(err?.error?.error ?? 'Erro ao salvar profissional.', 'Fechar', { duration: 4000 });
+        this.snackBar.open(err?.error?.error ?? 'Error', 'X', { duration: 4000 });
       },
     });
   }

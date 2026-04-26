@@ -7,22 +7,22 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { WaitlistService } from '../../core/services/waitlist.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
-import { WaitlistEntry, WAITLIST_STATUS_LABELS } from '../../core/models/waitlist.model';
+import { WaitlistEntry } from '../../core/models/waitlist.model';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-waitlist',
-  imports: [CommonModule, FormsModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatTooltipModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatTooltipModule, TranslateModule],
   templateUrl: './waitlist.component.html',
 })
 export class WaitlistComponent implements OnInit {
   private service = inject(WaitlistService);
   private tenantCtx = inject(TenantContextService);
+  private translate = inject(TranslateService);
 
   entries = signal<WaitlistEntry[]>([]);
   loading = signal(true);
   notifying = signal(false);
-
-  statusLabels = WAITLIST_STATUS_LABELS;
 
   ngOnInit() { this.load(); }
 
@@ -51,7 +51,8 @@ export class WaitlistComponent implements OnInit {
   }
 
   statusLabel(status: string): string {
-    return this.statusLabels[status as keyof typeof this.statusLabels] ?? status;
+    const key = `waitlist.status.${status.toLowerCase()}`;
+    return this.translate.instant(key) !== key ? this.translate.instant(key) : status;
   }
 
   statusColor(status: string): string {

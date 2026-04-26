@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
@@ -27,36 +28,36 @@ interface DialogData {
   standalone: true,
   imports: [
     CommonModule, ReactiveFormsModule, MatDialogModule,
-    MatFormFieldModule, MatInputModule, MatButtonModule,
+    MatFormFieldModule, MatInputModule, MatButtonModule, TranslateModule,
   ],
   template: `
-    <h2 mat-dialog-title>{{ data.service ? 'Editar Serviço' : 'Novo Serviço' }}</h2>
+    <h2 mat-dialog-title>{{ data.service ? ('services.dialog.titleEdit' | translate) : ('services.dialog.titleNew' | translate) }}</h2>
     <mat-dialog-content>
       <form [formGroup]="form" class="flex flex-col gap-3 pt-2 min-w-[420px]">
         <mat-form-field appearance="outline">
-          <mat-label>Nome do serviço *</mat-label>
+          <mat-label>{{ 'services.dialog.name' | translate }}</mat-label>
           <input matInput formControlName="name" />
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Descrição</mat-label>
+          <mat-label>{{ 'services.dialog.description' | translate }}</mat-label>
           <textarea matInput formControlName="description" rows="2"></textarea>
         </mat-form-field>
         <div class="grid grid-cols-2 gap-3">
           <mat-form-field appearance="outline">
-            <mat-label>Duração (min) *</mat-label>
+            <mat-label>{{ 'services.dialog.duration' | translate }}</mat-label>
             <input matInput type="number" formControlName="durationMinutes" min="5" />
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Preço (R$) *</mat-label>
+            <mat-label>{{ 'services.dialog.price' | translate }}</mat-label>
             <input matInput type="number" formControlName="price" min="0" step="0.01" />
           </mat-form-field>
         </div>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end" class="gap-2 px-6 pb-4">
-      <button mat-button mat-dialog-close>Cancelar</button>
+      <button mat-button mat-dialog-close>{{ 'common.cancel' | translate }}</button>
       <button mat-flat-button [disabled]="form.invalid || saving()" (click)="save()">
-        {{ saving() ? 'Salvando…' : 'Salvar' }}
+        {{ saving() ? ('common.savingEllipsis' | translate) : ('common.save' | translate) }}
       </button>
     </mat-dialog-actions>
   `,
@@ -89,12 +90,12 @@ export class ServiceDialogComponent {
     req$.subscribe({
       next: result => {
         this.saving.set(false);
-        this.snackBar.open('Serviço salvo com sucesso!', 'Fechar', { duration: 3000 });
+        this.snackBar.open('OK', 'X', { duration: 3000 });
         this.ref.close(result);
       },
       error: (err) => {
         this.saving.set(false);
-        this.snackBar.open(err?.error?.error ?? 'Erro ao salvar serviço.', 'Fechar', { duration: 4000 });
+        this.snackBar.open(err?.error?.error ?? 'Error', 'X', { duration: 4000 });
       },
     });
   }

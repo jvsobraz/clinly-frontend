@@ -5,6 +5,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { TranslateModule } from '@ngx-translate/core';
 import { IntelligenceService } from '../../core/services/intelligence.service';
 import { WaitlistOffer } from '../../core/models/intelligence.model';
 
@@ -13,14 +14,14 @@ type PageState = 'loading' | 'available' | 'confirmed' | 'expired' | 'error';
 @Component({
   selector: 'app-offer',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressBarModule],
+  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressBarModule, TranslateModule],
   template: `
     <div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex items-center justify-center p-4">
       <mat-card class="w-full max-w-md shadow-xl">
         @if (state() === 'loading') {
           <mat-card-content class="p-8 text-center">
             <mat-progress-bar mode="indeterminate" />
-            <p class="mt-4 text-gray-500">Verificando disponibilidade da vaga...</p>
+            <p class="mt-4 text-gray-500">{{ 'offer.loading' | translate }}</p>
           </mat-card-content>
         }
 
@@ -30,7 +31,7 @@ type PageState = 'loading' | 'available' | 'confirmed' | 'expired' | 'error';
               <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-4">
                 <mat-icon class="text-indigo-600 text-3xl">event_available</mat-icon>
               </div>
-              <h1 class="text-2xl font-bold text-gray-900">Vaga Disponível!</h1>
+              <h1 class="text-2xl font-bold text-gray-900">{{ 'offer.available.title' | translate }}</h1>
               <p class="text-gray-500 text-sm mt-1">{{ offer()!.clinicName }}</p>
             </div>
 
@@ -54,12 +55,12 @@ type PageState = 'loading' | 'available' | 'confirmed' | 'expired' | 'error';
 
             <div class="text-center text-xs text-orange-600 mb-4">
               <mat-icon class="text-sm align-middle">timer</mat-icon>
-              Oferta expira em {{ expiresInMinutes() }} minutos
+              {{ 'offer.available.expires' | translate:{ n: expiresInMinutes() } }}
             </div>
 
             <button mat-flat-button color="primary" class="w-full" [disabled]="confirming()" (click)="confirm()">
-              @if (confirming()) { <mat-icon>hourglass_empty</mat-icon> Confirmando... }
-              @else { <mat-icon>check_circle</mat-icon> Confirmar Vaga }
+              @if (confirming()) { <mat-icon>hourglass_empty</mat-icon> {{ 'offer.available.confirming' | translate }} }
+              @else { <mat-icon>check_circle</mat-icon> {{ 'offer.available.confirm' | translate }} }
             </button>
           </mat-card-content>
         }
@@ -69,8 +70,8 @@ type PageState = 'loading' | 'available' | 'confirmed' | 'expired' | 'error';
             <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <mat-icon class="text-green-600 text-3xl">check_circle</mat-icon>
             </div>
-            <h1 class="text-xl font-bold text-gray-900 mb-2">Consulta Confirmada!</h1>
-            <p class="text-gray-500 text-sm">Você receberá um lembrete próximo à data. Nos vemos em breve!</p>
+            <h1 class="text-xl font-bold text-gray-900 mb-2">{{ 'offer.confirmed.title' | translate }}</h1>
+            <p class="text-gray-500 text-sm">{{ 'offer.confirmed.subtitle' | translate }}</p>
           </mat-card-content>
         }
 
@@ -79,8 +80,8 @@ type PageState = 'loading' | 'available' | 'confirmed' | 'expired' | 'error';
             <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <mat-icon class="text-gray-400 text-3xl">schedule</mat-icon>
             </div>
-            <h1 class="text-xl font-bold text-gray-900 mb-2">Vaga não disponível</h1>
-            <p class="text-gray-500 text-sm">Esta oferta expirou ou a vaga foi preenchida por outro paciente. Fique atento ao seu e-mail para novas oportunidades!</p>
+            <h1 class="text-xl font-bold text-gray-900 mb-2">{{ 'offer.expired.title' | translate }}</h1>
+            <p class="text-gray-500 text-sm">{{ 'offer.expired.subtitle' | translate }}</p>
           </mat-card-content>
         }
 
@@ -89,8 +90,8 @@ type PageState = 'loading' | 'available' | 'confirmed' | 'expired' | 'error';
             <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
               <mat-icon class="text-red-500 text-3xl">error_outline</mat-icon>
             </div>
-            <h1 class="text-xl font-bold text-gray-900 mb-2">Link inválido</h1>
-            <p class="text-gray-500 text-sm">Este link não existe ou já foi utilizado.</p>
+            <h1 class="text-xl font-bold text-gray-900 mb-2">{{ 'offer.error.title' | translate }}</h1>
+            <p class="text-gray-500 text-sm">{{ 'offer.error.subtitle' | translate }}</p>
           </mat-card-content>
         }
       </mat-card>

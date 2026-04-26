@@ -8,10 +8,11 @@ import { HttpClient } from '@angular/common/http';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { environment } from '../../../environments/environment';
 import { ServiceDialogComponent, ClinicService } from './service-dialog.component';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-clinic-services',
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, TranslateModule],
   templateUrl: './clinic-services.component.html',
 })
 export class ClinicServicesComponent implements OnInit {

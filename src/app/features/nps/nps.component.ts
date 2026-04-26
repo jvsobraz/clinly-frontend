@@ -5,26 +5,27 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms';
+import { TranslateModule } from '@ngx-translate/core';
 import { NpsService, NpsContext } from '../../core/services/nps.service';
 
 @Component({
   selector: 'app-nps',
   standalone: true,
-  imports: [CommonModule, DatePipe, FormsModule, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, DatePipe, FormsModule, MatCardModule, MatButtonModule, MatIconModule, TranslateModule],
   template: `
     <div class="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-100 flex items-center justify-center p-4">
       <mat-card class="w-full max-w-lg shadow-xl">
         @if (state() === 'loading') {
-          <mat-card-content class="p-8 text-center text-gray-500">Carregando...</mat-card-content>
+          <mat-card-content class="p-8 text-center text-gray-500">{{ 'nps.loading' | translate }}</mat-card-content>
         }
         @if (state() === 'survey' && ctx()) {
           <mat-card-content class="p-8">
             <div class="text-center mb-6">
-              <h1 class="text-2xl font-bold text-gray-900">Como foi sua experiência?</h1>
+              <h1 class="text-2xl font-bold text-gray-900">{{ 'nps.title' | translate }}</h1>
               <p class="text-sm text-gray-500 mt-1">{{ ctx()!.clinicName }} · {{ ctx()!.scheduledAt | date:'dd/MM/yyyy' }}</p>
             </div>
             <p class="text-center text-gray-600 mb-6 text-sm">
-              Em uma escala de 0 a 10, o quanto você recomendaria <strong>{{ ctx()!.clinicName }}</strong> para um amigo?
+              {{ 'nps.recommendation' | translate:{ clinicName: ctx()!.clinicName } }}
             </p>
             <div class="grid grid-cols-11 gap-1 mb-6">
               @for (n of scores; track n) {
@@ -34,28 +35,28 @@ import { NpsService, NpsContext } from '../../core/services/nps.service';
               }
             </div>
             <div class="flex justify-between text-xs text-slate-400 mb-6">
-              <span>Não recomendaria</span><span>Recomendaria com certeza</span>
+              <span>{{ 'nps.notRecommend' | translate }}</span><span>{{ 'nps.wouldRecommend' | translate }}</span>
             </div>
-            <textarea rows="3" placeholder="Comentário opcional..."
+            <textarea rows="3" [placeholder]="'nps.comment' | translate"
               class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 mb-4"
               [(ngModel)]="comment"></textarea>
             <button mat-flat-button color="primary" class="w-full" [disabled]="selectedScore() === null || submitting()" (click)="submit()">
-              Enviar Avaliação
+              {{ 'nps.submit' | translate }}
             </button>
           </mat-card-content>
         }
         @if (state() === 'done') {
           <mat-card-content class="p-8 text-center">
             <mat-icon class="text-green-500 text-5xl">favorite</mat-icon>
-            <h2 class="text-xl font-bold mt-4">Obrigado pelo feedback!</h2>
-            <p class="text-gray-500 text-sm mt-2">Sua avaliação nos ajuda a melhorar continuamente. Até a próxima!</p>
+            <h2 class="text-xl font-bold mt-4">{{ 'nps.done.title' | translate }}</h2>
+            <p class="text-gray-500 text-sm mt-2">{{ 'nps.done.subtitle' | translate }}</p>
           </mat-card-content>
         }
         @if (state() === 'error') {
           <mat-card-content class="p-8 text-center">
             <mat-icon class="text-gray-400 text-5xl">sentiment_dissatisfied</mat-icon>
-            <h2 class="text-xl font-bold mt-4">Link inválido</h2>
-            <p class="text-gray-500 text-sm mt-2">Este link não existe ou a avaliação já foi realizada.</p>
+            <h2 class="text-xl font-bold mt-4">{{ 'nps.error.title' | translate }}</h2>
+            <p class="text-gray-500 text-sm mt-2">{{ 'nps.error.subtitle' | translate }}</p>
           </mat-card-content>
         }
       </mat-card>

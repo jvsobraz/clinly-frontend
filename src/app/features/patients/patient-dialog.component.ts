@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 import { PatientService } from '../../core/services/patient.service';
 import { Patient } from '../../core/models/patient.model';
 
@@ -21,61 +22,62 @@ interface DialogData {
   imports: [
     CommonModule, ReactiveFormsModule, MatDialogModule,
     MatFormFieldModule, MatInputModule, MatButtonModule, MatSelectModule,
+    TranslateModule,
   ],
   template: `
-    <h2 mat-dialog-title>{{ data.patient ? 'Editar Paciente' : 'Novo Paciente' }}</h2>
+    <h2 mat-dialog-title>{{ data.patient ? ('patients.dialog.titleEdit' | translate) : ('patients.dialog.titleNew' | translate) }}</h2>
     <mat-dialog-content>
       <form [formGroup]="form" class="flex flex-col gap-3 pt-2 min-w-[440px]">
         <mat-form-field appearance="outline">
-          <mat-label>Nome completo *</mat-label>
+          <mat-label>{{ 'patients.dialog.name' | translate }}</mat-label>
           <input matInput formControlName="name" />
         </mat-form-field>
         <div class="grid grid-cols-2 gap-3">
           <mat-form-field appearance="outline">
-            <mat-label>E-mail</mat-label>
+            <mat-label>{{ 'patients.dialog.email' | translate }}</mat-label>
             <input matInput type="email" formControlName="email" />
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Telefone</mat-label>
+            <mat-label>{{ 'patients.dialog.phone' | translate }}</mat-label>
             <input matInput formControlName="phone" />
           </mat-form-field>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <mat-form-field appearance="outline">
-            <mat-label>CPF</mat-label>
+            <mat-label>{{ 'patients.dialog.cpf' | translate }}</mat-label>
             <input matInput formControlName="cpf" />
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Data de nascimento</mat-label>
+            <mat-label>{{ 'patients.dialog.birthDate' | translate }}</mat-label>
             <input matInput type="date" formControlName="birthDate" />
           </mat-form-field>
         </div>
         <div class="grid grid-cols-2 gap-3">
           <mat-form-field appearance="outline">
-            <mat-label>Gênero</mat-label>
+            <mat-label>{{ 'patients.dialog.gender' | translate }}</mat-label>
             <mat-select formControlName="gender">
-              <mat-option value="">— Não informar —</mat-option>
-              <mat-option value="Masculino">Masculino</mat-option>
-              <mat-option value="Feminino">Feminino</mat-option>
-              <mat-option value="Não binário">Não binário</mat-option>
-              <mat-option value="Prefiro não informar">Prefiro não informar</mat-option>
+              <mat-option value="">{{ 'patients.dialog.genderNone' | translate }}</mat-option>
+              <mat-option value="Masculino">{{ 'patients.dialog.genderM' | translate }}</mat-option>
+              <mat-option value="Feminino">{{ 'patients.dialog.genderF' | translate }}</mat-option>
+              <mat-option value="Não binário">{{ 'patients.dialog.genderNB' | translate }}</mat-option>
+              <mat-option value="Prefiro não informar">{{ 'patients.dialog.genderNA' | translate }}</mat-option>
             </mat-select>
           </mat-form-field>
           <mat-form-field appearance="outline">
-            <mat-label>Plano de saúde</mat-label>
+            <mat-label>{{ 'patients.dialog.healthInsurance' | translate }}</mat-label>
             <input matInput formControlName="healthInsurance" />
           </mat-form-field>
         </div>
         <mat-form-field appearance="outline">
-          <mat-label>Observações</mat-label>
+          <mat-label>{{ 'patients.dialog.notes' | translate }}</mat-label>
           <textarea matInput formControlName="notes" rows="2"></textarea>
         </mat-form-field>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end" class="gap-2 px-6 pb-4">
-      <button mat-button mat-dialog-close>Cancelar</button>
+      <button mat-button mat-dialog-close>{{ 'common.cancel' | translate }}</button>
       <button mat-flat-button [disabled]="form.invalid || saving()" (click)="save()">
-        {{ saving() ? 'Salvando…' : 'Salvar' }}
+        {{ saving() ? ('common.savingEllipsis' | translate) : ('common.save' | translate) }}
       </button>
     </mat-dialog-actions>
   `,
@@ -111,12 +113,12 @@ export class PatientDialogComponent {
     req$.subscribe({
       next: result => {
         this.saving.set(false);
-        this.snackBar.open('Paciente salvo com sucesso!', 'Fechar', { duration: 3000 });
+        this.snackBar.open('OK', 'X', { duration: 3000 });
         this.ref.close(result);
       },
       error: (err) => {
         this.saving.set(false);
-        this.snackBar.open(err?.error?.error ?? 'Erro ao salvar paciente.', 'Fechar', { duration: 4000 });
+        this.snackBar.open(err?.error?.error ?? 'Error', 'X', { duration: 4000 });
       },
     });
   }

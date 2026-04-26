@@ -15,6 +15,7 @@
   "common": {
     "save": "Save changes",
     "saving": "Saving...",
+    "savingEllipsis": "Saving…",
     "cancel": "Cancel",
     "loading": "Loading...",
     "search": "Search by name, email or ID…",
@@ -25,7 +26,9 @@
     "active": "Active",
     "inactive": "Inactive",
     "logout": "Logout",
-    "none": "—"
+    "none": "—",
+    "back": "Back",
+    "close": "Close"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -82,6 +85,19 @@
       "completed": "Completed",
       "noShow": "No-show",
       "cancelled": "Cancelled"
+    },
+    "dialog": {
+      "title": "New Appointment",
+      "patient": "Patient *",
+      "professional": "Professional *",
+      "service": "Service *",
+      "room": "Room",
+      "noRoom": "— None —",
+      "datetime": "Date and time *",
+      "notes": "Notes",
+      "duration": "Duration",
+      "book": "Book",
+      "booking": "Booking…"
     }
   },
   "patients": {
@@ -95,14 +111,264 @@
       "phone": "Phone",
       "plan": "Plan"
     },
-    "empty": "No patients found"
+    "empty": "No patients found",
+    "dialog": {
+      "titleNew": "New Patient",
+      "titleEdit": "Edit Patient",
+      "name": "Full name *",
+      "email": "Email",
+      "phone": "Phone",
+      "cpf": "ID number",
+      "birthDate": "Date of birth",
+      "gender": "Gender",
+      "genderNone": "— Do not specify —",
+      "genderM": "Male",
+      "genderF": "Female",
+      "genderNB": "Non-binary",
+      "genderNA": "Prefer not to say",
+      "healthInsurance": "Health plan",
+      "notes": "Notes"
+    }
   },
   "professionals": {
     "title": "Professionals",
     "subtitle": "Manage the clinic team",
     "new": "New professional",
     "perAppointment": "{{ min }}min per appointment",
-    "empty": "No professionals registered"
+    "empty": "No professionals registered",
+    "dialog": {
+      "titleNew": "New Professional",
+      "titleEdit": "Edit Professional",
+      "name": "Full name *",
+      "email": "Email *",
+      "emailHint": "Will be used to access the system",
+      "phone": "Phone",
+      "crm": "License / Registration number",
+      "bio": "Bio",
+      "duration": "Default appointment duration (min) *",
+      "specialties": "Specialties",
+      "loadingSpecialties": "Loading...",
+      "acceptsNew": "Accepts new patients"
+    }
+  },
+  "services": {
+    "title": "Services",
+    "subtitle": "Services and procedures offered by the clinic",
+    "new": "New service",
+    "empty": "No services registered",
+    "dialog": {
+      "titleNew": "New Service",
+      "titleEdit": "Edit Service",
+      "name": "Service name *",
+      "description": "Description",
+      "duration": "Duration (min) *",
+      "price": "Price *"
+    }
+  },
+  "rooms": {
+    "title": "Rooms",
+    "subtitle": "Clinic rooms and physical spaces",
+    "new": "New room",
+    "capacity": "Capacity",
+    "empty": "No rooms registered",
+    "dialog": {
+      "titleNew": "New Room",
+      "titleEdit": "Edit Room",
+      "name": "Room name *",
+      "description": "Description",
+      "capacity": "Capacity *"
+    }
+  },
+  "waitlist": {
+    "title": "Waitlist",
+    "subtitle": "Manage the clinic waitlist",
+    "waiting": "{{ count }} waiting",
+    "notifyNext": "Notify Next",
+    "notifying": "Notifying...",
+    "notifyTooltip": "Notifies the first patient in the queue by email",
+    "empty": "Waitlist is empty",
+    "removeTooltip": "Remove from list",
+    "columns": {
+      "patient": "Patient",
+      "professional": "Professional",
+      "service": "Service",
+      "status": "Status",
+      "since": "In queue since"
+    },
+    "status": {
+      "waiting": "Waiting",
+      "notified": "Notified",
+      "booked": "Booked",
+      "expired": "Expired"
+    }
+  },
+  "packages": {
+    "title": "Treatment Packages",
+    "subtitle": "Create and manage session packages for your patients",
+    "new": "New Package",
+    "editTitle": "Edit Package",
+    "newTitle": "New Package",
+    "form": {
+      "name": "Name *",
+      "namePlaceholder": "e.g. Physiotherapy 10-session Package",
+      "description": "Description",
+      "descPlaceholder": "Describe the package...",
+      "sessions": "Total Sessions *",
+      "price": "Price *",
+      "validity": "Validity (days)"
+    },
+    "columns": {
+      "name": "Name",
+      "sessions": "Sessions",
+      "price": "Price",
+      "validity": "Validity"
+    },
+    "sessions": "{{ n }} sessions",
+    "days": "{{ n }} days",
+    "empty": "No treatment packages registered"
+  },
+  "financial": {
+    "title": "Financial",
+    "subtitle": "Revenue and payments by period",
+    "to": "to",
+    "totalRevenue": "Total Revenue",
+    "pending": "Receivables",
+    "paid": "Paid",
+    "unpaid": "Pending",
+    "byProfessional": "By Professional",
+    "byService": "By Service",
+    "appointments": "appointments",
+    "payments": "Payments",
+    "markPaid": "Mark as Paid",
+    "columns": {
+      "patient": "Patient",
+      "professional": "Professional",
+      "date": "Date",
+      "amount": "Amount",
+      "status": "Status"
+    },
+    "status": {
+      "paid": "Paid",
+      "unpaid": "Pending",
+      "waived": "Waived"
+    }
+  },
+  "subscription": {
+    "title": "Clinly Plans",
+    "subtitle": "Choose the right plan for your clinic",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "perMonth": "/month",
+    "popular": "Most popular",
+    "professionals": "{{ n }} professional(s)",
+    "unlimitedAppointments": "Unlimited appointments",
+    "appointmentsPerMonth": "{{ n }} appointments/month",
+    "emailReminders": "Email reminders",
+    "analytics": "Reports and analytics",
+    "multipleRooms": "Multiple rooms",
+    "startFree": "Start free",
+    "subscribe": "Subscribe to {{ name }}"
+  },
+  "intelligence": {
+    "subtitle": "360° Intelligence Profile",
+    "patient": "Patient",
+    "ltv": "Lifetime Value (LTV)",
+    "attendanceRate": "Attendance Rate",
+    "daysSince": "Days since last visit",
+    "trend": "Trend",
+    "behavior": "Booking Behavior",
+    "preferredDay": "Preferred day",
+    "preferredTime": "Preferred time",
+    "avgLead": "Average lead time",
+    "days": "days",
+    "noShows": "No-shows",
+    "cancellations": "Cancellations",
+    "clinicalHistory": "Clinical History",
+    "lastAppointment": "Last appointment",
+    "nextAppointment": "Next appointment",
+    "noAppointment": "None scheduled",
+    "activePackage": "Active package",
+    "packageYes": "Yes — {{ n }} sessions remaining",
+    "packageNo": "No",
+    "packageAdherence": "Package adherence",
+    "consultations": "appointments",
+    "retention": {
+      "new": "New",
+      "active": "Active",
+      "atRisk": "At Risk",
+      "churned": "Inactive"
+    },
+    "riskTrend": {
+      "improving": "Improving",
+      "stable": "Stable",
+      "deteriorating": "Deteriorating"
+    }
+  },
+  "portal": {
+    "welcome": "Welcome,",
+    "upcoming": "Upcoming Appointments",
+    "noUpcoming": "No appointments scheduled.",
+    "viewHistory": "View full history",
+    "history": {
+      "title": "My Appointments",
+      "subtitle": "Complete appointment history",
+      "yourScore": "Your score",
+      "rate": "Rate",
+      "empty": "No appointments found."
+    },
+    "status": {
+      "pending": "Pending",
+      "confirmed": "Confirmed",
+      "completed": "Completed",
+      "cancelled": "Cancelled",
+      "noShow": "No-show"
+    }
+  },
+  "nps": {
+    "loading": "Loading...",
+    "title": "How was your experience?",
+    "recommendation": "On a scale of 0 to 10, how likely are you to recommend {{ clinicName }} to a friend?",
+    "notRecommend": "Would not recommend",
+    "wouldRecommend": "Would definitely recommend",
+    "comment": "Optional comment...",
+    "submit": "Submit Review",
+    "done": {
+      "title": "Thank you for your feedback!",
+      "subtitle": "Your review helps us continuously improve. See you soon!"
+    },
+    "error": {
+      "title": "Invalid link",
+      "subtitle": "This link does not exist or the review has already been submitted."
+    }
+  },
+  "offer": {
+    "loading": "Checking slot availability...",
+    "available": {
+      "title": "Slot Available!",
+      "expires": "Offer expires in {{ n }} minutes",
+      "confirm": "Confirm Slot",
+      "confirming": "Confirming..."
+    },
+    "confirmed": {
+      "title": "Appointment Confirmed!",
+      "subtitle": "You will receive a reminder close to the date. See you soon!"
+    },
+    "expired": {
+      "title": "Slot not available",
+      "subtitle": "This offer has expired or the slot was taken by another patient. Watch your email for new opportunities!"
+    },
+    "error": {
+      "title": "Invalid link",
+      "subtitle": "This link does not exist or has already been used."
+    }
+  },
+  "booking": {
+    "notFound": "Clinic not found",
+    "defaultWelcome": "Schedule your appointment online",
+    "new": "New appointment",
+    "selectProfessional": "Choose a professional and time",
+    "comingSoon": "Full functionality coming soon!",
+    "back": "Back"
   },
   "settings": {
     "title": "Settings",
@@ -154,17 +420,20 @@
       "login": "Sign in"
     },
     "forgotPassword": {
-      "title": "Forgot password?",
-      "subtitle": "Enter your email to receive instructions",
+      "title": "Recover password",
+      "subtitle": "We will send a link to your email",
+      "sent": "Email sent! Check your inbox.",
       "email": "Email",
-      "submit": "Send instructions",
+      "submit": "Send link",
       "backToLogin": "Back to login"
     },
     "resetPassword": {
-      "title": "Reset password",
+      "title": "New password",
+      "subtitle": "Enter your new password below",
+      "success": "Password changed!",
+      "login": "Sign in",
       "newPassword": "New password",
-      "confirmPassword": "Confirm new password",
-      "submit": "Reset password"
+      "submit": "Save new password"
     }
   },
   "language": {

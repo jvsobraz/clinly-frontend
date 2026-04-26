@@ -6,6 +6,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { TranslateModule } from '@ngx-translate/core';
 import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
@@ -13,24 +14,26 @@ import { AuthService } from '../../../core/services/auth.service';
   imports: [
     ReactiveFormsModule, RouterLink, CommonModule,
     MatFormFieldModule, MatInputModule, MatButtonModule, MatProgressSpinnerModule,
+    TranslateModule,
   ],
   template: `
-    <h2 class="text-2xl font-semibold text-slate-800 mb-1">Nova senha</h2>
-    <p class="text-slate-500 text-sm mb-6">Digite sua nova senha abaixo</p>
+    <h2 class="text-2xl font-semibold text-slate-800 mb-1">{{ 'auth.resetPassword.title' | translate }}</h2>
+    <p class="text-slate-500 text-sm mb-6">{{ 'auth.resetPassword.subtitle' | translate }}</p>
 
     @if (success()) {
       <div class="bg-green-50 border border-green-200 text-green-700 rounded-lg px-4 py-3 text-sm mb-4">
-        Senha alterada! <a routerLink="/auth/login" class="font-medium underline">Fazer login</a>
+        {{ 'auth.resetPassword.success' | translate }}
+        <a routerLink="/auth/login" class="font-medium underline">{{ 'auth.resetPassword.login' | translate }}</a>
       </div>
     } @else {
       <form [formGroup]="form" (ngSubmit)="submit()" class="flex flex-col gap-4">
         <mat-form-field appearance="outline" class="w-full">
-          <mat-label>Nova senha</mat-label>
+          <mat-label>{{ 'auth.resetPassword.newPassword' | translate }}</mat-label>
           <input matInput type="password" formControlName="newPassword" />
         </mat-form-field>
         <button mat-flat-button type="submit" [disabled]="loading() || form.invalid" class="w-full h-11">
           @if (loading()) { <mat-spinner diameter="20" class="inline-block" /> }
-          @else { Salvar nova senha }
+          @else { {{ 'auth.resetPassword.submit' | translate }} }
         </button>
       </form>
     }

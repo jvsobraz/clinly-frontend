@@ -1,10 +1,10 @@
 <div class="space-y-6">
   <div class="flex items-center justify-between">
     <div>
-      <h1 class="text-2xl font-bold text-slate-800">Serviços</h1>
-      <p class="text-slate-500 text-sm">Serviços e procedimentos oferecidos pela clínica</p>
+      <h1 class="text-2xl font-bold text-slate-800">{{ 'services.title' | translate }}</h1>
+      <p class="text-slate-500 text-sm">{{ 'services.subtitle' | translate }}</p>
     </div>
-    <button mat-flat-button (click)="openDialog()"><mat-icon>add</mat-icon> Novo serviço</button>
+    <button mat-flat-button (click)="openDialog()"><mat-icon>add</mat-icon> {{ 'services.new' | translate }}</button>
   </div>
 
   @if (loading()) {
@@ -34,7 +34,7 @@
       @if (services().length === 0) {
         <div class="col-span-3 py-12 text-center text-slate-400">
           <mat-icon class="text-5xl">design_services</mat-icon>
-          <p class="mt-2">Nenhum serviço cadastrado</p>
+          <p class="mt-2">{{ 'services.empty' | translate }}</p>
         </div>
       }
     </div>

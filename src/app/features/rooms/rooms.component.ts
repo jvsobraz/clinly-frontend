@@ -4,21 +4,22 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog } from '@angular/material/dialog';
+import { TranslateModule } from '@ngx-translate/core';
 import { RoomService, Room } from '../../core/services/room.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { RoomDialogComponent } from './room-dialog.component';
 
 @Component({
   selector: 'app-rooms',
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, TranslateModule],
   template: `
     <div class="space-y-6">
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-slate-800">Salas</h1>
-          <p class="text-slate-500 text-sm">Salas e espaços físicos da clínica</p>
+          <h1 class="text-2xl font-bold text-slate-800">{{ 'rooms.title' | translate }}</h1>
+          <p class="text-slate-500 text-sm">{{ 'rooms.subtitle' | translate }}</p>
         </div>
-        <button mat-flat-button (click)="openDialog()"><mat-icon>add</mat-icon> Nova sala</button>
+        <button mat-flat-button (click)="openDialog()"><mat-icon>add</mat-icon> {{ 'rooms.new' | translate }}</button>
       </div>
       @if (loading()) {
         <div class="flex justify-center py-16"><mat-spinner diameter="40" /></div>
@@ -37,13 +38,13 @@ import { RoomDialogComponent } from './room-dialog.component';
                 </div>
               </div>
               @if (r.description) { <p class="text-sm text-slate-500 mb-2">{{ r.description }}</p> }
-              <p class="text-sm text-slate-500">Capacidade: {{ r.capacity }}</p>
+              <p class="text-sm text-slate-500">{{ 'rooms.capacity' | translate }}: {{ r.capacity }}</p>
             </div>
           }
           @if (rooms().length === 0) {
             <div class="col-span-3 py-12 text-center text-slate-400">
               <mat-icon class="text-5xl">meeting_room</mat-icon>
-              <p class="mt-2">Nenhuma sala cadastrada</p>
+              <p class="mt-2">{{ 'rooms.empty' | translate }}</p>
             </div>
           }
         </div>

@@ -7,6 +7,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { TranslateModule } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 
@@ -15,6 +16,7 @@ import { environment } from '../../../environments/environment';
   imports: [
     CommonModule, RouterLink, MatIconModule, MatButtonModule,
     MatProgressSpinnerModule, MatStepperModule, MatFormFieldModule, MatInputModule,
+    TranslateModule,
   ],
   template: `
     <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-start justify-center p-4 pt-10">
@@ -27,14 +29,14 @@ import { environment } from '../../../environments/environment';
         @if (!loading() && !clinic()) {
           <div class="text-center py-20 text-slate-500">
             <mat-icon class="text-5xl">search_off</mat-icon>
-            <p class="mt-3 text-lg font-medium">Clínica não encontrada</p>
+            <p class="mt-3 text-lg font-medium">{{ 'booking.notFound' | translate }}</p>
           </div>
         }
 
         @if (clinic(); as c) {
           <div class="text-center mb-8">
             <h1 class="text-3xl font-bold text-slate-800">{{ c.name }}</h1>
-            <p class="text-slate-500 mt-1">{{ c.welcomeMessage || 'Faça seu agendamento online' }}</p>
+            <p class="text-slate-500 mt-1">{{ c.welcomeMessage || ('booking.defaultWelcome' | translate) }}</p>
           </div>
 
           <div class="bg-white rounded-2xl shadow-xl p-8">
@@ -43,8 +45,8 @@ import { environment } from '../../../environments/environment';
                 <mat-icon class="text-indigo-600">event</mat-icon>
               </div>
               <div>
-                <h2 class="font-semibold text-slate-800">Novo agendamento</h2>
-                <p class="text-sm text-slate-400">Escolha o profissional e horário</p>
+                <h2 class="font-semibold text-slate-800">{{ 'booking.new' | translate }}</h2>
+                <p class="text-sm text-slate-400">{{ 'booking.selectProfessional' | translate }}</p>
               </div>
             </div>
 
@@ -69,8 +71,8 @@ import { environment } from '../../../environments/environment';
 
             @if (selectedProfessional()) {
               <div class="mt-6 pt-6 border-t border-slate-100 text-center">
-                <p class="text-slate-500 text-sm mb-4">Funcionalidade completa em breve!</p>
-                <a routerLink="/" mat-flat-button>Voltar</a>
+                <p class="text-slate-500 text-sm mb-4">{{ 'booking.comingSoon' | translate }}</p>
+                <a routerLink="/" mat-flat-button>{{ 'booking.back' | translate }}</a>
               </div>
             }
           </div>

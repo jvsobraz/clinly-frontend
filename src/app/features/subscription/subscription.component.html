@@ -1,14 +1,14 @@
 <div class="space-y-8">
   <div class="text-center">
-    <h1 class="text-2xl font-bold text-slate-800">Planos Clinly</h1>
-    <p class="text-slate-500 text-sm mt-1">Escolha o plano ideal para sua clínica</p>
+    <h1 class="text-2xl font-bold text-slate-800">{{ 'subscription.title' | translate }}</h1>
+    <p class="text-slate-500 text-sm mt-1">{{ 'subscription.subtitle' | translate }}</p>
     <div class="inline-flex items-center gap-3 mt-4 bg-slate-100 rounded-full p-1">
       <button class="px-4 py-1.5 rounded-full text-sm transition-colors"
         [class]="!annual() ? 'bg-white shadow text-slate-800 font-medium' : 'text-slate-500'"
-        (click)="annual.set(false)">Mensal</button>
+        (click)="annual.set(false)">{{ 'subscription.monthly' | translate }}</button>
       <button class="px-4 py-1.5 rounded-full text-sm transition-colors"
         [class]="annual() ? 'bg-white shadow text-slate-800 font-medium' : 'text-slate-500'"
-        (click)="annual.set(true)">Anual <span class="text-green-600 font-medium">-20%</span></button>
+        (click)="annual.set(true)">{{ 'subscription.annual' | translate }} <span class="text-green-600 font-medium">-20%</span></button>
     </div>
   </div>
 
@@ -21,7 +21,7 @@
           [class]="i === 1 ? 'border-indigo-500 bg-indigo-50 relative' : 'border-slate-200 bg-white'">
           @if (i === 1) {
             <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-indigo-600 text-white text-xs px-3 py-1 rounded-full font-medium">
-              Mais popular
+              {{ 'subscription.popular' | translate }}
             </div>
           }
           <h3 class="text-lg font-bold text-slate-800">{{ plan.name }}</h3>
@@ -30,32 +30,36 @@
             <span class="text-3xl font-bold text-slate-800">
               {{ formatPrice(annual() ? plan.annualPrice / 12 : plan.monthlyPrice) }}
             </span>
-            <span class="text-slate-400 text-sm">/mês</span>
+            <span class="text-slate-400 text-sm">{{ 'subscription.perMonth' | translate }}</span>
           </div>
           <ul class="space-y-2 flex-1 mb-6">
             <li class="flex items-center gap-2 text-sm text-slate-700">
               <mat-icon class="text-green-500 text-[18px]">check</mat-icon>
-              {{ plan.maxProfessionals }} profissional(is)
+              {{ 'subscription.professionals' | translate:{ n: plan.maxProfessionals } }}
             </li>
             <li class="flex items-center gap-2 text-sm text-slate-700">
               <mat-icon class="text-green-500 text-[18px]">check</mat-icon>
-              {{ plan.maxAppointmentsPerMonth === 9999 ? 'Agendamentos ilimitados' : plan.maxAppointmentsPerMonth + ' agendamentos/mês' }}
+              {{ plan.maxAppointmentsPerMonth === 9999
+                  ? ('subscription.unlimitedAppointments' | translate)
+                  : ('subscription.appointmentsPerMonth' | translate:{ n: plan.maxAppointmentsPerMonth }) }}
             </li>
             <li class="flex items-center gap-2 text-sm" [class]="plan.hasEmailReminders ? 'text-slate-700' : 'text-slate-400 line-through'">
               <mat-icon [class]="plan.hasEmailReminders ? 'text-green-500' : 'text-slate-300'" class="text-[18px]">{{ plan.hasEmailReminders ? 'check' : 'close' }}</mat-icon>
-              Lembretes por e-mail
+              {{ 'subscription.emailReminders' | translate }}
             </li>
             <li class="flex items-center gap-2 text-sm" [class]="plan.hasAnalytics ? 'text-slate-700' : 'text-slate-400 line-through'">
               <mat-icon [class]="plan.hasAnalytics ? 'text-green-500' : 'text-slate-300'" class="text-[18px]">{{ plan.hasAnalytics ? 'check' : 'close' }}</mat-icon>
-              Relatórios e analytics
+              {{ 'subscription.analytics' | translate }}
             </li>
             <li class="flex items-center gap-2 text-sm" [class]="plan.hasMultipleRooms ? 'text-slate-700' : 'text-slate-400 line-through'">
               <mat-icon [class]="plan.hasMultipleRooms ? 'text-green-500' : 'text-slate-300'" class="text-[18px]">{{ plan.hasMultipleRooms ? 'check' : 'close' }}</mat-icon>
-              Múltiplas salas
+              {{ 'subscription.multipleRooms' | translate }}
             </li>
           </ul>
           <button mat-flat-button [class]="i === 1 ? '' : 'mat-stroked'" (click)="checkout(plan.id)" class="w-full">
-            {{ plan.monthlyPrice === 0 ? 'Começar grátis' : 'Assinar ' + plan.name }}
+            {{ plan.monthlyPrice === 0
+                ? ('subscription.startFree' | translate)
+                : ('subscription.subscribe' | translate:{ name: plan.name }) }}
           </button>
         </div>
       }

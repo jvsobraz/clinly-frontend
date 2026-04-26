@@ -9,10 +9,11 @@ import { MatDialogModule, MatDialog } from '@angular/material/dialog';
 import { PackageService } from '../../core/services/package.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { TreatmentPackage, CreateTreatmentPackageRequest } from '../../core/models/package.model';
+import { TranslateModule } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-packages',
-  imports: [CommonModule, FormsModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatMenuModule, MatDialogModule],
+  imports: [CommonModule, FormsModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, MatMenuModule, MatDialogModule, TranslateModule],
   templateUrl: './packages.component.html',
 })
 export class PackagesComponent implements OnInit {

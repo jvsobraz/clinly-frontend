@@ -341,7 +341,7 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 ### Internacionalização (i18n)
 - Toggle **PT | EN** no header do admin-layout (persistido no `localStorage` via `LanguageService`)
 - Suporte a PT-BR e EN com arquivos JSON em `src/assets/i18n/`
-- Telas traduzidas: dashboard, agendamentos, pacientes, profissionais, configurações, login e cadastro
+- **Cobertura total:** todas as telas autenticadas e públicas traduzidas — dashboard, agendamentos, pacientes, profissionais, serviços, salas, lista de espera, pacotes, financeiro, assinatura, portal do paciente, NPS, oferta de slot, booking público, patient-detail (360°), todos os diálogos e páginas de autenticação
 - Baseado em **ngx-translate 17** com `provideTranslateService` + `provideTranslateHttpLoader` (lazy loading dos arquivos de tradução)
 
 ### Configurações

@@ -15,6 +15,7 @@
   "common": {
     "save": "Salvar alterações",
     "saving": "Salvando...",
+    "savingEllipsis": "Salvando…",
     "cancel": "Cancelar",
     "loading": "Carregando...",
     "search": "Buscar por nome, e-mail ou CPF…",
@@ -25,7 +26,9 @@
     "active": "Ativo",
     "inactive": "Inativo",
     "logout": "Sair",
-    "none": "—"
+    "none": "—",
+    "back": "Voltar",
+    "close": "Fechar"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -82,6 +85,19 @@
       "completed": "Concluído",
       "noShow": "Falta",
       "cancelled": "Cancelado"
+    },
+    "dialog": {
+      "title": "Novo Agendamento",
+      "patient": "Paciente *",
+      "professional": "Profissional *",
+      "service": "Serviço *",
+      "room": "Sala",
+      "noRoom": "— Nenhuma —",
+      "datetime": "Data e hora *",
+      "notes": "Observações",
+      "duration": "Duração",
+      "book": "Agendar",
+      "booking": "Agendando…"
     }
   },
   "patients": {
@@ -95,14 +111,264 @@
       "phone": "Telefone",
       "plan": "Plano"
     },
-    "empty": "Nenhum paciente encontrado"
+    "empty": "Nenhum paciente encontrado",
+    "dialog": {
+      "titleNew": "Novo Paciente",
+      "titleEdit": "Editar Paciente",
+      "name": "Nome completo *",
+      "email": "E-mail",
+      "phone": "Telefone",
+      "cpf": "CPF",
+      "birthDate": "Data de nascimento",
+      "gender": "Gênero",
+      "genderNone": "— Não informar —",
+      "genderM": "Masculino",
+      "genderF": "Feminino",
+      "genderNB": "Não binário",
+      "genderNA": "Prefiro não informar",
+      "healthInsurance": "Plano de saúde",
+      "notes": "Observações"
+    }
   },
   "professionals": {
     "title": "Profissionais",
     "subtitle": "Gerencie a equipe da clínica",
     "new": "Novo profissional",
     "perAppointment": "{{ min }}min por consulta",
-    "empty": "Nenhum profissional cadastrado"
+    "empty": "Nenhum profissional cadastrado",
+    "dialog": {
+      "titleNew": "Novo Profissional",
+      "titleEdit": "Editar Profissional",
+      "name": "Nome completo *",
+      "email": "E-mail *",
+      "emailHint": "Será usado para o profissional acessar o sistema",
+      "phone": "Telefone",
+      "crm": "CRM / Registro profissional",
+      "bio": "Bio",
+      "duration": "Duração padrão da consulta (min) *",
+      "specialties": "Especialidades",
+      "loadingSpecialties": "Carregando...",
+      "acceptsNew": "Aceita novos pacientes"
+    }
+  },
+  "services": {
+    "title": "Serviços",
+    "subtitle": "Serviços e procedimentos oferecidos pela clínica",
+    "new": "Novo serviço",
+    "empty": "Nenhum serviço cadastrado",
+    "dialog": {
+      "titleNew": "Novo Serviço",
+      "titleEdit": "Editar Serviço",
+      "name": "Nome do serviço *",
+      "description": "Descrição",
+      "duration": "Duração (min) *",
+      "price": "Preço (R$) *"
+    }
+  },
+  "rooms": {
+    "title": "Salas",
+    "subtitle": "Salas e espaços físicos da clínica",
+    "new": "Nova sala",
+    "capacity": "Capacidade",
+    "empty": "Nenhuma sala cadastrada",
+    "dialog": {
+      "titleNew": "Nova Sala",
+      "titleEdit": "Editar Sala",
+      "name": "Nome da sala *",
+      "description": "Descrição",
+      "capacity": "Capacidade *"
+    }
+  },
+  "waitlist": {
+    "title": "Lista de Espera",
+    "subtitle": "Gerencie a fila de espera da clínica",
+    "waiting": "{{ count }} aguardando",
+    "notifyNext": "Notificar Próximo",
+    "notifying": "Notificando...",
+    "notifyTooltip": "Notifica o primeiro paciente da fila por e-mail",
+    "empty": "Lista de espera vazia",
+    "removeTooltip": "Remover da lista",
+    "columns": {
+      "patient": "Paciente",
+      "professional": "Profissional",
+      "service": "Serviço",
+      "status": "Status",
+      "since": "Na fila desde"
+    },
+    "status": {
+      "waiting": "Aguardando",
+      "notified": "Notificado",
+      "booked": "Agendado",
+      "expired": "Expirado"
+    }
+  },
+  "packages": {
+    "title": "Pacotes de Tratamento",
+    "subtitle": "Crie e gerencie pacotes de sessões para seus pacientes",
+    "new": "Novo Pacote",
+    "editTitle": "Editar Pacote",
+    "newTitle": "Novo Pacote",
+    "form": {
+      "name": "Nome *",
+      "namePlaceholder": "Ex: Pacote Fisioterapia 10 sessões",
+      "description": "Descrição",
+      "descPlaceholder": "Descreva o pacote...",
+      "sessions": "Total de Sessões *",
+      "price": "Preço (R$) *",
+      "validity": "Validade (dias)"
+    },
+    "columns": {
+      "name": "Nome",
+      "sessions": "Sessões",
+      "price": "Preço",
+      "validity": "Validade"
+    },
+    "sessions": "{{ n }} sessões",
+    "days": "{{ n }} dias",
+    "empty": "Nenhum pacote de tratamento cadastrado"
+  },
+  "financial": {
+    "title": "Financeiro",
+    "subtitle": "Receita e pagamentos por período",
+    "to": "até",
+    "totalRevenue": "Receita Total",
+    "pending": "A Receber",
+    "paid": "Pagos",
+    "unpaid": "Pendentes",
+    "byProfessional": "Por Profissional",
+    "byService": "Por Serviço",
+    "appointments": "consultas",
+    "payments": "Pagamentos",
+    "markPaid": "Marcar Pago",
+    "columns": {
+      "patient": "Paciente",
+      "professional": "Profissional",
+      "date": "Data",
+      "amount": "Valor",
+      "status": "Status"
+    },
+    "status": {
+      "paid": "Pago",
+      "unpaid": "Pendente",
+      "waived": "Isento"
+    }
+  },
+  "subscription": {
+    "title": "Planos Clinly",
+    "subtitle": "Escolha o plano ideal para sua clínica",
+    "monthly": "Mensal",
+    "annual": "Anual",
+    "perMonth": "/mês",
+    "popular": "Mais popular",
+    "professionals": "{{ n }} profissional(is)",
+    "unlimitedAppointments": "Agendamentos ilimitados",
+    "appointmentsPerMonth": "{{ n }} agendamentos/mês",
+    "emailReminders": "Lembretes por e-mail",
+    "analytics": "Relatórios e analytics",
+    "multipleRooms": "Múltiplas salas",
+    "startFree": "Começar grátis",
+    "subscribe": "Assinar {{ name }}"
+  },
+  "intelligence": {
+    "subtitle": "Perfil de Inteligência 360°",
+    "patient": "Paciente",
+    "ltv": "Valor Vitalício (LTV)",
+    "attendanceRate": "Taxa de Comparecimento",
+    "daysSince": "Dias desde última visita",
+    "trend": "Tendência",
+    "behavior": "Comportamento de Agendamento",
+    "preferredDay": "Dia preferido",
+    "preferredTime": "Período preferido",
+    "avgLead": "Antecedência média",
+    "days": "dias",
+    "noShows": "Não comparecimentos",
+    "cancellations": "Cancelamentos",
+    "clinicalHistory": "Histórico Clínico",
+    "lastAppointment": "Última consulta",
+    "nextAppointment": "Próxima consulta",
+    "noAppointment": "Nenhuma agendada",
+    "activePackage": "Pacote ativo",
+    "packageYes": "Sim — {{ n }} sessões restantes",
+    "packageNo": "Não",
+    "packageAdherence": "Aderência ao pacote",
+    "consultations": "consultas",
+    "retention": {
+      "new": "Novo",
+      "active": "Ativo",
+      "atRisk": "Em Risco",
+      "churned": "Inativo"
+    },
+    "riskTrend": {
+      "improving": "Melhorando",
+      "stable": "Estável",
+      "deteriorating": "Piorando"
+    }
+  },
+  "portal": {
+    "welcome": "Bem-vindo(a),",
+    "upcoming": "Próximas Consultas",
+    "noUpcoming": "Nenhuma consulta agendada.",
+    "viewHistory": "Ver histórico completo",
+    "history": {
+      "title": "Minhas Consultas",
+      "subtitle": "Histórico completo de agendamentos",
+      "yourScore": "Sua nota",
+      "rate": "Avaliar",
+      "empty": "Nenhuma consulta encontrada."
+    },
+    "status": {
+      "pending": "Pendente",
+      "confirmed": "Confirmado",
+      "completed": "Concluído",
+      "cancelled": "Cancelado",
+      "noShow": "Não compareceu"
+    }
+  },
+  "nps": {
+    "loading": "Carregando...",
+    "title": "Como foi sua experiência?",
+    "recommendation": "Em uma escala de 0 a 10, o quanto você recomendaria {{ clinicName }} para um amigo?",
+    "notRecommend": "Não recomendaria",
+    "wouldRecommend": "Recomendaria com certeza",
+    "comment": "Comentário opcional...",
+    "submit": "Enviar Avaliação",
+    "done": {
+      "title": "Obrigado pelo feedback!",
+      "subtitle": "Sua avaliação nos ajuda a melhorar continuamente. Até a próxima!"
+    },
+    "error": {
+      "title": "Link inválido",
+      "subtitle": "Este link não existe ou a avaliação já foi realizada."
+    }
+  },
+  "offer": {
+    "loading": "Verificando disponibilidade da vaga...",
+    "available": {
+      "title": "Vaga Disponível!",
+      "expires": "Oferta expira em {{ n }} minutos",
+      "confirm": "Confirmar Vaga",
+      "confirming": "Confirmando..."
+    },
+    "confirmed": {
+      "title": "Consulta Confirmada!",
+      "subtitle": "Você receberá um lembrete próximo à data. Nos vemos em breve!"
+    },
+    "expired": {
+      "title": "Vaga não disponível",
+      "subtitle": "Esta oferta expirou ou a vaga foi preenchida por outro paciente. Fique atento ao seu e-mail para novas oportunidades!"
+    },
+    "error": {
+      "title": "Link inválido",
+      "subtitle": "Este link não existe ou já foi utilizado."
+    }
+  },
+  "booking": {
+    "notFound": "Clínica não encontrada",
+    "defaultWelcome": "Faça seu agendamento online",
+    "new": "Novo agendamento",
+    "selectProfessional": "Escolha o profissional e horário",
+    "comingSoon": "Funcionalidade completa em breve!",
+    "back": "Voltar"
   },
   "settings": {
     "title": "Configurações",
@@ -154,17 +420,20 @@
       "login": "Entrar"
     },
     "forgotPassword": {
-      "title": "Esqueceu a senha?",
-      "subtitle": "Informe seu e-mail para receber as instruções",
+      "title": "Recuperar senha",
+      "subtitle": "Enviaremos um link para seu e-mail",
+      "sent": "E-mail enviado! Verifique sua caixa de entrada.",
       "email": "E-mail",
-      "submit": "Enviar instruções",
+      "submit": "Enviar link",
       "backToLogin": "Voltar ao login"
     },
     "resetPassword": {
-      "title": "Redefinir senha",
+      "title": "Nova senha",
+      "subtitle": "Digite sua nova senha abaixo",
+      "success": "Senha alterada!",
+      "login": "Fazer login",
       "newPassword": "Nova senha",
-      "confirmPassword": "Confirmar nova senha",
-      "submit": "Redefinir senha"
+      "submit": "Salvar nova senha"
     }
   },
   "language": {

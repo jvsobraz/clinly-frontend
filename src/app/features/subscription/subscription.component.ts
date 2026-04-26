@@ -6,6 +6,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { TenantContextService } from '../../core/services/tenant-context.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 interface Plan {
   id: number; name: string; description: string;
@@ -16,7 +17,7 @@ interface Plan {
 
 @Component({
   selector: 'app-subscription',
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatProgressSpinnerModule, TranslateModule],
   templateUrl: './subscription.component.html',
 })
 export class SubscriptionComponent implements OnInit {

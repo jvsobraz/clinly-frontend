@@ -8,6 +8,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IntelligenceService } from '../../../core/services/intelligence.service';
 import { TenantContextService } from '../../../core/services/tenant-context.service';
 import { PatientIntelligence } from '../../../core/models/intelligence.model';
@@ -18,7 +19,8 @@ import { PatientIntelligence } from '../../../core/models/intelligence.model';
   imports: [
     CommonModule, CurrencyPipe, PercentPipe,
     MatCardModule, MatButtonModule, MatChipsModule,
-    MatIconModule, MatDividerModule, MatProgressBarModule, MatTooltipModule
+    MatIconModule, MatDividerModule, MatProgressBarModule, MatTooltipModule,
+    TranslateModule,
   ],
   template: `
     <div class="p-6 max-w-5xl mx-auto">
@@ -27,8 +29,8 @@ import { PatientIntelligence } from '../../../core/models/intelligence.model';
           <mat-icon>arrow_back</mat-icon>
         </button>
         <div>
-          <h1 class="text-2xl font-bold text-gray-900">{{ intel()?.patientName ?? 'Paciente' }}</h1>
-          <p class="text-sm text-gray-500">Perfil de Inteligência 360°</p>
+          <h1 class="text-2xl font-bold text-gray-900">{{ intel()?.patientName ?? ('intelligence.patient' | translate) }}</h1>
+          <p class="text-sm text-gray-500">{{ 'intelligence.subtitle' | translate }}</p>
         </div>
         @if (intel(); as i) {
           <div class="ml-auto">
@@ -44,7 +46,6 @@ import { PatientIntelligence } from '../../../core/models/intelligence.model';
       }
 
       @if (intel(); as i) {
-        <!-- Insights alerts -->
         @if (i.insights.length > 0) {
           <div class="mb-6 flex flex-col gap-2">
             @for (insight of i.insights; track insight.message) {
@@ -59,90 +60,87 @@ import { PatientIntelligence } from '../../../core/models/intelligence.model';
           </div>
         }
 
-        <!-- Metrics grid -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <mat-card class="text-center p-4">
             <div class="text-3xl font-bold text-indigo-600">{{ i.lifetimeValue | currency:'BRL':'symbol':'1.0-0' }}</div>
-            <div class="text-xs text-gray-500 mt-1">Valor Vitalício (LTV)</div>
+            <div class="text-xs text-gray-500 mt-1">{{ 'intelligence.ltv' | translate }}</div>
           </mat-card>
           <mat-card class="text-center p-4">
             <div class="text-3xl font-bold" [ngClass]="attendanceColor(i.attendanceRate)">{{ i.attendanceRate | percent:'1.0-0' }}</div>
-            <div class="text-xs text-gray-500 mt-1">Taxa de Comparecimento</div>
-            <div class="text-xs text-gray-400">{{ i.completedAppointments }}/{{ i.totalAppointments }} consultas</div>
+            <div class="text-xs text-gray-500 mt-1">{{ 'intelligence.attendanceRate' | translate }}</div>
+            <div class="text-xs text-gray-400">{{ i.completedAppointments }}/{{ i.totalAppointments }} {{ 'intelligence.consultations' | translate }}</div>
           </mat-card>
           <mat-card class="text-center p-4">
             <div class="text-3xl font-bold text-gray-700">{{ i.daysSinceLastVisit < 0 ? '—' : i.daysSinceLastVisit }}</div>
-            <div class="text-xs text-gray-500 mt-1">Dias desde última visita</div>
+            <div class="text-xs text-gray-500 mt-1">{{ 'intelligence.daysSince' | translate }}</div>
           </mat-card>
           <mat-card class="text-center p-4">
             <div class="text-3xl font-bold" [ngClass]="trendColor(i.riskTrend)">
               <mat-icon>{{ trendIcon(i.riskTrend) }}</mat-icon>
             </div>
-            <div class="text-xs text-gray-500 mt-1">Tendência</div>
+            <div class="text-xs text-gray-500 mt-1">{{ 'intelligence.trend' | translate }}</div>
             <div class="text-xs text-gray-400">{{ trendLabel(i.riskTrend) }}</div>
           </mat-card>
         </div>
 
         <div class="grid md:grid-cols-2 gap-6">
-          <!-- Comportamento -->
           <mat-card>
             <mat-card-header>
-              <mat-card-title class="text-base">Comportamento de Agendamento</mat-card-title>
+              <mat-card-title class="text-base">{{ 'intelligence.behavior' | translate }}</mat-card-title>
             </mat-card-header>
             <mat-card-content class="pt-4">
               <div class="flex flex-col gap-3">
                 <div class="flex justify-between text-sm">
-                  <span class="text-gray-500">Dia preferido</span>
+                  <span class="text-gray-500">{{ 'intelligence.preferredDay' | translate }}</span>
                   <span class="font-medium">{{ i.preferredDayOfWeek ?? '—' }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
-                  <span class="text-gray-500">Período preferido</span>
+                  <span class="text-gray-500">{{ 'intelligence.preferredTime' | translate }}</span>
                   <span class="font-medium">{{ i.preferredTimeWindow ?? '—' }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
-                  <span class="text-gray-500">Antecedência média</span>
-                  <span class="font-medium">{{ i.averageBookingLeadDays }} dias</span>
+                  <span class="text-gray-500">{{ 'intelligence.avgLead' | translate }}</span>
+                  <span class="font-medium">{{ i.averageBookingLeadDays }} {{ 'intelligence.days' | translate }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
-                  <span class="text-gray-500">Não comparecimentos</span>
+                  <span class="text-gray-500">{{ 'intelligence.noShows' | translate }}</span>
                   <span class="font-medium text-red-600">{{ i.noShowCount }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
-                  <span class="text-gray-500">Cancelamentos</span>
+                  <span class="text-gray-500">{{ 'intelligence.cancellations' | translate }}</span>
                   <span class="font-medium text-orange-600">{{ i.cancelledCount }}</span>
                 </div>
               </div>
             </mat-card-content>
           </mat-card>
 
-          <!-- Histórico e próxima consulta -->
           <mat-card>
             <mat-card-header>
-              <mat-card-title class="text-base">Histórico Clínico</mat-card-title>
+              <mat-card-title class="text-base">{{ 'intelligence.clinicalHistory' | translate }}</mat-card-title>
             </mat-card-header>
             <mat-card-content class="pt-4">
               <div class="flex flex-col gap-3">
                 <div class="flex justify-between text-sm">
-                  <span class="text-gray-500">Última consulta</span>
+                  <span class="text-gray-500">{{ 'intelligence.lastAppointment' | translate }}</span>
                   <span class="font-medium">{{ i.lastAppointmentDate ? (i.lastAppointmentDate | date:'dd/MM/yyyy') : '—' }}</span>
                 </div>
                 <div class="flex justify-between text-sm">
-                  <span class="text-gray-500">Próxima consulta</span>
-                  <span class="font-medium text-indigo-600">{{ i.nextAppointmentDate ? (i.nextAppointmentDate | date:'dd/MM/yyyy') : 'Nenhuma agendada' }}</span>
+                  <span class="text-gray-500">{{ 'intelligence.nextAppointment' | translate }}</span>
+                  <span class="font-medium text-indigo-600">{{ i.nextAppointmentDate ? (i.nextAppointmentDate | date:'dd/MM/yyyy') : ('intelligence.noAppointment' | translate) }}</span>
                 </div>
                 <mat-divider />
                 <div class="flex justify-between text-sm">
-                  <span class="text-gray-500">Pacote ativo</span>
+                  <span class="text-gray-500">{{ 'intelligence.activePackage' | translate }}</span>
                   @if (i.hasActivePackage) {
-                    <span class="font-medium text-green-600">Sim — {{ i.packageSessionsRemaining }} sessões restantes</span>
+                    <span class="font-medium text-green-600">{{ 'intelligence.packageYes' | translate:{ n: i.packageSessionsRemaining } }}</span>
                   } @else {
-                    <span class="text-gray-400">Não</span>
+                    <span class="text-gray-400">{{ 'intelligence.packageNo' | translate }}</span>
                   }
                 </div>
                 @if (i.hasActivePackage && i.packageAdherence !== null) {
                   <div>
                     <div class="flex justify-between text-xs text-gray-500 mb-1">
-                      <span>Aderência ao pacote</span>
+                      <span>{{ 'intelligence.packageAdherence' | translate }}</span>
                       <span>{{ i.packageAdherence | percent:'1.0-0' }}</span>
                     </div>
                     <mat-progress-bar mode="determinate" [value]="(i.packageAdherence ?? 0) * 100" />
@@ -161,6 +159,7 @@ export class PatientDetailComponent implements OnInit {
   private router = inject(Router);
   private intelligenceService = inject(IntelligenceService);
   private tenantCtx = inject(TenantContextService);
+  private translate = inject(TranslateService);
 
   intel = signal<PatientIntelligence | null>(null);
   loading = signal(false);
@@ -189,7 +188,13 @@ export class PatientDetailComponent implements OnInit {
   }
 
   retentionLabel(s: string) {
-    return { 'New': 'Novo', 'Active': 'Ativo', 'AtRisk': 'Em Risco', 'Churned': 'Inativo' }[s] ?? s;
+    const keyMap: Record<string, string> = {
+      'New': 'intelligence.retention.new',
+      'Active': 'intelligence.retention.active',
+      'AtRisk': 'intelligence.retention.atRisk',
+      'Churned': 'intelligence.retention.churned',
+    };
+    return keyMap[s] ? this.translate.instant(keyMap[s]) : s;
   }
 
   attendanceColor(rate: number) {
@@ -207,7 +212,12 @@ export class PatientDetailComponent implements OnInit {
   }
 
   trendLabel(t: string) {
-    return { 'Improving': 'Melhorando', 'Stable': 'Estável', 'Deteriorating': 'Piorando' }[t] ?? t;
+    const keyMap: Record<string, string> = {
+      'Improving': 'intelligence.riskTrend.improving',
+      'Stable': 'intelligence.riskTrend.stable',
+      'Deteriorating': 'intelligence.riskTrend.deteriorating',
+    };
+    return keyMap[t] ? this.translate.instant(keyMap[t]) : t;
   }
 
   insightBg(l: string) {

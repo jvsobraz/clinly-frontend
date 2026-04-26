@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { TranslateModule } from '@ngx-translate/core';
 import { RoomService, Room } from '../../core/services/room.service';
 
 interface DialogData {
@@ -18,30 +19,30 @@ interface DialogData {
   standalone: true,
   imports: [
     CommonModule, ReactiveFormsModule, MatDialogModule,
-    MatFormFieldModule, MatInputModule, MatButtonModule,
+    MatFormFieldModule, MatInputModule, MatButtonModule, TranslateModule,
   ],
   template: `
-    <h2 mat-dialog-title>{{ data.room ? 'Editar Sala' : 'Nova Sala' }}</h2>
+    <h2 mat-dialog-title>{{ data.room ? ('rooms.dialog.titleEdit' | translate) : ('rooms.dialog.titleNew' | translate) }}</h2>
     <mat-dialog-content>
       <form [formGroup]="form" class="flex flex-col gap-3 pt-2 min-w-[380px]">
         <mat-form-field appearance="outline">
-          <mat-label>Nome da sala *</mat-label>
+          <mat-label>{{ 'rooms.dialog.name' | translate }}</mat-label>
           <input matInput formControlName="name" />
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Descrição</mat-label>
+          <mat-label>{{ 'rooms.dialog.description' | translate }}</mat-label>
           <input matInput formControlName="description" />
         </mat-form-field>
         <mat-form-field appearance="outline">
-          <mat-label>Capacidade *</mat-label>
+          <mat-label>{{ 'rooms.dialog.capacity' | translate }}</mat-label>
           <input matInput type="number" formControlName="capacity" min="1" />
         </mat-form-field>
       </form>
     </mat-dialog-content>
     <mat-dialog-actions align="end" class="gap-2 px-6 pb-4">
-      <button mat-button mat-dialog-close>Cancelar</button>
+      <button mat-button mat-dialog-close>{{ 'common.cancel' | translate }}</button>
       <button mat-flat-button [disabled]="form.invalid || saving()" (click)="save()">
-        {{ saving() ? 'Salvando…' : 'Salvar' }}
+        {{ saving() ? ('common.savingEllipsis' | translate) : ('common.save' | translate) }}
       </button>
     </mat-dialog-actions>
   `,
@@ -72,12 +73,12 @@ export class RoomDialogComponent {
     req$.subscribe({
       next: result => {
         this.saving.set(false);
-        this.snackBar.open('Sala salva com sucesso!', 'Fechar', { duration: 3000 });
+        this.snackBar.open('OK', 'X', { duration: 3000 });
         this.ref.close(result);
       },
       error: (err) => {
         this.saving.set(false);
-        this.snackBar.open(err?.error?.error ?? 'Erro ao salvar sala.', 'Fechar', { duration: 4000 });
+        this.snackBar.open(err?.error?.error ?? 'Error', 'X', { duration: 4000 });
       },
     });
   }
