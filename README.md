@@ -257,6 +257,7 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 
 ### Dashboard
 - Total de agendamentos do dia (total, confirmados, concluídos, cancelados)
+- **Gráfico donut** de status de hoje (Chart.js) — visualização de confirmados/concluídos/cancelados/pendentes
 - Métricas do mês (total, cancelamentos, taxa de não comparecimento)
 - Agenda do dia com status colorido
 
@@ -312,7 +313,7 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 ### Financeiro
 - Filtro por período com seletores de data (padrão: mês corrente)
 - Cards de resumo: receita total, a receber, consultas pagas e não pagas
-- Breakdown de receita por profissional e por serviço
+- **Gráficos de barras horizontais** (Chart.js) de receita por profissional e por serviço
 - Tabela detalhada de pagamentos com botão "Marcar Pago" para consultas pendentes
 
 ### Smart Gap Engine — Oferta de Slot
