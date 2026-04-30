@@ -46,7 +46,9 @@
     "noAppointments": "No appointments for today",
     "churnRisk": "Churn Risk Patients",
     "daysSinceVisit": "{{ days }} days without visit",
-    "noVisits": "No visits"
+    "noVisits": "No visits",
+    "pending": "Pending",
+    "statusChart": "Today's Status"
   },
   "appointments": {
     "title": "Appointments",
@@ -237,6 +239,7 @@
     "unpaid": "Pending",
     "byProfessional": "By Professional",
     "byService": "By Service",
+    "noData": "No data for this period",
     "appointments": "appointments",
     "payments": "Payments",
     "markPaid": "Mark as Paid",

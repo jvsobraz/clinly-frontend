@@ -46,7 +46,9 @@
     "noAppointments": "Nenhum agendamento para hoje",
     "churnRisk": "Pacientes em Risco de Churn",
     "daysSinceVisit": "{{ days }} dias sem visita",
-    "noVisits": "Sem visitas"
+    "noVisits": "Sem visitas",
+    "pending": "Pendentes",
+    "statusChart": "Status de Hoje"
   },
   "appointments": {
     "title": "Agendamentos",
@@ -237,6 +239,7 @@
     "unpaid": "Pendentes",
     "byProfessional": "Por Profissional",
     "byService": "Por Serviço",
+    "noData": "Sem dados no período",
     "appointments": "consultas",
     "payments": "Pagamentos",
     "markPaid": "Marcar Pago",

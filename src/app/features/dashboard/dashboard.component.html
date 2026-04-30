@@ -37,6 +37,14 @@
       </div>
     </div>
 
+    <!-- Today status donut chart -->
+    @if (d.todayTotal > 0) {
+      <div class="bg-white rounded-xl p-5 border border-slate-200">
+        <h2 class="font-semibold text-slate-700 mb-3 text-sm">{{ 'dashboard.statusChart' | translate }}</h2>
+        <canvas id="chart-today-status"></canvas>
+      </div>
+    }
+
     <!-- Month stats -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
       <div class="bg-indigo-600 text-white rounded-xl p-5">
