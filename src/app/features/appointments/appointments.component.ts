@@ -11,6 +11,7 @@ import { AppointmentService } from '../../core/services/appointment.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { Appointment, STATUS_LABELS, STATUS_COLORS } from '../../core/models/appointment.model';
 import { AppointmentDialogComponent } from './appointment-dialog.component';
+import { AppointmentNotesDialogComponent } from './appointment-notes-dialog.component';
 
 const DAY_LABELS = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
 const HOUR_SLOTS = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18];
@@ -120,6 +121,18 @@ export class AppointmentsComponent implements OnInit {
   cancel(id: number) { this.service.cancel(this.tenantCtx.tenantId()!, id, { reason: 'Cancelado pelo administrador' }).subscribe(() => this.load()); }
   complete(id: number) { this.service.complete(this.tenantCtx.tenantId()!, id).subscribe(() => this.load()); }
   noShow(id: number) { this.service.noShow(this.tenantCtx.tenantId()!, id).subscribe(() => this.load()); }
+
+  openNotes(apt: { id: number; patient?: { name: string } }) {
+    this.dialog.open(AppointmentNotesDialogComponent, {
+      data: {
+        tenantId: this.tenantCtx.tenantId()!,
+        appointmentId: apt.id,
+        patientName: apt.patient?.name ?? '—',
+      },
+      width: '600px',
+      maxHeight: '85vh',
+    });
+  }
 
   openDialog() {
     this.dialog.open(AppointmentDialogComponent, {

@@ -28,6 +28,7 @@
     "logout": "Sair",
     "none": "—",
     "back": "Voltar",
+    "close": "Fechar",
     "close": "Fechar"
   },
   "dashboard": {
@@ -442,5 +443,12 @@
   "language": {
     "pt": "PT",
     "en": "EN"
+  },
+  "notes": {
+    "title": "Prontuário",
+    "empty": "Nenhuma anotação clínica registrada.",
+    "newNote": "Nova Anotação",
+    "placeholder": "Queixa principal, observações clínicas, prescrições...",
+    "add": "Adicionar"
   }
 }

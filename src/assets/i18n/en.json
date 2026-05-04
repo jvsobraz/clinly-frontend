@@ -28,6 +28,7 @@
     "logout": "Logout",
     "none": "—",
     "back": "Back",
+    "close": "Close",
     "close": "Close"
   },
   "dashboard": {
@@ -442,5 +443,12 @@
   "language": {
     "pt": "PT",
     "en": "EN"
+  },
+  "notes": {
+    "title": "Medical Records",
+    "empty": "No clinical notes recorded yet.",
+    "newNote": "New Note",
+    "placeholder": "Chief complaint, clinical observations, prescriptions...",
+    "add": "Add"
   }
 }
