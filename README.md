@@ -268,6 +268,7 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 - Ações rápidas via menu: Confirmar, Concluir, **Marcar Falta** (NoShow), Cancelar
 - Badge de status com cores semânticas (Pendente, Confirmado, Cancelado, Concluído, Não compareceu)
 - **Badge de risco de no-show** (Baixo/Médio/Alto) calculado por score baseado em histórico, antecedência, dia da semana e horário
+- **Prontuário eletrônico** por agendamento: ícone `medical_information` em cada linha abre dialog para adicionar/visualizar/deletar anotações clínicas (queixa principal, observações, prescrições) com autor e timestamp
 - Feedback visual via snackbar em todas as ações
 
 ### Profissionais
