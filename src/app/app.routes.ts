@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { authGuard, guestGuard } from './core/guards/auth.guard';
+import { authGuard, guestGuard, adminGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', loadComponent: () => import('./features/landing/landing.component').then(m => m.LandingComponent) },
@@ -25,16 +25,16 @@ export const routes: Routes = [
     children: [
       { path: '', loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent) },
       { path: 'appointments', loadComponent: () => import('./features/appointments/appointments.component').then(m => m.AppointmentsComponent) },
-      { path: 'professionals', loadComponent: () => import('./features/professionals/professionals.component').then(m => m.ProfessionalsComponent) },
+      { path: 'professionals', canActivate: [adminGuard], loadComponent: () => import('./features/professionals/professionals.component').then(m => m.ProfessionalsComponent) },
       { path: 'patients', loadComponent: () => import('./features/patients/patients.component').then(m => m.PatientsComponent) },
       { path: 'patients/:id/intelligence', loadComponent: () => import('./features/patients/patient-detail/patient-detail.component').then(m => m.PatientDetailComponent) },
-      { path: 'services', loadComponent: () => import('./features/clinic-services/clinic-services.component').then(m => m.ClinicServicesComponent) },
-      { path: 'rooms', loadComponent: () => import('./features/rooms/rooms.component').then(m => m.RoomsComponent) },
+      { path: 'services', canActivate: [adminGuard], loadComponent: () => import('./features/clinic-services/clinic-services.component').then(m => m.ClinicServicesComponent) },
+      { path: 'rooms', canActivate: [adminGuard], loadComponent: () => import('./features/rooms/rooms.component').then(m => m.RoomsComponent) },
       { path: 'waitlist', loadComponent: () => import('./features/waitlist/waitlist.component').then(m => m.WaitlistComponent) },
-      { path: 'packages', loadComponent: () => import('./features/packages/packages.component').then(m => m.PackagesComponent) },
-      { path: 'financial', loadComponent: () => import('./features/financial/financial.component').then(m => m.FinancialComponent) },
-      { path: 'settings', loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent) },
-      { path: 'subscription', loadComponent: () => import('./features/subscription/subscription.component').then(m => m.SubscriptionComponent) },
+      { path: 'packages', canActivate: [adminGuard], loadComponent: () => import('./features/packages/packages.component').then(m => m.PackagesComponent) },
+      { path: 'financial', canActivate: [adminGuard], loadComponent: () => import('./features/financial/financial.component').then(m => m.FinancialComponent) },
+      { path: 'settings', canActivate: [adminGuard], loadComponent: () => import('./features/settings/settings.component').then(m => m.SettingsComponent) },
+      { path: 'subscription', canActivate: [adminGuard], loadComponent: () => import('./features/subscription/subscription.component').then(m => m.SubscriptionComponent) },
     ],
   },
 

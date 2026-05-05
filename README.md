@@ -24,7 +24,7 @@ O projeto usa **Angular 21** com standalone components, lazy loading e Angular S
 ```
 src/app/
 ├── core/
-│   ├── guards/           # authGuard (protege rotas privadas), guestGuard (redireciona logados)
+│   ├── guards/           # authGuard (protege rotas privadas), guestGuard (redireciona logados), adminGuard (restringe rotas a ClinicAdmin/SuperAdmin)
 │   ├── interceptors/     # authInterceptor — injeta JWT e trata 401 com auto-refresh
 │   ├── models/           # Interfaces TypeScript dos recursos da API
 │   └── services/         # Serviços HTTP e TenantContextService
@@ -135,7 +135,7 @@ src/
 ├── app/
 │   ├── core/
 │   │   ├── guards/
-│   │   │   └── auth.guard.ts          # authGuard + guestGuard
+│   │   │   └── auth.guard.ts          # authGuard + guestGuard + adminGuard
 │   │   ├── interceptors/
 │   │   │   └── auth.interceptor.ts    # Injeta Bearer token, auto-refresh em 401
 │   │   ├── models/
@@ -214,16 +214,16 @@ src/
 | `/auth/reset-password` | `ResetPasswordComponent` | `guestGuard` | Redefinir senha via token |
 | `/dashboard` | `DashboardComponent` | `authGuard` | Métricas, agenda do dia e widget de pacientes em risco de churn |
 | `/dashboard/appointments` | `AppointmentsComponent` | `authGuard` | Lista de agendamentos (filtro por data) e **calendário semanal** com toggle Lista/Semana |
-| `/dashboard/professionals` | `ProfessionalsComponent` | `authGuard` | Cards de profissionais com especialidades |
+| `/dashboard/professionals` | `ProfessionalsComponent` | `authGuard` + `adminGuard` | Cards de profissionais com especialidades |
 | `/dashboard/patients` | `PatientsComponent` | `authGuard` | Tabela de pacientes com busca em tempo real e ícone de insights |
 | `/dashboard/patients/:id/intelligence` | `PatientDetailComponent` | `authGuard` | Inteligência 360°: LTV, retenção, perfil comportamental e insights |
-| `/dashboard/services` | `ClinicServicesComponent` | `authGuard` | Serviços e procedimentos |
-| `/dashboard/rooms` | `RoomsComponent` | `authGuard` | Salas físicas |
+| `/dashboard/services` | `ClinicServicesComponent` | `authGuard` + `adminGuard` | Serviços e procedimentos |
+| `/dashboard/rooms` | `RoomsComponent` | `authGuard` + `adminGuard` | Salas físicas |
 | `/dashboard/waitlist` | `WaitlistComponent` | `authGuard` | Lista de espera com fila ordenada e notificação por e-mail |
-| `/dashboard/packages` | `PackagesComponent` | `authGuard` | Pacotes de tratamento (CRUD + atribuição a pacientes) |
-| `/dashboard/financial` | `FinancialComponent` | `authGuard` | Relatório financeiro com filtro por período e registro de pagamentos |
-| `/dashboard/settings` | `SettingsComponent` | `authGuard` | Configurações da clínica |
-| `/dashboard/subscription` | `SubscriptionComponent` | `authGuard` | Planos Free/Basic/Pro + checkout Stripe |
+| `/dashboard/packages` | `PackagesComponent` | `authGuard` + `adminGuard` | Pacotes de tratamento (CRUD + atribuição a pacientes) |
+| `/dashboard/financial` | `FinancialComponent` | `authGuard` + `adminGuard` | Relatório financeiro com filtro por período e registro de pagamentos |
+| `/dashboard/settings` | `SettingsComponent` | `authGuard` + `adminGuard` | Configurações da clínica |
+| `/dashboard/subscription` | `SubscriptionComponent` | `authGuard` + `adminGuard` | Planos Free/Basic/Pro + checkout Stripe |
 | `/patient` | `PortalHomeComponent` | `authGuard` | Portal do Paciente — próximas consultas |
 | `/patient/appointments` | `PortalAppointmentsComponent` | `authGuard` | Portal do Paciente — histórico completo com NPS |
 | `/booking/:slug` | `BookingComponent` | — | Agendamento público (sem login) |
@@ -381,5 +381,5 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 |---|---|---|
 | Refresh token serializado | `auth.interceptor.ts` | Um `BehaviorSubject` garante que apenas uma chamada `/auth/refresh-token` ocorre por vez; requisições concorrentes aguardam o resultado em vez de disparar refreshes paralelos que rotacionariam o token |
 | `X-Requested-With` | `auth.interceptor.ts` | Header enviado em todas as requisições como sinal anti-CSRF para o backend |
-| Guards de rota | `auth.guard.ts` | `authGuard` bloqueia acesso a rotas privadas; `guestGuard` redireciona usuários logados |
+| Guards de rota | `auth.guard.ts` | `authGuard` bloqueia acesso a rotas privadas; `guestGuard` redireciona usuários logados; `adminGuard` restringe rotas de gestão (profissionais, financeiro, configurações, assinatura, etc.) a ClinicAdmin e SuperAdmin |
 | Tokens em `localStorage` | `auth.service.ts` | Tokens são removidos no logout e na falha de refresh |
