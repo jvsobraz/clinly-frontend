@@ -347,6 +347,12 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 - **Cobertura total:** todas as telas autenticadas e públicas traduzidas — dashboard, agendamentos, pacientes, profissionais, serviços, salas, lista de espera, pacotes, financeiro, assinatura, portal do paciente, NPS, oferta de slot, booking público, patient-detail (360°), todos os diálogos e páginas de autenticação
 - Baseado em **ngx-translate 17** com `provideTranslateService` + `provideTranslateHttpLoader` (lazy loading dos arquivos de tradução)
 
+### Automações de Notificação (Settings)
+- **Toggle de e-mail:** ativa/desativa o envio automático de confirmação, lembrete 24h e cancelamento por e-mail
+- **Toggle WhatsApp:** ativa integração com Z-API para envio de mensagens automáticas no WhatsApp do paciente
+- **Credenciais Z-API:** formulário inline que aparece ao ativar o WhatsApp (Instance ID, Token, Client-Token) — salvo criptografado no tenant
+- Mensagens enviadas automaticamente: confirmação de agendamento, lembrete 24h antes e cancelamento
+
 ### Configurações
 - Edição de nome, telefone, endereço, mensagem de boas-vindas e cor primária
 - **Seed de dados demo:** botão "Gerar dados demo" (POST `/seed/demo`) e "Remover dados demo" (DELETE `/seed/demo`) com feedback visual de status — popula a clínica com profissionais, pacientes, serviços, salas e ~8 meses de agendamentos realistas para demonstração
