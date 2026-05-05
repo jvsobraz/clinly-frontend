@@ -115,6 +115,10 @@
       "plan": "Plano"
     },
     "empty": "Nenhum paciente encontrado",
+    "sendInvite": "Enviar convite por e-mail",
+    "inviteSent": "Convite enviado para {{ name }}!",
+    "inviteError": "Erro ao enviar convite. Tente novamente.",
+    "intelligence": "Inteligência 360°",
     "dialog": {
       "titleNew": "Novo Paciente",
       "titleEdit": "Editar Paciente",

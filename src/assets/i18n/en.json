@@ -115,6 +115,10 @@
       "plan": "Plan"
     },
     "empty": "No patients found",
+    "sendInvite": "Send invite by email",
+    "inviteSent": "Invite sent to {{ name }}!",
+    "inviteError": "Failed to send invite. Please try again.",
+    "intelligence": "360° Intelligence",
     "dialog": {
       "titleNew": "New Patient",
       "titleEdit": "Edit Patient",

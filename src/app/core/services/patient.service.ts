@@ -33,4 +33,8 @@ export class PatientService {
   delete(tenantId: number, id: number): Observable<void> {
     return this.http.delete<void>(`${this.url(tenantId)}/${id}`);
   }
+
+  invite(tenantId: number, id: number): Observable<void> {
+    return this.http.post<void>(`${this.url(tenantId)}/${id}/invite`, {});
+  }
 }

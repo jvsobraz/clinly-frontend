@@ -6,8 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
-import { TranslateModule } from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { PatientService } from '../../core/services/patient.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
 import { Patient } from '../../core/models/patient.model';
@@ -23,9 +24,12 @@ export class PatientsComponent implements OnInit {
   private service = inject(PatientService);
   private tenantCtx = inject(TenantContextService);
   private dialog = inject(MatDialog);
+  private snackBar = inject(MatSnackBar);
+  private translate = inject(TranslateService);
 
   patients = signal<Patient[]>([]);
   loading = signal(true);
+  inviting = signal<number | null>(null);
   searchText = '';
   private search$ = new Subject<string>();
 
@@ -44,9 +48,7 @@ export class PatientsComponent implements OnInit {
     });
   }
 
-  onSearch(q: string) {
-    this.search$.next(q);
-  }
+  onSearch(q: string) { this.search$.next(q); }
 
   openDialog(patient?: Patient) {
     const tenantId = this.tenantCtx.tenantId()!;
@@ -56,6 +58,25 @@ export class PatientsComponent implements OnInit {
       maxHeight: '90vh',
     }).afterClosed().subscribe(result => {
       if (result) this.load(this.searchText || undefined);
+    });
+  }
+
+  sendInvite(patient: Patient) {
+    const tenantId = this.tenantCtx.tenantId();
+    if (!tenantId || this.inviting() !== null) return;
+    this.inviting.set(patient.id);
+    this.service.invite(tenantId, patient.id).subscribe({
+      next: () => {
+        this.inviting.set(null);
+        this.snackBar.open(
+          this.translate.instant('patients.inviteSent', { name: patient.name }),
+          '', { duration: 4000, panelClass: ['snack-success'] }
+        );
+      },
+      error: () => {
+        this.inviting.set(null);
+        this.snackBar.open(this.translate.instant('patients.inviteError'), '', { duration: 4000 });
+      },
     });
   }
 }
