@@ -9,6 +9,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { FinancialService } from '../../core/services/financial.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
+import { PdfExportService } from '../../core/services/pdf-export.service';
 import { FinancialReport } from '../../core/models/financial.model';
 import { Chart, BarController, BarElement, CategoryScale, LinearScale, Tooltip } from 'chart.js';
 
@@ -27,10 +28,16 @@ Chart.register(BarController, BarElement, CategoryScale, LinearScale, Tooltip);
           <h1 class="text-2xl font-bold text-slate-800">{{ 'financial.title' | translate }}</h1>
           <p class="text-slate-500 text-sm">{{ 'financial.subtitle' | translate }}</p>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-wrap">
           <input type="date" class="border border-slate-200 rounded-lg px-3 py-2 text-sm" [(ngModel)]="fromDate" (change)="load()" />
           <span class="text-slate-400">{{ 'financial.to' | translate }}</span>
           <input type="date" class="border border-slate-200 rounded-lg px-3 py-2 text-sm" [(ngModel)]="toDate" (change)="load()" />
+          @if (report()) {
+            <button mat-stroked-button (click)="exportPdf()" class="flex items-center gap-1">
+              <mat-icon class="text-[18px]">picture_as_pdf</mat-icon>
+              {{ 'financial.exportPdf' | translate }}
+            </button>
+          }
         </div>
       </div>
 
@@ -126,6 +133,7 @@ export class FinancialComponent implements OnInit, OnDestroy {
   private service = inject(FinancialService);
   private tenantCtx = inject(TenantContextService);
   private translate = inject(TranslateService);
+  private pdfExport = inject(PdfExportService);
 
   report = signal<FinancialReport | null>(null);
   loading = signal(false);
@@ -158,6 +166,17 @@ export class FinancialComponent implements OnInit, OnDestroy {
       next: r => { this.report.set(r); this.loading.set(false); },
       error: () => this.loading.set(false)
     });
+  }
+
+  exportPdf() {
+    const r = this.report();
+    if (!r) return;
+    this.pdfExport.exportFinancialReport(
+      r,
+      this.tenantCtx.tenantName() || 'Clinly',
+      this.fromDate,
+      this.toDate
+    );
   }
 
   markPaid(appointmentId: number) {

@@ -244,6 +244,7 @@
     "appointments": "consultas",
     "payments": "Pagamentos",
     "markPaid": "Marcar Pago",
+    "exportPdf": "Exportar PDF",
     "columns": {
       "patient": "Paciente",
       "professional": "Profissional",
