@@ -316,6 +316,7 @@ O fluxo de autenticação usa **JWT + Refresh Token** com armazenamento no `loca
 - Cards de resumo: receita total, a receber, consultas pagas e não pagas
 - **Gráficos de barras horizontais** (Chart.js) de receita por profissional e por serviço
 - Tabela detalhada de pagamentos com botão "Marcar Pago" para consultas pendentes
+- **Exportação PDF** com um clique (`picture_as_pdf`): gera relatório com cabeçalho da clínica, KPIs resumidos, tabelas de receita por profissional/serviço e detalhamento de pagamentos com status colorido — localizado automaticamente para PT-BR / EN
 
 ### Smart Gap Engine — Oferta de Slot
 - Página pública `/offer/:token` sem necessidade de login
