@@ -466,5 +466,45 @@
     "newNote": "New Note",
     "placeholder": "Chief complaint, clinical observations, prescriptions...",
     "add": "Add"
+  },
+  "onboarding": {
+    "skip": "Skip this step",
+    "skipAll": "Skip setup",
+    "next": "Next",
+    "finish": "Finish",
+    "welcome": {
+      "title": "Welcome to Clinly!",
+      "subtitle": "Let's set up your clinic in 3 simple steps. You can skip any step and configure later.",
+      "step1": "Clinic details",
+      "step2": "First professional",
+      "step3": "First service",
+      "start": "Start setup"
+    },
+    "clinic": {
+      "title": "Clinic details",
+      "subtitle": "How should your clinic appear to patients?",
+      "name": "Clinic name *",
+      "phone": "Phone",
+      "address": "Address"
+    },
+    "professional": {
+      "title": "Add a professional",
+      "subtitle": "Who will perform appointments at the clinic?",
+      "name": "Full name *",
+      "email": "Email *",
+      "duration": "Default appointment duration (min) *"
+    },
+    "service": {
+      "title": "Register a service",
+      "subtitle": "What type of appointments does your clinic offer?",
+      "name": "Service name *",
+      "duration": "Duration (min) *",
+      "price": "Price *"
+    },
+    "done": {
+      "title": "Clinic configured!",
+      "subtitle": "All set. You can now start scheduling appointments.",
+      "cta": "Go to Dashboard"
+    }
   }
 }

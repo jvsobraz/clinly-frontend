@@ -466,5 +466,45 @@
     "newNote": "Nova Anotação",
     "placeholder": "Queixa principal, observações clínicas, prescrições...",
     "add": "Adicionar"
+  },
+  "onboarding": {
+    "skip": "Pular este passo",
+    "skipAll": "Pular configuração",
+    "next": "Próximo",
+    "finish": "Concluir",
+    "welcome": {
+      "title": "Bem-vindo ao Clinly!",
+      "subtitle": "Vamos configurar sua clínica em 3 passos simples. Você pode pular qualquer etapa e configurar depois.",
+      "step1": "Dados da clínica",
+      "step2": "Primeiro profissional",
+      "step3": "Primeiro serviço",
+      "start": "Começar configuração"
+    },
+    "clinic": {
+      "title": "Dados da clínica",
+      "subtitle": "Como sua clínica deve aparecer para os pacientes?",
+      "name": "Nome da clínica *",
+      "phone": "Telefone",
+      "address": "Endereço"
+    },
+    "professional": {
+      "title": "Adicione um profissional",
+      "subtitle": "Quem vai realizar os atendimentos na clínica?",
+      "name": "Nome completo *",
+      "email": "E-mail *",
+      "duration": "Duração padrão do atendimento (min) *"
+    },
+    "service": {
+      "title": "Cadastre um serviço",
+      "subtitle": "Que tipo de atendimento sua clínica oferece?",
+      "name": "Nome do serviço *",
+      "duration": "Duração (min) *",
+      "price": "Preço *"
+    },
+    "done": {
+      "title": "Clínica configurada!",
+      "subtitle": "Tudo pronto. Você já pode começar a agendar consultas.",
+      "cta": "Ir para o Dashboard"
+    }
   }
 }

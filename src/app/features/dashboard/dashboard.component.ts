@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatDialog } from '@angular/material/dialog';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { DashboardService } from '../../core/services/dashboard.service';
 import { TenantContextService } from '../../core/services/tenant-context.service';
@@ -11,6 +12,7 @@ import { IntelligenceService } from '../../core/services/intelligence.service';
 import { DashboardData } from '../../core/models/dashboard.model';
 import { STATUS_LABELS, STATUS_COLORS } from '../../core/models/appointment.model';
 import { PatientIntelligence } from '../../core/models/intelligence.model';
+import { OnboardingWizardComponent } from '../onboarding/onboarding-wizard.component';
 import { Chart, ArcElement, DoughnutController, Tooltip, Legend } from 'chart.js';
 
 Chart.register(ArcElement, DoughnutController, Tooltip, Legend);
@@ -25,6 +27,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private tenantCtx = inject(TenantContextService);
   private intelligenceService = inject(IntelligenceService);
   private translate = inject(TranslateService);
+  private dialog = inject(MatDialog);
 
   data = signal<DashboardData | null>(null);
   atRisk = signal<PatientIntelligence[]>([]);
@@ -56,6 +59,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
       next: (r) => this.atRisk.set(r),
       error: () => {}
     });
+
+    if (!localStorage.getItem(`clinly_onboarding_done_${tenantId}`)) {
+      setTimeout(() => {
+        this.dialog.open(OnboardingWizardComponent, {
+          data: { tenantId },
+          width: '560px',
+          maxWidth: '95vw',
+          disableClose: true,
+        });
+      }, 600);
+    }
   }
 
   ngOnDestroy() {
