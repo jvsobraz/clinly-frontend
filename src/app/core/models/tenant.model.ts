@@ -8,6 +8,11 @@ export interface Tenant {
   primaryColor?: string;
   logoUrl?: string;
   welcomeMessage?: string;
+  emailNotificationsEnabled?: boolean;
+  whatsAppEnabled?: boolean;
+  whatsAppInstanceId?: string;
+  whatsAppToken?: string;
+  whatsAppClientToken?: string;
   isActive: boolean;
   createdAt: string;
   subscription?: TenantSubscription;
@@ -33,4 +38,9 @@ export interface UpdateTenantRequest {
   address?: string;
   primaryColor?: string;
   welcomeMessage?: string;
+  emailNotificationsEnabled?: boolean;
+  whatsAppEnabled?: boolean;
+  whatsAppInstanceId?: string;
+  whatsAppToken?: string;
+  whatsAppClientToken?: string;
 }

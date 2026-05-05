@@ -391,7 +391,18 @@
     "phone": "Phone",
     "address": "Address",
     "welcomeMessage": "Welcome message",
-    "primaryColor": "Primary color"
+    "primaryColor": "Primary color",
+    "automations": {
+      "title": "Notification Automations",
+      "emailTitle": "Email notifications",
+      "emailSubtitle": "Automatic confirmation, 24h reminder and cancellation emails",
+      "whatsappTitle": "Automatic WhatsApp",
+      "whatsappSubtitle": "Automatic messages via Z-API (confirmation, reminder and cancellation)",
+      "zapiHint": "Configure your Z-API credentials. The patient's phone number must be saved in their profile.",
+      "instanceId": "Instance ID (Z-API)",
+      "token": "Token (Z-API)",
+      "clientToken": "Client-Token (Z-API)"
+    }
   },
   "auth": {
     "login": {

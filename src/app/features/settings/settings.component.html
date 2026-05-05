@@ -29,6 +29,7 @@
     }
   </div>
 
+  <!-- Clinic Info -->
   <div class="bg-white rounded-xl border border-slate-200 p-6">
     @if (loading()) {
       <div class="flex justify-center py-8"><mat-spinner diameter="32" /></div>
@@ -59,6 +60,57 @@
           <input type="color" formControlName="primaryColor"
             class="w-10 h-10 rounded border border-slate-200 cursor-pointer p-0.5" />
           <span class="text-sm text-slate-400">{{ form.get('primaryColor')?.value }}</span>
+        </div>
+
+        <!-- ── Automations ──────────────────────────────────────── -->
+        <div class="border-t border-slate-100 pt-4 mt-2 space-y-5">
+          <h3 class="text-sm font-semibold text-slate-700 flex items-center gap-2">
+            <mat-icon class="text-[18px] text-indigo-500">notifications_active</mat-icon>
+            {{ 'settings.automations.title' | translate }}
+          </h3>
+
+          <!-- Email toggle -->
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-slate-700">{{ 'settings.automations.emailTitle' | translate }}</p>
+              <p class="text-xs text-slate-400">{{ 'settings.automations.emailSubtitle' | translate }}</p>
+            </div>
+            <mat-slide-toggle formControlName="emailNotificationsEnabled" color="primary" />
+          </div>
+
+          <!-- WhatsApp toggle -->
+          <div class="flex items-center justify-between">
+            <div>
+              <p class="text-sm font-medium text-slate-700 flex items-center gap-1.5">
+                <mat-icon class="text-[16px] text-green-500">whatsapp</mat-icon>
+                {{ 'settings.automations.whatsappTitle' | translate }}
+              </p>
+              <p class="text-xs text-slate-400">{{ 'settings.automations.whatsappSubtitle' | translate }}</p>
+            </div>
+            <mat-slide-toggle formControlName="whatsAppEnabled" color="primary" />
+          </div>
+
+          <!-- Z-API credentials (visible only when WhatsApp enabled) -->
+          @if (whatsAppOn) {
+            <div class="bg-green-50 border border-green-100 rounded-lg p-4 space-y-3">
+              <p class="text-xs font-medium text-green-800 flex items-center gap-1">
+                <mat-icon class="text-[14px]">info</mat-icon>
+                {{ 'settings.automations.zapiHint' | translate }}
+              </p>
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>{{ 'settings.automations.instanceId' | translate }}</mat-label>
+                <input matInput formControlName="whatsAppInstanceId" placeholder="ex: 3D25A1234B56" />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>{{ 'settings.automations.token' | translate }}</mat-label>
+                <input matInput formControlName="whatsAppToken" placeholder="ex: ABCDE12345..." />
+              </mat-form-field>
+              <mat-form-field appearance="outline" class="w-full">
+                <mat-label>{{ 'settings.automations.clientToken' | translate }}</mat-label>
+                <input matInput formControlName="whatsAppClientToken" placeholder="ex: F71C3..." />
+              </mat-form-field>
+            </div>
+          }
         </div>
 
         <div class="flex justify-end">

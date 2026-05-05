@@ -391,7 +391,18 @@
     "phone": "Telefone",
     "address": "Endereço",
     "welcomeMessage": "Mensagem de boas-vindas",
-    "primaryColor": "Cor principal"
+    "primaryColor": "Cor principal",
+    "automations": {
+      "title": "Automações de Notificação",
+      "emailTitle": "Notificações por e-mail",
+      "emailSubtitle": "Envio automático de confirmação, lembrete 24h e cancelamento",
+      "whatsappTitle": "WhatsApp automático",
+      "whatsappSubtitle": "Mensagens automáticas via Z-API (confirmação, lembrete e cancelamento)",
+      "zapiHint": "Configure suas credenciais Z-API. O número do paciente deve estar salvo no cadastro.",
+      "instanceId": "Instance ID (Z-API)",
+      "token": "Token (Z-API)",
+      "clientToken": "Client-Token (Z-API)"
+    }
   },
   "auth": {
     "login": {
