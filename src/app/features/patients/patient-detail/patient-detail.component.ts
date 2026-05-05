@@ -1,5 +1,6 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { CommonModule, CurrencyPipe, PercentPipe } from '@angular/common';
+import { CommonModule, CurrencyPipe, DatePipe, PercentPipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,18 +9,24 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { IntelligenceService } from '../../../core/services/intelligence.service';
 import { TenantContextService } from '../../../core/services/tenant-context.service';
+import { AppointmentNotesService, AppointmentNote } from '../../../core/services/appointment-notes.service';
 import { PatientIntelligence } from '../../../core/models/intelligence.model';
 
 @Component({
   selector: 'app-patient-detail',
   standalone: true,
   imports: [
-    CommonModule, CurrencyPipe, PercentPipe,
+    CommonModule, CurrencyPipe, DatePipe, PercentPipe, FormsModule,
     MatCardModule, MatButtonModule, MatChipsModule,
     MatIconModule, MatDividerModule, MatProgressBarModule, MatTooltipModule,
+    MatFormFieldModule, MatInputModule, MatProgressSpinnerModule,
     TranslateModule,
   ],
   template: `
@@ -150,6 +157,44 @@ import { PatientIntelligence } from '../../../core/models/intelligence.model';
             </mat-card-content>
           </mat-card>
         </div>
+
+        <!-- Prontuário -->
+        <mat-card class="mt-6">
+          <mat-card-header>
+            <mat-card-title class="text-base flex items-center gap-2">
+              <mat-icon class="text-indigo-500 text-[20px]">medical_information</mat-icon>
+              {{ 'notes.title' | translate }}
+            </mat-card-title>
+          </mat-card-header>
+          <mat-card-content class="pt-4">
+            @if (notesLoading()) {
+              <div class="flex justify-center py-6"><mat-spinner diameter="32" /></div>
+            } @else {
+              @if (notes().length === 0) {
+                <p class="text-sm text-slate-400 text-center py-4">{{ 'notes.empty' | translate }}</p>
+              } @else {
+                <div class="flex flex-col gap-3 mb-4">
+                  @for (note of notes(); track note.id) {
+                    <div class="bg-slate-50 rounded-lg p-4 border border-slate-100">
+                      <p class="text-sm text-slate-800 leading-relaxed whitespace-pre-wrap">{{ note.content }}</p>
+                      <div class="flex items-center gap-1.5 mt-2 text-xs text-slate-400">
+                        <mat-icon class="!text-[13px]">person</mat-icon>
+                        <span>{{ note.authorName }}</span>
+                        <span>·</span>
+                        <span>{{ note.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+                        @if (note.appointmentDate) {
+                          <span>·</span>
+                          <mat-icon class="!text-[13px]">event</mat-icon>
+                          <span>{{ note.appointmentDate | date:'dd/MM/yyyy' }}</span>
+                        }
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            }
+          </mat-card-content>
+        </mat-card>
       }
     </div>
   `
@@ -158,11 +203,15 @@ export class PatientDetailComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private intelligenceService = inject(IntelligenceService);
+  private notesService = inject(AppointmentNotesService);
   private tenantCtx = inject(TenantContextService);
   private translate = inject(TranslateService);
+  private snackBar = inject(MatSnackBar);
 
   intel = signal<PatientIntelligence | null>(null);
+  notes = signal<AppointmentNote[]>([]);
   loading = signal(false);
+  notesLoading = signal(false);
 
   ngOnInit() {
     const patientId = Number(this.route.snapshot.paramMap.get('id'));
@@ -173,6 +222,12 @@ export class PatientDetailComponent implements OnInit {
     this.intelligenceService.getPatientIntelligence(tenantId, patientId).subscribe({
       next: data => { this.intel.set(data); this.loading.set(false); },
       error: () => this.loading.set(false)
+    });
+
+    this.notesLoading.set(true);
+    this.notesService.getByPatient(tenantId, patientId).subscribe({
+      next: data => { this.notes.set(data); this.notesLoading.set(false); },
+      error: () => this.notesLoading.set(false),
     });
   }
 

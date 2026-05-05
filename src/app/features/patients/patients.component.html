@@ -60,6 +60,10 @@
                   <button mat-icon-button (click)="openDialog(p)">
                     <mat-icon class="text-slate-400 text-[18px]">edit</mat-icon>
                   </button>
+                  <button mat-icon-button (click)="deletePatient(p)"
+                    [matTooltip]="'common.delete' | translate">
+                    <mat-icon class="text-slate-400 text-[18px]">delete_outline</mat-icon>
+                  </button>
                 </td>
               </tr>
             }

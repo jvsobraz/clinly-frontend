@@ -61,6 +61,15 @@ export class PatientsComponent implements OnInit {
     });
   }
 
+  deletePatient(patient: Patient) {
+    if (!confirm(`Remover o paciente "${patient.name}"? Esta ação não pode ser desfeita.`)) return;
+    const tenantId = this.tenantCtx.tenantId()!;
+    this.service.delete(tenantId, patient.id).subscribe({
+      next: () => this.patients.update(list => list.filter(p => p.id !== patient.id)),
+      error: () => this.snackBar.open('Erro ao remover paciente.', '', { duration: 3000 }),
+    });
+  }
+
   sendInvite(patient: Patient) {
     const tenantId = this.tenantCtx.tenantId();
     if (!tenantId || this.inviting() !== null) return;

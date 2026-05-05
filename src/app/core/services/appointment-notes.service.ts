@@ -10,6 +10,7 @@ export interface AppointmentNote {
   isPrivate: boolean;
   authorName: string;
   createdAt: string;
+  appointmentDate?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -32,6 +33,12 @@ export class AppointmentNotesService {
   delete(tenantId: number, appointmentId: number, noteId: number): Observable<void> {
     return this.http.delete<void>(
       `${environment.apiUrl}/tenants/${tenantId}/appointments/${appointmentId}/notes/${noteId}`
+    );
+  }
+
+  getByPatient(tenantId: number, patientId: number): Observable<AppointmentNote[]> {
+    return this.http.get<AppointmentNote[]>(
+      `${environment.apiUrl}/tenants/${tenantId}/patients/${patientId}/notes`
     );
   }
 }
